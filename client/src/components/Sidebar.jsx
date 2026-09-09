@@ -1,13 +1,8 @@
-// import React from 'react';
+import { Link, useLocation } from "react-router-dom";
 
-// export default function Sidebar() {
-//   return (
-//     <aside className="w-64 bg-surface text-clay min-h-screen p-4 font-body">
-//       <h2 className="font-head text-xl text-growth font-semibold mb-4">Navigation</h2>
-//     </aside>
-//   );
-// }
-export default function Sidebar({ brand, subtitle, items, active }) {
+export default function Sidebar({ brand, subtitle, items }) {
+  const location = useLocation();
+
   return (
     <aside className="w-64 min-h-screen flex flex-col p-4 text-white"
       style={{ background: "linear-gradient(180deg, #151235 0%, #211B4E 100%)" }}>
@@ -26,11 +21,14 @@ export default function Sidebar({ brand, subtitle, items, active }) {
 
       <nav>
         {items.map((item) => (
-          <a key={item.label} href={item.href || "#"}
-            className={`rail-item ${item.label === active ? "active" : ""}`}>
+          <Link
+            key={item.label}
+            to={item.href || "#"}
+            className={`rail-item ${location.pathname === item.href ? "active" : ""}`}
+          >
             <item.icon size={17} />
             {item.label}
-          </a>
+          </Link>
         ))}
       </nav>
     </aside>

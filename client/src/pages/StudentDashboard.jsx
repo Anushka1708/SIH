@@ -9,14 +9,14 @@ import { studentData as d } from "../data/mockData";
 import { getCurrentUser } from "../utils/auth";
 
 const items = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Profile", icon: User },
-  { label: "Skills & Assessment", icon: Award },
-  { label: "Opportunities", icon: Briefcase },
-  { label: "Applications", icon: FileText },
-  { label: "Resume & Portfolio", icon: FileEdit },
-  { label: "Learning Programs", icon: BookOpen },
-  { label: "Settings", icon: Settings },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/student" },
+  { label: "Profile", icon: User, href: "/student/profile" },
+  { label: "Skills & Assessment", icon: Award, href: "/student/skills" },
+  { label: "Opportunities", icon: Briefcase, href: "/student/opportunities" },
+  { label: "Applications", icon: FileText, href: "/student/applications" },
+  { label: "Resume & Portfolio", icon: FileEdit, href: "/student/resume" },
+  { label: "Learning Programs", icon: BookOpen, href: "/student/learning" },
+  { label: "Settings", icon: Settings, href: "/student/settings" },
 ];
 
 export default function StudentDashboard() {

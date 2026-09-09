@@ -6,13 +6,13 @@ import { institutionData as d } from "../data/mockData";
 import { getCurrentUser } from "../utils/auth";
 
 const items = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Students", icon: Users },
-  { label: "Faculty", icon: GraduationCap },
-  { label: "Collaborations", icon: Handshake },
-  { label: "Learning Programs", icon: BookOpen },
-  { label: "Reports", icon: BarChart3 },
-  { label: "Settings", icon: Settings },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/institution" },
+  { label: "Students", icon: Users, href: "/institution/students" },
+  { label: "Faculty", icon: GraduationCap, href: "/institution/faculty" },
+  { label: "Collaborations", icon: Handshake, href: "/institution/collaborations" },
+  { label: "Learning Programs", icon: BookOpen, href: "/institution/learning" },
+  { label: "Reports", icon: BarChart3, href: "/institution/reports" },
+  { label: "Settings", icon: Settings, href: "/institution/settings" },
 ];
 
 const statusStyle = {

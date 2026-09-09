@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GraduationCap, Building2, School, UserCog, Mail, Lock, User } from "lucide-react";
+import { loginUser } from "../utils/auth"; // ← added
 
 const roles = [
   { id: "student", label: "Student", icon: GraduationCap, desc: "Learn, apply, get placed" },
@@ -33,7 +33,12 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Signup data:", { role, ...form });
+
+    // build the user object your dashboards expect (name, role, companyName, institutionName etc.)
+    const user = { role, ...form };
+    loginUser(user); // ← added: saves to localStorage as "skillbridge_user"
+
+    console.log("Signup data:", user);
     navigate(role === "student" ? "/student"
       : role === "company" ? "/company"
       : role === "institution" ? "/institution"

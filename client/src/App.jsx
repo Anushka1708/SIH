@@ -8,6 +8,13 @@ import InstitutionDashboard from './pages/InstitutionDashboard.jsx'
 import FacultyDashboard from './pages/FacultyDashboard.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import ComingSoon from './pages/ComingSoon.jsx'
+import StudentProfile from './pages/StudentProfile.jsx'
+import StudentSkills from './pages/StudentSkills.jsx'
+import StudentApplications from './pages/StudentApplications.jsx'
+import StudentOpportunities from './pages/StudentOpportunities.jsx'
+import StudentResume from './pages/StudentResume.jsx'
+import StudentLearning from './pages/StudentLearning.jsx'
+import StudentSettings from './pages/StudentSettings.jsx'
 
 export default function App() {
   return (
@@ -18,13 +25,13 @@ export default function App() {
 
       {/* Student */}
       <Route path="/student" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>} />
-      <Route path="/student/profile" element={<ProtectedRoute role="student"><ComingSoon title="Profile" /></ProtectedRoute>} />
-      <Route path="/student/skills" element={<ProtectedRoute role="student"><ComingSoon title="Skills & Assessment" /></ProtectedRoute>} />
-      <Route path="/student/opportunities" element={<ProtectedRoute role="student"><ComingSoon title="Opportunities" /></ProtectedRoute>} />
-      <Route path="/student/applications" element={<ProtectedRoute role="student"><ComingSoon title="Applications" /></ProtectedRoute>} />
-      <Route path="/student/resume" element={<ProtectedRoute role="student"><ComingSoon title="Resume & Portfolio" /></ProtectedRoute>} />
-      <Route path="/student/learning" element={<ProtectedRoute role="student"><ComingSoon title="Learning Programs" /></ProtectedRoute>} />
-      <Route path="/student/settings" element={<ProtectedRoute role="student"><ComingSoon title="Settings" /></ProtectedRoute>} />
+      <Route path="/student/profile" element={<ProtectedRoute role="student"><StudentProfile /></ProtectedRoute>} />
+      <Route path="/student/skills" element={<ProtectedRoute role="student"><StudentSkills /></ProtectedRoute>} />
+      <Route path="/student/opportunities" element={<ProtectedRoute role="student"><StudentOpportunities /></ProtectedRoute>} />
+      <Route path="/student/applications" element={<ProtectedRoute role="student"><StudentApplications /></ProtectedRoute>} />
+      <Route path="/student/resume" element={<ProtectedRoute role="student"><StudentResume /></ProtectedRoute>} />
+      <Route path="/student/learning" element={<ProtectedRoute role="student"><StudentLearning /></ProtectedRoute>} />
+      <Route path="/student/settings" element={<ProtectedRoute role="student"><StudentSettings /></ProtectedRoute>} />
 
       {/* Company */}
       <Route path="/company" element={<ProtectedRoute role="company"><CompanyDashboard /></ProtectedRoute>} />

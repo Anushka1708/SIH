@@ -13,15 +13,31 @@ export const studentData = {
     { name: "MongoDB", percent: 40 },
   ],
   opportunities: [
-    { title: "Frontend Developer Intern", company: "TechNova Solutions", location: "Remote", stipend: "₹15k/month", matched: ["React", "CSS"], gap: ["TypeScript"] },
-    { title: "Full Stack Developer Intern", company: "ByteLabs", location: "Hybrid", stipend: "₹20k/month", matched: ["Node.js", "MongoDB"], gap: ["GraphQL"] },
-    { title: "AI/ML Summer Internship", company: "InnovateAI", location: "Remote", stipend: "₹25k/month", matched: ["Python"], gap: ["TensorFlow", "ML Ops"] },
+  { title: "Frontend Developer Intern", company: "TechNova Solutions", location: "Remote", stipend: "₹15k/month", type: "Internship", matched: ["React", "CSS"], gap: ["TypeScript"] },
+  { title: "Full Stack Developer Intern", company: "ByteLabs", location: "Hybrid", stipend: "₹20k/month", type: "Internship", matched: ["Node.js", "MongoDB"], gap: ["GraphQL"] },
+  { title: "AI/ML Summer Internship", company: "InnovateAI", location: "Remote", stipend: "₹25k/month", type: "Internship", matched: ["Python"], gap: ["TensorFlow", "ML Ops"] },
+  { title: "Data Analyst", company: "InsightCo", location: "Bangalore", stipend: "₹25,000/mo", type: "Job", matched: ["SQL", "Excel"], gap: ["Python"] },
+  { title: "UI/UX Design Project", company: "Creativo Studio", location: "Remote", stipend: "₹8,000", type: "Project", matched: ["Figma"], gap: ["User Research"] },
   ],
   roadmap: [
     { title: "Complete profile", description: "Add skills, projects and resume.", done: true },
     { title: "Verify skills", description: "Take assessments to get verified badges.", done: true },
     { title: "Apply to internships", description: "Send applications to matched roles.", done: false },
     { title: "Get placed", description: "Land your first internship or job.", done: false },
+  ],
+  applicationsList: [
+  { name: "TechNova Solutions", info: "Applied on 2 Sep", role: "Frontend Developer Intern", status: "Shortlisted", time: "2d ago" },
+  { name: "ByteLabs", info: "Applied on 30 Aug", role: "Full Stack Developer Intern", status: "Applied", time: "5d ago" },
+  { name: "InnovateAI", info: "Applied on 25 Aug", role: "AI/ML Summer Internship", status: "Interview", time: "1w ago" },
+  { name: "InsightCo", info: "Applied on 20 Aug", role: "Data Analyst", status: "Applied", time: "2w ago" },
+  ],
+  skillAssessments: [
+  { name: "JavaScript", percent: 85, verified: true },
+  { name: "React", percent: 72, verified: true },
+  { name: "Node.js", percent: 68, verified: false },
+  { name: "MongoDB", percent: 40, verified: false },
+  { name: "TypeScript", percent: 0, verified: false },
+  { name: "Python", percent: 55, verified: true },
   ],
 };
 

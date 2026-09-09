@@ -8,14 +8,14 @@ import { companyData as d } from "../data/mockData";
 import { getCurrentUser } from "../utils/auth";
 
 const items = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Post Opportunity", icon: Send },
-  { label: "Applications", icon: FileText },
-  { label: "Internships", icon: Users },
-  { label: "Projects", icon: FolderKanban },
-  { label: "Profile", icon: Users },
-  { label: "Analytics", icon: BarChart3 },
-  { label: "Settings", icon: Settings },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/company" },
+  { label: "Post Opportunity", icon: Send, href: "/company/postopportunity" },
+  { label: "Applications", icon: FileText, href: "/company/applications" },
+  { label: "Internships", icon: Users, href: "/company/internships" },
+  { label: "Projects", icon: FolderKanban, href: "/company/projects" },
+  { label: "Profile", icon: Users, href: "/company/profile" },
+  { label: "Analytics", icon: BarChart3, href: "/company/analytics" },
+  { label: "Settings", icon: Settings, href: "/company/settings"  },
 ];
 
 export default function CompanyDashboard() {

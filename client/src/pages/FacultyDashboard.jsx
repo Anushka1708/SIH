@@ -6,13 +6,13 @@ import { facultyData as d } from "../data/mockData";
 import { getCurrentUser } from "../utils/auth";
 
 const items = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Courses", icon: BookOpen },
-  { label: "Students", icon: Users },
-  { label: "Assessments", icon: ClipboardList },
-  { label: "Mentorship", icon: Handshake },
-  { label: "Profile", icon: User },
-  { label: "Settings", icon: Settings },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/faculty" },
+  { label: "Courses", icon: BookOpen, href: "/faculty/courses" },
+  { label: "Students", icon: Users, href: "/faculty/students" },
+  { label: "Assessments", icon: ClipboardList, href: "/faculty/assessments" },
+  { label: "Mentorship", icon: Handshake, href: "/faculty/mentorship" },
+  { label: "Profile", icon: User, href: "/faculty/profile" },
+  { label: "Settings", icon: Settings, href: "/faculty/settings" },
 ];
 
 export default function FacultyDashboard() {

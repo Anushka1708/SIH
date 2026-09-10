@@ -107,7 +107,7 @@ const pillars = [
       "Direct bidding on industry live project problem statements",
     ],
     ctaText: "Create Student Profile",
-    ctaLink: "/signup",
+    ctaLink: "/signup?role=student",
     stat: "10K+",
     statLabel: "Active Students",
   },
@@ -124,7 +124,7 @@ const pillars = [
       "Direct pipeline to vetted graduates across premier institutes",
     ],
     ctaText: "Post Opportunities Free",
-    ctaLink: "/signup",
+    ctaLink: "/signup?role=company",
     stat: "500+",
     statLabel: "Hiring Partners",
   },
@@ -141,7 +141,7 @@ const pillars = [
       "Centralized MoU and industry-sponsored lab tracking",
     ],
     ctaText: "Register Institution",
-    ctaLink: "/signup",
+    ctaLink: "/signup?role=institution",
     stat: "200+",
     statLabel: "Universities",
   },
@@ -214,7 +214,7 @@ export default function Landing() {
             Sign In
           </Link>
           <Link
-            to="/signup"
+            to="/signup?role=student"
             className="btn-primary !px-4 !py-2 text-xs font-semibold shadow-md shadow-indigo-500/25 transition"
           >
             Get Started Free
@@ -258,16 +258,16 @@ export default function Landing() {
 
               <div className="flex flex-wrap gap-3.5 mb-10">
                 <Link
-                  to="/signup"
+                  to="/signup?role=student"
                   className="btn-primary !px-6 !py-3 text-xs md:text-sm font-bold shadow-lg shadow-indigo-600/30 flex items-center gap-2 hover:scale-[1.02] transition-transform"
                 >
-                  Join SkillBridge Free <ArrowRight size={16} />
+                  Join as Student <ArrowRight size={16} />
                 </Link>
                 <Link
-                  to="/login"
+                  to="/signup?role=company"
                   className="btn-ghost !bg-white/10 !border-white/20 !text-white !px-6 !py-3 text-xs md:text-sm font-semibold hover:!bg-white/15 transition"
                 >
-                  Explore Dashboard
+                  For Companies / Hire Talent
                 </Link>
               </div>
 
@@ -368,18 +368,18 @@ export default function Landing() {
                 </div>
               </div>
 
-              {/* Floating Glassmorphic AI Roadmap Card */}
+              {/* Floating Glassmorphic Competency Matrix Card */}
               <motion.div
                 whileHover={{ y: -3 }}
-                className="absolute -bottom-6 -left-6 bg-[#1D1845]/95 backdrop-blur-xl border border-white/20 p-3.5 rounded-2xl shadow-xl max-w-xs text-white hidden sm:flex items-center gap-3"
+                className="absolute -bottom-5 -left-5 bg-[#1D1845]/95 backdrop-blur-xl border border-white/20 p-3.5 rounded-2xl shadow-xl max-w-xs text-white hidden sm:flex items-center gap-3"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center shrink-0 shadow-sm">
-                  <Sparkles size={18} className="text-amber-300" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center shrink-0 shadow-sm">
+                  <ShieldCheck size={20} className="text-white" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold leading-tight">Gemini AI Roadmap Active</p>
+                  <p className="text-xs font-bold leading-tight">Verified Competency Matrix</p>
                   <p className="text-[10px] text-indigo-200/80 leading-tight mt-0.5">
-                    3 personalized milestones generated to close Cloud DevOps gap.
+                    Evidence-derived skill vectors validated by faculty & corporate MoUs.
                   </p>
                 </div>
               </motion.div>
@@ -572,7 +572,7 @@ export default function Landing() {
               </div>
             </div>
 
-            <Link to="/signup" className="btn-primary !px-5 !py-2.5 text-xs font-bold">
+            <Link to="/signup?role=student" className="btn-primary !px-5 !py-2.5 text-xs font-bold">
               Join the Network Today
             </Link>
           </div>
@@ -598,18 +598,24 @@ export default function Landing() {
           <p className="text-indigo-200 text-xs md:text-sm mb-8 leading-relaxed">
             Join thousands of students and hundreds of recruiters using SkillBridge to make hiring evidence-driven and fair.
           </p>
-          <div className="flex justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             <Link
-              to="/signup"
+              to="/signup?role=student"
               className="btn-primary !px-6 !py-3 text-xs md:text-sm font-bold shadow-lg shadow-indigo-500/25"
             >
-              Sign Up as Student or Partner
+              Join as Student
             </Link>
             <Link
-              to="/login"
+              to="/signup?role=company"
               className="btn-ghost !bg-white/10 !border-white/20 !text-white !px-6 !py-3 text-xs md:text-sm font-semibold hover:!bg-white/20"
             >
-              Member Sign In
+              For Companies / Hire Talent
+            </Link>
+            <Link
+              to="/signup?role=institution"
+              className="btn-ghost !bg-white/10 !border-white/20 !text-white !px-6 !py-3 text-xs md:text-sm font-semibold hover:!bg-white/20"
+            >
+              Register Institutions
             </Link>
           </div>
         </div>
@@ -651,10 +657,10 @@ export default function Landing() {
           <div>
             <p className="font-bold text-white mb-3">Stakeholder Portals</p>
             <ul className="space-y-2 text-[#C9C5E8]">
-              <li><Link to="/login" className="hover:text-white transition">Student Portal</Link></li>
-              <li><Link to="/login" className="hover:text-white transition">Recruiter & Company</Link></li>
-              <li><Link to="/login" className="hover:text-white transition">Faculty Mentorship</Link></li>
-              <li><Link to="/login" className="hover:text-white transition">College Administration</Link></li>
+              <li><Link to="/signup?role=student" className="hover:text-white transition">Student Portal</Link></li>
+              <li><Link to="/signup?role=company" className="hover:text-white transition">For Companies / Hire Talent</Link></li>
+              <li><Link to="/signup?role=faculty" className="hover:text-white transition">Faculty Portal</Link></li>
+              <li><Link to="/signup?role=institution" className="hover:text-white transition">Register Institutions</Link></li>
             </ul>
           </div>
 

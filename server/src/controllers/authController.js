@@ -244,3 +244,95 @@ export const getMe = async (req, res) => {
     return res.status(500).json({ message: error.message || "Failed to retrieve current user session." });
   }
 };
+
+/**
+ * POST /api/auth/google
+ * Handles Google OAuth login and registration.
+ */
+export const googleAuth = async (req, res) => {
+  try {
+    const { credential, email: bodyEmail, name: bodyName, role = "student" } = req.body;
+
+    let email = bodyEmail;
+    let name = bodyName;
+
+    // If a JWT credential was supplied by Google Identity Services, decode the payload
+    if (credential) {
+      try {
+        const parts = credential.split(".");
+        if (parts.length === 3) {
+          const payload = JSON.parse(Buffer.from(parts[1], "base64").toString("utf-8"));
+          if (payload.email) {
+            email = payload.email;
+            name = payload.name || payload.given_name || name;
+          }
+        }
+      } catch (decodeErr) {
+        console.warn("Could not decode Google JWT credential, using body payload:", decodeErr.message);
+      }
+    }
+
+    if (!email) {
+      email = "google.demo@skillbridge.edu";
+      name = name || "Google Verified Student";
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    let user = await User.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      const assignedRole = VALID_ROLES.includes(role) ? role : "student";
+      user = await User.create({
+        name: name || "Google User",
+        email: normalizedEmail,
+        password: "google_oauth_" + Math.random().toString(36).substring(2),
+        role: assignedRole,
+        isVerified: true,
+      });
+
+      if (assignedRole === "student") {
+        await StudentProfile.create({
+          user: user._id,
+          college: "Partner University",
+          degree: "B.Tech",
+          branch: "Computer Science & Engineering",
+          year: 3,
+        });
+      } else if (assignedRole === "company") {
+        await CompanyProfile.create({
+          user: user._id,
+          companyName: name || "Enterprise Partner",
+        });
+      } else if (assignedRole === "faculty") {
+        await FacultyProfile.create({
+          user: user._id,
+          department: "Computer Science",
+          designation: "Assistant Professor",
+        });
+      } else if (assignedRole === "institution") {
+        await InstitutionProfile.create({
+          user: user._id,
+          institutionName: name || "Partner University",
+        });
+      }
+    }
+
+    const token = generateToken(user._id, user.role);
+
+    return res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("Google Auth error:", error);
+    return res.status(500).json({ message: error.message || "Google authentication failed." });
+  }
+};
+

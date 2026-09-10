@@ -7,6 +7,7 @@ import { connectDB } from "./src/config/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const clientDistPath = path.resolve(__dirname, "../client/dist");
 
 import dns from "dns";
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
@@ -52,12 +53,10 @@ app.use("/api/assessments", assessmentRoutes);
 app.use("/api/faculty", facultyRoutes);
 app.use("/api/passport", passportRoutes);
 
-// Serve static assets from the React build directory in production mode
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(express.static(clientDistPath));
 
-// Single Page Application (SPA) Catch-All Fallback
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
+  res.sendFile(path.join(clientDistPath, "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;

@@ -39,6 +39,12 @@ export const studentData = {
   { name: "TypeScript", percent: 0, verified: false },
   { name: "Python", percent: 55, verified: true },
   ],
+  learningPrograms: [
+  { title: "Complete React Developer Course", provider: "SkillBridge Academy", duration: "6 weeks", level: "Intermediate", enrolled: false },
+  { title: "Data Structures & Algorithms", provider: "CodeMasters", duration: "8 weeks", level: "Beginner", enrolled: true },
+  { title: "TypeScript Fundamentals", provider: "SkillBridge Academy", duration: "3 weeks", level: "Beginner", enrolled: false },
+  { title: "Advanced Node.js & APIs", provider: "DevAcademy", duration: "5 weeks", level: "Advanced", enrolled: false },
+],
 };
 
 export const companyData = {

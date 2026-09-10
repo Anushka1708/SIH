@@ -1,31 +1,33 @@
-import { LayoutDashboard, Users, GraduationCap, Handshake, BookOpen, BarChart3, Settings } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { getCurrentUser } from "../utils/auth";
-
-const items = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/institution" },
-  { label: "Students", icon: Users, href: "/institution/students" },
-  { label: "Faculty", icon: GraduationCap, href: "/institution/faculty" },
-  { label: "Collaborations", icon: Handshake, href: "/institution/collaborations" },
-  { label: "Learning Programs", icon: BookOpen, href: "/institution/learning" },
-  { label: "Reports", icon: BarChart3, href: "/institution/reports" },
-  { label: "Settings", icon: Settings, href: "/institution/settings" },
-];
+import { institutionData as d } from "../data/mockData";
+import { institutionItems } from "./InstitutionDashboard";
 
 export default function InstitutionReports() {
   const user = getCurrentUser();
+  const displayName = user?.institutionName || user?.name || "Institution";
+  const max = Math.max(...d.enrollment);
+
   return (
     <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={user?.institutionName || user?.name} subtitle="Institution" items={items} />
+      <Sidebar brand={displayName} subtitle="Institution" items={institutionItems} active="Reports" />
       <div className="flex-1">
-        <Topbar placeholder="Search students, programs..." />
+        <Topbar placeholder="Search reports..." />
         <div className="p-6">
           <h2 className="text-xl font-extrabold mb-1">Reports</h2>
-          <p className="text-muted text-sm mb-6">Placement, enrollment and performance reports.</p>
+          <p className="text-muted text-sm mb-6">Placement and enrollment trends over time.</p>
+
           <div className="card">
-            {/* TODO: charts and exportable reports */}
-            <p className="text-sm text-muted">Reports go here.</p>
+            <p className="font-semibold text-[#1E1B33] text-sm mb-4">Enrollment Trend</p>
+            <div className="flex items-end gap-3 h-48">
+              {d.enrollment.map((v, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                  <div className="w-full bg-primary rounded-t-md" style={{ height: `${(v / max) * 100}%` }} />
+                  <span className="text-xs text-muted font-mono">{d.months[i]}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

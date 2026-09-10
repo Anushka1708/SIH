@@ -1,31 +1,30 @@
-import { LayoutDashboard, Users, GraduationCap, Handshake, BookOpen, BarChart3, Settings as SettingsIcon } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import { getCurrentUser } from "../utils/auth";
-
-const items = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/institution" },
-  { label: "Students", icon: Users, href: "/institution/students" },
-  { label: "Faculty", icon: GraduationCap, href: "/institution/faculty" },
-  { label: "Collaborations", icon: Handshake, href: "/institution/collaborations" },
-  { label: "Learning Programs", icon: BookOpen, href: "/institution/learning" },
-  { label: "Reports", icon: BarChart3, href: "/institution/reports" },
-  { label: "Settings", icon: SettingsIcon, href: "/institution/settings" },
-];
+import { getCurrentUser, logout } from "../utils/auth";
+import { useNavigate } from "react-router-dom";
+import { institutionItems } from "./InstitutionDashboard";
 
 export default function InstitutionSettings() {
   const user = getCurrentUser();
+  const navigate = useNavigate();
+  const displayName = user?.institutionName || user?.name || "Institution";
+
+  const handleLogout = () => { logout(); navigate("/login"); };
+
   return (
     <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={user?.institutionName || user?.name} subtitle="Institution" items={items} />
+      <Sidebar brand={displayName} subtitle="Institution" items={institutionItems} active="Settings" />
       <div className="flex-1">
-        <Topbar placeholder="Search students, programs..." />
-        <div className="p-6 max-w-2xl">
+        <Topbar placeholder="Search..." />
+        <div className="p-6 max-w-xl">
           <h2 className="text-xl font-extrabold mb-1">Settings</h2>
-          <p className="text-muted text-sm mb-6">Manage account preferences.</p>
-          <div className="card">
-            {/* TODO: password change, notifications, logout - follow StudentSettings.jsx pattern */}
-            <p className="text-sm text-muted">Settings form goes here.</p>
+          <p className="text-muted text-sm mb-6">Manage institution account preferences.</p>
+
+          <div className="card flex flex-col gap-4">
+            <label className="flex items-center justify-between text-sm"><span>Weekly report emails</span><input type="checkbox" defaultChecked /></label>
+            <label className="flex items-center justify-between text-sm"><span>Collaboration requests</span><input type="checkbox" defaultChecked /></label>
+            <hr className="border-line" />
+            <button onClick={handleLogout} className="btn-ghost justify-center text-red">Logout</button>
           </div>
         </div>
       </div>

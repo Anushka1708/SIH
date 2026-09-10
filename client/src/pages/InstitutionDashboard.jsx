@@ -5,7 +5,7 @@ import StatCard from "../components/StatCard";
 import { institutionData as d } from "../data/mockData";
 import { getCurrentUser } from "../utils/auth";
 
-const items = [
+export const institutionItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/institution" },
   { label: "Students", icon: Users, href: "/institution/students" },
   { label: "Faculty", icon: GraduationCap, href: "/institution/faculty" },
@@ -15,11 +15,7 @@ const items = [
   { label: "Settings", icon: Settings, href: "/institution/settings" },
 ];
 
-const statusStyle = {
-  Active: "bg-greenSoft text-green",
-  Upcoming: "bg-amberSoft text-amber",
-  Completed: "bg-bg text-muted",
-};
+const statusStyle = { Active: "bg-greenSoft text-green", Upcoming: "bg-amberSoft text-amber", Completed: "bg-bg text-muted" };
 
 export default function InstitutionDashboard() {
   const user = getCurrentUser();
@@ -28,7 +24,7 @@ export default function InstitutionDashboard() {
 
   return (
     <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={displayName} subtitle="Institution" items={items} active="Dashboard" />
+      <Sidebar brand={displayName} subtitle="Institution" items={institutionItems} active="Dashboard" />
       <div className="flex-1">
         <Topbar placeholder="Search students, programs..." />
         <div className="p-6">
@@ -51,11 +47,10 @@ export default function InstitutionDashboard() {
                 ))}
               </div>
             </div>
-
             <div className="card">
               <div className="flex justify-between items-center mb-1">
                 <p className="font-semibold text-[#1E1B33] text-sm">Recent Collaborations</p>
-                <a href="#" className="text-xs text-primary font-semibold">View All</a>
+                <a href="/institution/collaborations" className="text-xs text-primary font-semibold">View All</a>
               </div>
               <ul>
                 {d.collaborations.map((c) => (

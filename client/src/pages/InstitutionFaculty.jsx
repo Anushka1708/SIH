@@ -1,31 +1,38 @@
-import { LayoutDashboard, Users, GraduationCap, Handshake, BookOpen, BarChart3, Settings } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { getCurrentUser } from "../utils/auth";
+import { institutionItems } from "./InstitutionDashboard";
 
-const items = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/institution" },
-  { label: "Students", icon: Users, href: "/institution/students" },
-  { label: "Faculty", icon: GraduationCap, href: "/institution/faculty" },
-  { label: "Collaborations", icon: Handshake, href: "/institution/collaborations" },
-  { label: "Learning Programs", icon: BookOpen, href: "/institution/learning" },
-  { label: "Reports", icon: BarChart3, href: "/institution/reports" },
-  { label: "Settings", icon: Settings, href: "/institution/settings" },
+const faculty = [
+  { name: "Dr. R. Sharma", dept: "CSE", designation: "Professor", students: 48 },
+  { name: "Dr. A. Mehta", dept: "ECE", designation: "Associate Professor", students: 36 },
 ];
 
 export default function InstitutionFaculty() {
   const user = getCurrentUser();
+  const displayName = user?.institutionName || user?.name || "Institution";
+
   return (
     <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={user?.institutionName || user?.name} subtitle="Institution" items={items} />
+      <Sidebar brand={displayName} subtitle="Institution" items={institutionItems} active="Faculty" />
       <div className="flex-1">
-        <Topbar placeholder="Search students, programs..." />
+        <Topbar placeholder="Search faculty..." />
         <div className="p-6">
           <h2 className="text-xl font-extrabold mb-1">Faculty</h2>
-          <p className="text-muted text-sm mb-6">Manage faculty members.</p>
+          <p className="text-muted text-sm mb-6">Faculty members across all departments.</p>
+
           <div className="card">
-            {/* TODO: faculty directory, add/edit */}
-            <p className="text-sm text-muted">Faculty list goes here.</p>
+            <ul>
+              {faculty.map((f) => (
+                <li key={f.name} className="flex justify-between items-center py-3 border-b border-line last:border-none">
+                  <div>
+                    <p className="text-sm font-semibold text-[#1E1B33]">{f.name}</p>
+                    <p className="text-xs text-muted">{f.designation} · {f.dept}</p>
+                  </div>
+                  <span className="text-xs text-muted">{f.students} students</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

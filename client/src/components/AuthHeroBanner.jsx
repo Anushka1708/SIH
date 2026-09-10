@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import BrandLogo from "./BrandLogo";
 import {
   Sparkles,
   ShieldCheck,
@@ -20,24 +20,7 @@ export default function AuthHeroBanner() {
 
       {/* Top Header: Logo on Left + Cursive Tagline on Right */}
       <div className="flex items-center justify-between w-full relative z-10">
-        <Link
-          to="/"
-          className="flex items-center gap-2.5 font-bold text-lg group w-fit hover:opacity-95 transition"
-          title="SkillBridge Home"
-        >
-          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center font-black text-white shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-transform">
-            S
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="font-extrabold text-lg tracking-tight text-white leading-none">
-              SkillBridge
-            </span>
-            <span className="text-white/30 text-xs font-light">|</span>
-            <span className="text-[10px] text-indigo-300 font-bold tracking-wider uppercase">
-              TALENT PLATFORM
-            </span>
-          </div>
-        </Link>
+        <BrandLogo to="/" size="default" showTagline={true} />
 
         {/* Handwritten Cursive Tagline with Curved Underline SVG */}
         <div className="flex flex-col items-end text-right">

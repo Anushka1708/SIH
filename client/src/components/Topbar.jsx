@@ -23,6 +23,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { getCurrentUser, logout } from "../utils/auth";
 import { motion, AnimatePresence } from "framer-motion";
 import { getStoredTheme, toggleTheme, isCurrentlyDark } from "../utils/theme";
+import BrandLogo from "./BrandLogo";
 
 const INITIAL_NOTIFICATIONS = [
   {
@@ -187,13 +188,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
     <header className="flex items-center justify-between px-6 py-3.5 border-b border-[#E2E8F0] dark:border-[#2E2A52] bg-white/95 dark:bg-[#130F2E]/95 backdrop-blur-md sticky top-0 z-40">
       {/* Mobile Branding / Dashboard Link */}
       <div className="md:hidden flex items-center mr-3">
-        <Link
-          to={getDashboardUrl()}
-          className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center font-black text-white text-sm shadow-sm"
-          title="SkillBridge Dashboard"
-        >
-          S
-        </Link>
+        <BrandLogo to={getDashboardUrl()} size="compact" showTagline={false} />
       </div>
 
       {/* Interactive Search Bar */}

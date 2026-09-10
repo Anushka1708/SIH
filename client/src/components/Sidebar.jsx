@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { getCurrentUser } from "../utils/auth";
 import { motion } from "framer-motion";
+import BrandLogo from "./BrandLogo";
 
 export default function Sidebar({ brand, subtitle, items = [], active }) {
   const location = useLocation();
@@ -87,25 +88,10 @@ export default function Sidebar({ brand, subtitle, items = [], active }) {
       className="w-64 min-h-screen flex flex-col p-4 text-white select-none border-r border-white/5"
       style={{ background: "linear-gradient(180deg, #131032 0%, #1D1845 100%)" }}
     >
-      {/* Clickable SkillBridge Brand Logo */}
-      <Link
-        to={dashboardUrl}
-        className="flex items-center gap-2.5 px-2 mb-7 group transition-opacity hover:opacity-95"
-        title="SkillBridge Dashboard"
-      >
-        <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center font-black text-white shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-transform">
-          S
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="font-extrabold text-base tracking-tight text-white leading-none">
-            SkillBridge
-          </span>
-          <span className="text-white/30 text-xs font-light">|</span>
-          <span className="text-[10px] text-indigo-300 font-bold tracking-wider uppercase">
-            TALENT PLATFORM
-          </span>
-        </div>
-      </Link>
+      {/* Clickable High-Tech SkillBridge Brand Logo */}
+      <div className="px-2 mb-7">
+        <BrandLogo to={dashboardUrl} size="compact" showTagline={false} />
+      </div>
 
       {/* User Brand Profile Snippet */}
       <Link

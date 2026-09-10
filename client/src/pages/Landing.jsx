@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { getCurrentUser } from "../utils/auth";
+import BrandLogo from "../components/BrandLogo";
 
 const SKILL_PREVIEWS = {
   "React.js": {
@@ -179,24 +180,7 @@ export default function Landing() {
         className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-12 py-3.5 text-white backdrop-blur-md border-b border-white/10"
         style={{ background: "rgba(19, 16, 50, 0.95)" }}
       >
-        <Link
-          to={getHomeLink()}
-          className="flex items-center gap-2.5 font-bold text-lg group"
-          title="SkillBridge Home"
-        >
-          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 font-black group-hover:scale-105 transition-transform">
-            S
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="leading-tight font-extrabold text-white tracking-tight text-lg">
-              SkillBridge
-            </span>
-            <span className="text-white/30 text-xs font-light">|</span>
-            <span className="text-[10px] text-indigo-300 font-bold tracking-wider uppercase">
-              TALENT PLATFORM
-            </span>
-          </div>
-        </Link>
+        <BrandLogo to={getHomeLink()} size="default" showTagline={true} />
 
         {/* Smooth Scroll Navigation Links */}
         <div className="hidden md:flex items-center gap-8 text-xs font-semibold text-[#C9C5E8]">

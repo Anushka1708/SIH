@@ -240,3 +240,62 @@ html.dark ::-webkit-scrollbar-thumb:hover,
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #6D65A8;
 }
+
+/* Dark mode role selection, badges and text contrast overrides */
+html.dark .bg-\[\#EEF0FD\],
+.dark .bg-\[\#EEF0FD\] {
+  background-color: #1E1B3B !important;
+}
+
+html.dark .text-slate-900,
+.dark .text-slate-900,
+html.dark .text-slate-800,
+.dark .text-slate-800,
+html.dark .text-slate-700,
+.dark .text-slate-700 {
+  color: #F3F4F6 !important;
+}
+
+html.dark .text-slate-600,
+.dark .text-slate-600,
+html.dark .text-slate-500,
+.dark .text-slate-500 {
+  color: #9CA3AF !important;
+}
+
+html.dark .border-slate-200,
+.dark .border-slate-200,
+html.dark .border-slate-100,
+.dark .border-slate-100 {
+  border-color: #2E2A52 !important;
+}
+
+html.dark .bg-indigo-50,
+.dark .bg-indigo-50 {
+  background-color: rgba(99, 102, 241, 0.18) !important;
+  color: #C7D2FE !important;
+}
+
+html.dark .bg-emerald-50,
+.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.18) !important;
+  color: #6EE7B7 !important;
+}
+
+html.dark .bg-amber-50,
+.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.18) !important;
+  color: #FCD34D !important;
+}
+
+html.dark .bg-purple-50,
+.dark .bg-purple-50 {
+  background-color: rgba(168, 85, 247, 0.18) !important;
+  color: #E9D5FF !important;
+}
+
+html.dark .bg-rose-50,
+.dark .bg-rose-50 {
+  background-color: rgba(244, 63, 94, 0.18) !important;
+  color: #FDA4AF !important;
+}

@@ -1,15 +1,27 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
-import { GraduationCap, Building2, School, UserCog, Mail, Lock, Eye, EyeOff, User, ArrowLeft } from "lucide-react";
+import {
+  GraduationCap,
+  Building2,
+  School,
+  UserCog,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  User,
+  ArrowLeft,
+} from "lucide-react";
 import { loginUser } from "../utils/auth";
 import api from "../services/api";
 import { signInWithGoogle } from "../services/googleAuth";
+import AuthHeroBanner from "../components/AuthHeroBanner";
 
 const roles = [
-  { id: "student", label: "Student", icon: GraduationCap, desc: "Learn, apply, get placed" },
-  { id: "company", label: "Company", icon: Building2, desc: "Hire talent, post roles" },
-  { id: "institution", label: "Institution", icon: School, desc: "Manage students & faculty" },
-  { id: "faculty", label: "Faculty", icon: UserCog, desc: "Mentor & teach" },
+  { id: "student", label: "Student", icon: GraduationCap, desc: "Learn, apply & get verified" },
+  { id: "company", label: "Company", icon: Building2, desc: "Hire talent & post roles" },
+  { id: "institution", label: "Institution", icon: School, desc: "Manage students & NAAC reports" },
+  { id: "faculty", label: "Faculty", icon: UserCog, desc: "Mentor & verify skills" },
 ];
 
 export default function Signup() {
@@ -31,6 +43,7 @@ export default function Signup() {
       setRole(qRole);
     }
   }, [searchParams]);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -51,6 +64,15 @@ export default function Signup() {
 
   const update = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
+  const redirectByRole = (r) => {
+    navigate(
+      r === "student" ? "/student"
+      : r === "company" ? "/company"
+      : r === "institution" ? "/institution"
+      : "/faculty"
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -70,13 +92,7 @@ export default function Signup() {
         localStorage.setItem("skillbridge_token", token);
       }
       loginUser({ ...form, ...user, role });
-
-      navigate(
-        role === "student" ? "/student"
-        : role === "company" ? "/company"
-        : role === "institution" ? "/institution"
-        : "/faculty"
-      );
+      redirectByRole(role);
     } catch (err) {
       const msg =
         err.response?.data?.message || err.message || "Signup failed. Please try again.";
@@ -86,305 +102,388 @@ export default function Signup() {
     }
   };
 
+  const handleGoogleSignup = async () => {
+    try {
+      setGoogleLoading(true);
+      setError("");
+      const data = await signInWithGoogle({ role });
+      if (data.token) {
+        localStorage.setItem("skillbridge_token", data.token);
+      }
+      loginUser(data.user);
+      redirectByRole(data.user.role || role);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || "Google signup failed.");
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen grid md:grid-cols-2">
-      <div className="text-white flex flex-col justify-between p-10"
-        style={{ background: "linear-gradient(180deg, #151235 0%, #211B4E 100%)" }}>
-        <Link to="/" className="flex items-center gap-2.5 font-bold text-lg group hover:opacity-90 transition" title="Back to Home">
-          <div className="w-8 h-8 rounded-[10px] bg-primary flex items-center justify-center group-hover:scale-105 transition-transform">S</div>
-          SkillBridge
-        </Link>
-        <div>
-          <h2 className="text-2xl font-extrabold mb-2">Create your account</h2>
-          <p className="text-[#9791C4] italic">"Your skills, our platform, a better tomorrow."</p>
-        </div>
-        <div className="h-40 bg-white/5 rounded-xl2" />
-      </div>
+    <div className="min-h-screen grid lg:grid-cols-12 bg-white dark:bg-[#0B081E]">
+      {/* Left Column: Uniform Hero Banner with Branding, Tagline & Value Cards */}
+      <AuthHeroBanner />
 
-      <div className="flex flex-col justify-center px-10 md:px-16 py-10 bg-white overflow-y-auto">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-primary transition mb-6 w-fit bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-xl border border-slate-200"
-          title="Return to SkillBridge Home"
-        >
-          <ArrowLeft size={14} /> Back to Home
-        </Link>
-        <h2 className="text-2xl font-extrabold mb-1">Join SkillBridge</h2>
-        <p className="text-muted mb-6">Select your role to get started</p>
-
-        {error && (
-          <p className="text-sm text-red bg-redSoft rounded-lg px-3 py-2 mb-4">{error}</p>
-        )}
-
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          {roles.map((r) => (
-            <button
-              key={r.id}
-              type="button"
-              onClick={() => setRole(r.id)}
-              className={`text-left rounded-xl2 border p-4 transition ${
-                role === r.id
-                  ? "border-primary bg-[#EEF0FD]"
-                  : "border-line bg-white hover:border-primary/40"
-              }`}
-            >
-              <r.icon size={20} className={role === r.id ? "text-primary" : "text-muted"} />
-              <p className="text-sm font-semibold mt-2 text-[#1E1B33]">{r.label}</p>
-              <p className="text-xs text-muted">{r.desc}</p>
-            </button>
-          ))}
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <label className="flex items-center gap-2 border border-line rounded-xl px-3 py-3">
-            <User size={16} className="text-muted" />
-            <input
-              className="outline-none text-sm w-full"
-              placeholder={role === "company" ? "Contact person name" : role === "institution" ? "Admin name" : "Full name"}
-              value={form.name}
-              onChange={update("name")}
-              required
-            />
-          </label>
-
-          <label className="flex items-center gap-2 border border-line rounded-xl px-3 py-3">
-            <Mail size={16} className="text-muted" />
-            <input
-              className="outline-none text-sm w-full"
-              placeholder="Enter your email"
-              type="email"
-              value={form.email}
-              onChange={update("email")}
-              required
-            />
-          </label>
-
-          <label className="flex items-center gap-2 border border-line rounded-xl px-3 py-3">
-            <Lock size={16} className="text-muted" />
-            <input
-              className="outline-none text-sm w-full"
-              placeholder="Create a password"
-              type={showPassword ? "text" : "password"}
-              value={form.password}
-              onChange={update("password")}
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="text-muted hover:text-slate-700 dark:hover:text-slate-200 transition focus:outline-none p-0.5"
-              title={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-            </button>
-          </label>
-
-          {role === "student" && (
-            <>
-              <input
-                className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                placeholder="College / University name"
-                value={form.college}
-                onChange={update("college")}
-                required
-              />
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-[11px] text-muted font-medium mb-1 block">Course / Degree</label>
-                  <select
-                    className="border border-line rounded-xl px-3 py-2.5 text-sm outline-none w-full bg-white text-[#1E1B33]"
-                    value={form.degree}
-                    onChange={update("degree")}
-                    required
-                  >
-                    <option value="B.Tech">B.Tech</option>
-                    <option value="M.Tech">M.Tech</option>
-                    <option value="BCA">BCA</option>
-                    <option value="MCA">MCA</option>
-                    <option value="B.Sc">B.Sc</option>
-                    <option value="M.Sc">M.Sc</option>
-                    <option value="B.E.">B.E.</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-[11px] text-muted font-medium mb-1 block">Branch / Specialization</label>
-                  <select
-                    className="border border-line rounded-xl px-3 py-2.5 text-sm outline-none w-full bg-white text-[#1E1B33]"
-                    value={form.branch}
-                    onChange={update("branch")}
-                    required
-                  >
-                    <option value="Computer Science & Engineering">Computer Science & Engineering</option>
-                    <option value="Information Technology">Information Technology</option>
-                    <option value="Electronics & Communication">Electronics & Communication</option>
-                    <option value="Electrical Engineering">Electrical Engineering</option>
-                    <option value="Mechanical Engineering">Mechanical Engineering</option>
-                    <option value="Civil Engineering">Civil Engineering</option>
-                    <option value="Data Science & AI">Data Science & AI</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-[11px] text-muted font-medium mb-1 block">Current Year</label>
-                <select
-                  className="border border-line rounded-xl px-3 py-2.5 text-sm outline-none w-full bg-white text-[#1E1B33]"
-                  value={form.year}
-                  onChange={update("year")}
-                  required
-                >
-                  <option value="1st Year">1st Year</option>
-                  <option value="2nd Year">2nd Year</option>
-                  <option value="3rd Year">3rd Year</option>
-                  <option value="4th Year">4th Year</option>
-                  <option value="5th Year">5th Year</option>
-                </select>
-              </div>
-            </>
-          )}
-
-          {role === "company" && (
-            <>
-              <input
-                className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                placeholder="Company name"
-                value={form.companyName}
-                onChange={update("companyName")}
-                required
-              />
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                  placeholder="Industry (e.g. IT Services)"
-                  value={form.industry}
-                  onChange={update("industry")}
-                  required
-                />
-                <input
-                  className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                  placeholder="Website"
-                  value={form.website}
-                  onChange={update("website")}
-                />
-              </div>
-            </>
-          )}
-
-          {role === "institution" && (
-            <>
-              <input
-                className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                placeholder="Institution name"
-                value={form.institutionName}
-                onChange={update("institutionName")}
-                required
-              />
-              <input
-                className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                placeholder="Location (city, state)"
-                value={form.location}
-                onChange={update("location")}
-                required
-              />
-            </>
-          )}
-
-          {role === "faculty" && (
-            <>
-              <input
-                className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                placeholder="Institution name"
-                value={form.institutionName}
-                onChange={update("institutionName")}
-                required
-              />
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                  placeholder="Department (e.g. CSE)"
-                  value={form.department}
-                  onChange={update("department")}
-                  required
-                />
-                <input
-                  className="border border-line rounded-xl px-3 py-3 text-sm outline-none"
-                  placeholder="Designation (e.g. Professor)"
-                  value={form.designation}
-                  onChange={update("designation")}
-                  required
-                />
-              </div>
-            </>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-primary justify-center mt-2 disabled:opacity-60"
+      {/* Right Column: Clean Form Container */}
+      <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-center px-8 sm:px-14 lg:px-16 py-12 relative bg-white dark:bg-[#130F2E] overflow-y-auto">
+        <div className="max-w-md w-full mx-auto">
+          {/* Back to Home Navigation */}
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition mb-6 w-fit bg-slate-100 dark:bg-white/5 hover:bg-indigo-50 dark:hover:bg-white/10 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10"
+            title="Return to SkillBridge Home"
           >
-            {loading ? "Creating Account..." : "Create Account"}
-          </button>
+            <ArrowLeft size={14} /> Back to Home
+          </Link>
 
-          <div className="relative flex py-2.5 items-center">
-            <div className="flex-grow border-t border-slate-200 dark:border-white/10" />
-            <span className="flex-shrink mx-3 text-xs text-muted">or continue with</span>
-            <div className="flex-grow border-t border-slate-200 dark:border-white/10" />
+          {/* Form Header */}
+          <div className="mb-6">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1E1B33] dark:text-white tracking-tight">
+              Join SkillBridge
+            </h2>
+            <p className="text-xs sm:text-sm text-muted mt-1">
+              Select your role to configure your verified workspace
+            </p>
           </div>
 
-          <button
-            type="button"
-            onClick={async () => {
-              try {
-                setGoogleLoading(true);
-                setError("");
-                const data = await signInWithGoogle({ role });
-                if (data.token) {
-                  localStorage.setItem("skillbridge_token", data.token);
-                }
-                loginUser(data.user);
-                navigate(
-                  data.user.role === "student" ? "/student"
-                  : data.user.role === "company" ? "/company"
-                  : data.user.role === "institution" ? "/institution"
-                  : "/faculty"
-                );
-              } catch (err) {
-                setError(err.response?.data?.message || err.message || "Google signup failed.");
-              } finally {
-                setGoogleLoading(false);
-              }
-            }}
-            disabled={googleLoading}
-            className="w-full border border-slate-200 dark:border-white/10 rounded-xl py-3 px-4 flex items-center justify-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5 transition shadow-xs"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-              />
-            </svg>
-            <span>{googleLoading ? "Signing in..." : "Continue with Google"}</span>
-          </button>
-        </form>
+          {/* Error Banner */}
+          {error && (
+            <div className="text-xs text-red bg-redSoft dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl px-3.5 py-2.5 mb-5 flex items-start gap-2">
+              <span className="shrink-0 mt-0.5 font-bold">⚠️</span>
+              <p className="leading-snug">{error}</p>
+            </div>
+          )}
 
-        <p className="text-sm text-center text-muted mt-6">
-          Already have an account? <Link to="/login" className="text-primary font-semibold">Login</Link>
-        </p>
+          {/* Role Selection Cards with High-Contrast Dark Styling */}
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {roles.map((r) => {
+              const isSelected = role === r.id;
+              return (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => setRole(r.id)}
+                  className={`text-left rounded-2xl border p-3.5 sm:p-4 transition-all duration-150 ${
+                    isSelected
+                      ? "bg-[#EEF0FD] dark:bg-[#1E1B3B] border-primary dark:border-[#6366F1] ring-2 ring-primary/20 shadow-sm"
+                      : "bg-white dark:bg-[#130F2E] border-[#ECEBF5] dark:border-[#2E2A52] hover:border-primary/40 dark:hover:border-primary/50"
+                  }`}
+                >
+                  <r.icon
+                    size={20}
+                    className={isSelected ? "text-primary dark:text-[#818CF8]" : "text-muted dark:text-[#9CA3AF]"}
+                  />
+                  <p
+                    className={`text-sm font-bold mt-2 ${
+                      isSelected
+                        ? "text-primary dark:text-[#F3F4F6]"
+                        : "text-[#1E1B33] dark:text-[#F3F4F6]"
+                    }`}
+                  >
+                    {r.label}
+                  </p>
+                  <p className="text-[11px] sm:text-xs text-muted dark:text-[#9CA3AF] mt-0.5 leading-snug">
+                    {r.desc}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Role Specific Registration Form */}
+          <form onSubmit={handleSubmit} className="space-y-3.5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                {role === "company" ? "Contact Person Name" : role === "institution" ? "Administrator Name" : "Full Name"}
+              </label>
+              <label className="flex items-center gap-2.5 border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition bg-white dark:bg-[#1E1B3B]">
+                <User size={16} className="text-muted shrink-0" />
+                <input
+                  className="outline-none text-sm w-full bg-transparent text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280]"
+                  placeholder={role === "company" ? "e.g. Priya Nair" : role === "institution" ? "e.g. Dr. K. Sharma" : "e.g. Aarav Sharma"}
+                  value={form.name}
+                  onChange={update("name")}
+                  required
+                />
+              </label>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Official Email Address
+              </label>
+              <label className="flex items-center gap-2.5 border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition bg-white dark:bg-[#1E1B3B]">
+                <Mail size={16} className="text-muted shrink-0" />
+                <input
+                  className="outline-none text-sm w-full bg-transparent text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280]"
+                  placeholder="name@organization.edu / company.com"
+                  type="email"
+                  value={form.email}
+                  onChange={update("email")}
+                  required
+                />
+              </label>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Create Password
+              </label>
+              <label className="flex items-center gap-2.5 border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition bg-white dark:bg-[#1E1B3B]">
+                <Lock size={16} className="text-muted shrink-0" />
+                <input
+                  className="outline-none text-sm w-full bg-transparent text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280]"
+                  placeholder="Minimum 6 characters"
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
+                  onChange={update("password")}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-muted hover:text-slate-700 dark:hover:text-slate-200 transition focus:outline-none p-0.5"
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </label>
+            </div>
+
+            {/* Student Specific Fields */}
+            {role === "student" && (
+              <>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    College / University Name
+                  </label>
+                  <input
+                    className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                    placeholder="e.g. Jabalpur Engineering College"
+                    value={form.college}
+                    onChange={update("college")}
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[11px] text-muted dark:text-[#9CA3AF] font-medium mb-1 block">Course / Degree</label>
+                    <select
+                      className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3 py-2.5 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                      value={form.degree}
+                      onChange={update("degree")}
+                      required
+                    >
+                      <option value="B.Tech">B.Tech</option>
+                      <option value="M.Tech">M.Tech</option>
+                      <option value="BCA">BCA</option>
+                      <option value="MCA">MCA</option>
+                      <option value="B.Sc">B.Sc</option>
+                      <option value="M.Sc">M.Sc</option>
+                      <option value="B.E.">B.E.</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] text-muted dark:text-[#9CA3AF] font-medium mb-1 block">Branch / Field</label>
+                    <select
+                      className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3 py-2.5 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                      value={form.branch}
+                      onChange={update("branch")}
+                      required
+                    >
+                      <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                      <option value="Information Technology">Information Technology</option>
+                      <option value="Electronics & Communication">Electronics & Communication</option>
+                      <option value="Electrical Engineering">Electrical Engineering</option>
+                      <option value="Mechanical Engineering">Mechanical Engineering</option>
+                      <option value="Civil Engineering">Civil Engineering</option>
+                      <option value="Data Science & AI">Data Science & AI</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] text-muted dark:text-[#9CA3AF] font-medium mb-1 block">Current Year</label>
+                  <select
+                    className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3 py-2.5 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                    value={form.year}
+                    onChange={update("year")}
+                    required
+                  >
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                    <option value="5th Year">5th Year</option>
+                  </select>
+                </div>
+              </>
+            )}
+
+            {/* Company Specific Fields */}
+            {role === "company" && (
+              <>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Company Name
+                  </label>
+                  <input
+                    className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                    placeholder="e.g. TechCorp Global Solutions"
+                    value={form.companyName}
+                    onChange={update("companyName")}
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[11px] text-muted dark:text-[#9CA3AF] font-medium mb-1 block">Industry</label>
+                    <input
+                      className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                      placeholder="e.g. Enterprise Cloud"
+                      value={form.industry}
+                      onChange={update("industry")}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] text-muted dark:text-[#9CA3AF] font-medium mb-1 block">Website (Optional)</label>
+                    <input
+                      className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                      placeholder="https://..."
+                      value={form.website}
+                      onChange={update("website")}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Institution Specific Fields */}
+            {role === "institution" && (
+              <>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Institution / University Name
+                  </label>
+                  <input
+                    className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                    placeholder="e.g. Jabalpur Engineering College"
+                    value={form.institutionName}
+                    onChange={update("institutionName")}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Campus Location (City, State)
+                  </label>
+                  <input
+                    className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                    placeholder="e.g. Jabalpur, Madhya Pradesh"
+                    value={form.location}
+                    onChange={update("location")}
+                    required
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Faculty Specific Fields */}
+            {role === "faculty" && (
+              <>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Affiliated Institution Name
+                  </label>
+                  <input
+                    className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                    placeholder="e.g. Jabalpur Engineering College"
+                    value={form.institutionName}
+                    onChange={update("institutionName")}
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[11px] text-muted dark:text-[#9CA3AF] font-medium mb-1 block">Department</label>
+                    <input
+                      className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                      placeholder="e.g. CSE / IT"
+                      value={form.department}
+                      onChange={update("department")}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[11px] text-muted dark:text-[#9CA3AF] font-medium mb-1 block">Designation</label>
+                    <input
+                      className="border border-[#ECEBF5] dark:border-[#2E2A52] rounded-xl px-3.5 py-3 text-sm outline-none w-full bg-white dark:bg-[#1E1B3B] text-[#1E1B33] dark:text-white placeholder:text-muted dark:placeholder:text-[#6B7280] focus:border-primary focus:ring-2 focus:ring-primary/10 transition"
+                      placeholder="e.g. Associate Professor"
+                      value={form.designation}
+                      onChange={update("designation")}
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary justify-center w-full py-3.5 text-sm font-bold shadow-md shadow-indigo-500/20 disabled:opacity-60 transition active:scale-[0.99] mt-2"
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+            </button>
+
+            {/* Social Divider */}
+            <div className="relative flex py-4 items-center">
+              <div className="flex-grow border-t border-slate-200 dark:border-white/10" />
+              <span className="flex-shrink mx-3 text-xs text-muted">or continue with</span>
+              <div className="flex-grow border-t border-slate-200 dark:border-white/10" />
+            </div>
+
+            {/* Continue with Google Button */}
+            <button
+              type="button"
+              onClick={handleGoogleSignup}
+              disabled={googleLoading}
+              className="w-full border border-slate-200 dark:border-white/10 rounded-xl py-3 px-4 flex items-center justify-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5 transition shadow-xs active:scale-[0.99]"
+            >
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                />
+              </svg>
+              <span>{googleLoading ? "Connecting with Google..." : "Continue with Google"}</span>
+            </button>
+          </form>
+
+          {/* Switch to Login */}
+          <p className="text-xs sm:text-sm text-center text-muted mt-6">
+            Already have an account?{" "}
+            <Link to="/login" className="text-primary font-bold hover:underline">
+              Sign In
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

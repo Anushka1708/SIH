@@ -137,11 +137,24 @@ export default function StudentDashboard() {
             className="rounded-2xl p-6 md:p-7 mb-6 text-white shadow-md relative overflow-hidden"
             style={{ background: "linear-gradient(135deg, #4338CA 0%, #6366F1 50%, #8B5CF6 100%)" }}
           >
-            <div className="relative z-10">
-              <h2 className="text-2xl font-black tracking-tight">Good Day, {firstName}! 👋</h2>
-              <p className="text-white/85 text-xs md:text-sm mt-1 max-w-xl leading-relaxed">
-                Your evidence-based skill vector and live industry match engine are active. Track your applications and close skill gaps in real-time.
-              </p>
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-black tracking-tight">Good Day, {firstName}! 👋</h2>
+                <p className="text-white/85 text-xs md:text-sm mt-1 max-w-xl leading-relaxed">
+                  Your evidence-based skill vector and live industry match engine are active. Track your applications and close skill gaps in real-time.
+                </p>
+              </div>
+
+              {/* Profile Status Badge */}
+              <div className="flex items-center gap-2.5 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/40 px-3.5 py-1.5 rounded-xl shadow-xs shrink-0 self-start sm:self-center">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                </span>
+                <span className="text-xs font-semibold tracking-wide text-emerald-100">
+                  Profile Status: Active & AI Verified
+                </span>
+              </div>
             </div>
             <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
           </div>

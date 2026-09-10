@@ -326,10 +326,13 @@ export default function StudentResume() {
             </div>
 
             {/* Profile Status Badge */}
-            <div className="flex items-center gap-2 bg-white/80 border border-slate-200/80 px-3.5 py-1.5 rounded-xl shadow-xs">
-              <span className={`w-2 h-2 rounded-full ${hasResume ? "bg-emerald-500" : "bg-amber-500"}`} />
-              <span className="text-xs font-semibold text-slate-700">
-                {hasResume ? "Profile Status: Complete (Resume Active)" : "Profile Status: Ready for Resume"}
+            <div className="flex items-center gap-2.5 bg-emerald-500/10 dark:bg-emerald-500/15 backdrop-blur-md border border-emerald-500/30 px-3.5 py-1.5 rounded-xl shadow-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              <span className="text-xs font-semibold tracking-wide text-emerald-700 dark:text-emerald-300">
+                {hasResume ? "Profile Status: Active & AI Verified" : "Profile Status: Ready for Verification"}
               </span>
             </div>
           </div>

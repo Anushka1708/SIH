@@ -249,9 +249,20 @@ export default function StudentProfile() {
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-primary to-violet flex items-center justify-center text-white text-xl font-black shadow-md">
                 {form.name ? form.name[0]?.toUpperCase() : "S"}
               </div>
-              <div>
-                <p className="font-bold text-base text-[#1E1B33]">{form.name || "Student"}</p>
-                <p className="text-xs text-muted">
+              <div className="flex-1">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <p className="font-bold text-base text-[#1E1B33]">{form.name || "Student"}</p>
+                  <div className="flex items-center gap-2.5 bg-emerald-500/10 dark:bg-emerald-500/15 backdrop-blur-md border border-emerald-500/30 px-3 py-1 rounded-xl shadow-xs">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                    </span>
+                    <span className="text-xs font-semibold tracking-wide text-emerald-700 dark:text-emerald-300">
+                      Profile Status: Active & AI Verified
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted mt-0.5">
                   {form.degree || form.branch
                     ? `${form.degree} · ${form.branch}`.trim()
                     : "Course"}

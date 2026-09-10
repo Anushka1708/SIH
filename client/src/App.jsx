@@ -46,10 +46,11 @@ import FacultySettings from './pages/FacultySettings.jsx'
 import GoogleAuthCallback from './pages/GoogleAuthCallback.jsx'
 import AIChatbot from './components/AIChatbot.jsx'
 import NetworkStatusBanner from './components/NetworkStatusBanner.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 export default function App() {
   return (
-    <>
+    <ErrorBoundary>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -109,6 +110,6 @@ export default function App() {
 
       {/* Network & Offline Status Banner / Toast */}
       <NetworkStatusBanner />
-    </>
+    </ErrorBoundary>
   )
 }

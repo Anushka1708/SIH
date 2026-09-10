@@ -98,6 +98,8 @@ import {
   Award,
   Zap,
   FolderKanban,
+  TrendingUp,
+  AlertCircle,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
@@ -142,20 +144,22 @@ export default function FacultyDashboard() {
     loadDashboard();
   }, []);
 
-  const d = dashboardData || defaultData;
-  const displayName = user?.name || d.facultyName || d.name || "Dr. Rajesh Verma";
-  const designation = user?.designation || d.designation || "Placement Head & Senior Professor";
-  const assessments = d.assessments || [];
+  const d = dashboardData || defaultData || {};
+  const displayName = user?.name || d?.facultyName || d?.name || "Dr. Rajesh Verma";
+  const designation = user?.designation || d?.designation || "Placement Head & Senior Professor";
+  const assessments = Array.isArray(d?.assessments) ? d.assessments : [];
 
-  // Assessment statistics
+  // Assessment statistics with robust safe-guards
   const totalTestsCreated = assessments.length || 3;
-  const activeQuizzes = assessments.filter((a) => a.status === "Active").length || 3;
-  const pendingEvaluations = assessments.reduce((acc, curr) => acc + (curr.pendingCount || 0), 0) || 4;
-  const studentCompletionRate = d.stats?.find((s) => s.label.includes("Completion"))?.value || "92%";
+  const activeQuizzes = assessments.filter((a) => a?.status === "Active").length || 3;
+  const pendingEvaluations = assessments.reduce((acc, curr) => acc + (curr?.pendingCount || 0), 0) || 4;
+  const statsList = Array.isArray(d?.stats) ? d.stats : [];
+  const studentCompletionRate = statsList.find((s) => s?.label?.includes("Completion"))?.value || "92%";
 
-  const p = d.performance || { score: 84, excellent: 42, good: 38, needsImprovement: 15, poor: 5 };
+  const p = d?.performance || { score: 84, excellent: 42, good: 38, needsImprovement: 15, poor: 5 };
+  const performanceScore = typeof p?.score === "number" ? p.score : 84;
   const circumference = 2 * Math.PI * 42;
-  const offset = circumference - (p.score / 100) * circumference;
+  const offset = circumference - (performanceScore / 100) * circumference;
 
   return (
     <div className="flex bg-[#F4F5FB] min-h-screen">

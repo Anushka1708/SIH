@@ -15,10 +15,13 @@ import {
   Settings,
   LogOut,
   Info,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { getCurrentUser, logout } from "../utils/auth";
 import { motion, AnimatePresence } from "framer-motion";
+import { getStoredTheme, toggleTheme, isCurrentlyDark } from "../utils/theme";
 
 const INITIAL_NOTIFICATIONS = [
   {
@@ -68,6 +71,13 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
+  const [currentTheme, setCurrentTheme] = useState(getStoredTheme());
+
+  useEffect(() => {
+    const handleThemeEv = () => setCurrentTheme(getStoredTheme());
+    window.addEventListener("theme-change", handleThemeEv);
+    return () => window.removeEventListener("theme-change", handleThemeEv);
+  }, []);
 
   const notifRef = useRef(null);
   const userMenuRef = useRef(null);
@@ -400,18 +410,21 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
               setShowUserMenu(!showUserMenu);
               setShowNotifications(false);
             }}
-            className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-slate-100 transition group"
+            className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition group"
           >
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-violet flex items-center justify-center text-white font-bold text-xs shadow-sm">
               {initials}
             </div>
             <div className="hidden md:block text-left">
-              <p className="text-xs font-bold text-[#1E1B33] leading-tight group-hover:text-primary transition">
+              <p className="text-xs font-bold text-[#1E1B33] dark:text-[#F3F4F6] leading-tight group-hover:text-primary transition">
                 {user?.name || "Guest"}
               </p>
-              <p className="text-[10px] text-muted leading-tight capitalize mt-0.5">
-                {user?.role || "Member"}
-              </p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="text-[10px] text-muted dark:text-[#9CA3AF] leading-tight capitalize">
+                  {user?.role || "Member"}
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              </div>
             </div>
             <ChevronDown size={14} className="text-muted hidden md:block" />
           </button>
@@ -424,36 +437,72 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 6, scale: 0.97 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 top-12 bg-white border border-[#ECEBF5] rounded-2xl shadow-xl py-1.5 w-48 z-50 overflow-hidden"
+                className="absolute right-0 top-12 bg-white dark:bg-[#130F2E] border border-[#ECEBF5] dark:border-[#2E2A52] rounded-2xl shadow-xl py-2 w-56 z-50 overflow-hidden"
               >
-                <div className="px-3 py-2 border-b border-slate-100 mb-1">
-                  <p className="text-xs font-bold text-slate-800 truncate">{user?.name || "Guest"}</p>
-                  <p className="text-[10px] text-muted truncate">{user?.email || ""}</p>
+                {/* User Name & Role Pill Header */}
+                <div className="px-3.5 py-2.5 border-b border-slate-100 dark:border-[#2E2A52] mb-1 bg-slate-50/50 dark:bg-[#1E1B3B]/50">
+                  <p className="text-xs font-bold text-slate-800 dark:text-[#F3F4F6] truncate">
+                    {user?.name || "Guest User"}
+                  </p>
+                  <p className="text-[10px] text-muted dark:text-[#9CA3AF] truncate mb-1.5">
+                    {user?.email || ""}
+                  </p>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-500/20 text-primary dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/30">
+                    {user?.role || "Student"}
+                  </span>
                 </div>
 
-                <Link
-                  to={user?.role ? `/${user.role}/profile` : "/student/profile"}
-                  onClick={() => setShowUserMenu(false)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 transition"
-                >
-                  <User size={14} className="text-muted" /> Profile & Documents
-                </Link>
+                {/* Navigation Links */}
+                <div className="py-1">
+                  <Link
+                    to={user?.role ? `/${user.role}/profile` : "/student/profile"}
+                    onClick={() => setShowUserMenu(false)}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-[#F3F4F6] hover:bg-slate-50 dark:hover:bg-[#1E1B3B] transition"
+                  >
+                    <User size={15} className="text-muted dark:text-indigo-400" />
+                    <span>My Profile</span>
+                  </Link>
 
-                <Link
-                  to={user?.role ? `/${user.role}/settings` : "/student/settings"}
-                  onClick={() => setShowUserMenu(false)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 transition"
-                >
-                  <Settings size={14} className="text-muted" /> Account Settings
-                </Link>
+                  <Link
+                    to={user?.role ? `/${user.role}/settings` : "/student/settings"}
+                    onClick={() => setShowUserMenu(false)}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-[#F3F4F6] hover:bg-slate-50 dark:hover:bg-[#1E1B3B] transition"
+                  >
+                    <Settings size={15} className="text-muted dark:text-indigo-400" />
+                    <span>Account Settings</span>
+                  </Link>
 
-                <div className="border-t border-slate-100 my-1" />
+                  {/* Quick Theme Toggle Option */}
+                  <button
+                    onClick={() => {
+                      const next = toggleTheme();
+                      setCurrentTheme(next);
+                    }}
+                    className="w-full flex items-center justify-between px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-[#F3F4F6] hover:bg-slate-50 dark:hover:bg-[#1E1B3B] transition text-left"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      {isCurrentlyDark() ? (
+                        <Moon size={15} className="text-amber-400" />
+                      ) : (
+                        <Sun size={15} className="text-amber-500" />
+                      )}
+                      <span>Theme</span>
+                    </div>
+                    <span className="text-[10px] font-semibold text-muted dark:text-[#9CA3AF] uppercase bg-slate-100 dark:bg-[#1E1B3B] px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#2E2A52]">
+                      {isCurrentlyDark() ? "Dark" : "Light"}
+                    </span>
+                  </button>
+                </div>
 
+                <div className="border-t border-slate-100 dark:border-[#2E2A52] my-1" />
+
+                {/* Sign Out */}
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 transition"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition text-left"
                 >
-                  <LogOut size={14} /> Log Out
+                  <LogOut size={15} />
+                  <span>Sign Out</span>
                 </button>
               </motion.div>
             )}

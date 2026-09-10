@@ -123,16 +123,22 @@ export default function Sidebar({ brand, subtitle, items = [], active }) {
         </div>
       </Link>
 
-      {/* Navigation Items */}
+      {/* Navigation Items (Profile and Settings relocated to Topbar) */}
       <nav className="flex-1 space-y-1">
-        {items.map((item) => {
-          const activeItem = isItemActive(item);
-          return (
-            <Link
-              key={item.label}
-              to={item.href || "#"}
-              className={`rail-item ${activeItem ? "active" : ""}`}
-            >
+        {items
+          .filter(
+            (item) =>
+              item.label?.toLowerCase() !== "profile" &&
+              item.label?.toLowerCase() !== "settings"
+          )
+          .map((item) => {
+            const activeItem = isItemActive(item);
+            return (
+              <Link
+                key={item.label}
+                to={item.href || "#"}
+                className={`rail-item ${activeItem ? "active" : ""}`}
+              >
               <item.icon size={17} className={activeItem ? "text-white" : "text-[#C9C5E8]"} />
               <span className="truncate">{item.label}</span>
               {activeItem && (

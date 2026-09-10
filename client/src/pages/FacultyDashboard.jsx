@@ -94,10 +94,10 @@ import {
   Plus,
   ArrowRight,
   CheckCircle2,
-  AlertCircle,
   Activity,
   Award,
   Zap,
+  FolderKanban,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
@@ -108,6 +108,7 @@ import api from "../services/api";
 
 export const facultyItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/faculty" },
+  { label: "Live Industry Projects", icon: FolderKanban, href: "/faculty/projects" },
   { label: "Assessments", icon: ClipboardList, href: "/faculty/assessments" },
   { label: "Upskilling & AI Quizzes", icon: Sparkles, href: "/faculty/upskilling" },
   { label: "Academic CV Analyzer", icon: FileText, href: "/faculty/resume" },

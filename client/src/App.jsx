@@ -11,11 +11,13 @@ import StudentOpportunities from './pages/StudentOpportunities.jsx'
 import StudentApplications from './pages/StudentApplications.jsx'
 import StudentResume from './pages/StudentResume.jsx'
 import StudentLearning from './pages/StudentLearning.jsx'
+import StudentPassport from './pages/StudentPassport.jsx'
 import StudentSettings from './pages/StudentSettings.jsx'
 
 import CompanyDashboard from './pages/CompanyDashboard.jsx'
 import CompanyPostOpportunity from './pages/CompanyPostOpportunity.jsx'
 import CompanyApplications from './pages/CompanyApplications.jsx'
+import CompanyTalentSearch from './pages/CompanyTalentSearch.jsx'
 import CompanyInternships from './pages/CompanyInternships.jsx'
 import CompanyProjects from './pages/CompanyProjects.jsx'
 import CompanyProfile from './pages/CompanyProfile.jsx'
@@ -31,6 +33,7 @@ import InstitutionReports from './pages/InstitutionReports.jsx'
 import InstitutionSettings from './pages/InstitutionSettings.jsx'
 
 import FacultyDashboard from './pages/FacultyDashboard.jsx'
+import FacultyProjects from './pages/FacultyProjects.jsx'
 import FacultyCourses from './pages/FacultyCourses.jsx'
 import FacultyStudents from './pages/FacultyStudents.jsx'
 import FacultyAssessments from './pages/FacultyAssessments.jsx'
@@ -58,6 +61,7 @@ export default function App() {
         <Route path="/student/dashboard" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>} />
         <Route path="/student/profile" element={<ProtectedRoute role="student"><StudentProfile /></ProtectedRoute>} />
         <Route path="/student/skills" element={<ProtectedRoute role="student"><StudentSkills /></ProtectedRoute>} />
+        <Route path="/student/passport" element={<ProtectedRoute role="student"><StudentPassport /></ProtectedRoute>} />
         <Route path="/student/opportunities" element={<ProtectedRoute role="student"><StudentOpportunities /></ProtectedRoute>} />
         <Route path="/student/applications" element={<ProtectedRoute role="student"><StudentApplications /></ProtectedRoute>} />
         <Route path="/student/resume" element={<ProtectedRoute role="student"><StudentResume /></ProtectedRoute>} />
@@ -67,6 +71,7 @@ export default function App() {
         {/* Company */}
         <Route path="/company" element={<ProtectedRoute role="company"><CompanyDashboard /></ProtectedRoute>} />
         <Route path="/company/dashboard" element={<ProtectedRoute role="company"><CompanyDashboard /></ProtectedRoute>} />
+        <Route path="/company/talent-search" element={<ProtectedRoute role="company"><CompanyTalentSearch /></ProtectedRoute>} />
         <Route path="/company/postopportunity" element={<ProtectedRoute role="company"><CompanyPostOpportunity /></ProtectedRoute>} />
         <Route path="/company/applications" element={<ProtectedRoute role="company"><CompanyApplications /></ProtectedRoute>} />
         <Route path="/company/internships" element={<ProtectedRoute role="company"><CompanyInternships /></ProtectedRoute>} />
@@ -88,6 +93,7 @@ export default function App() {
         {/* Faculty */}
         <Route path="/faculty" element={<ProtectedRoute role="faculty"><FacultyDashboard /></ProtectedRoute>} />
         <Route path="/faculty/dashboard" element={<ProtectedRoute role="faculty"><FacultyDashboard /></ProtectedRoute>} />
+        <Route path="/faculty/projects" element={<ProtectedRoute role="faculty"><FacultyProjects /></ProtectedRoute>} />
         <Route path="/faculty/courses" element={<ProtectedRoute role="faculty"><FacultyCourses /></ProtectedRoute>} />
         <Route path="/faculty/students" element={<ProtectedRoute role="faculty"><FacultyStudents /></ProtectedRoute>} />
         <Route path="/faculty/assessments" element={<ProtectedRoute role="faculty"><FacultyAssessments /></ProtectedRoute>} />

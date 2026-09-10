@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import EmptyState from "../components/EmptyState";
+import ExplainableMatchModal from "../components/ExplainableMatchModal";
 import { getCurrentUser } from "../utils/auth";
 import api from "../services/api";
 
@@ -29,6 +30,7 @@ const items = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/student" },
   { label: "Profile", icon: User, href: "/student/profile" },
   { label: "Skills & Assessment", icon: Award, href: "/student/skills" },
+  { label: "Skill Passport", icon: Award, href: "/student/passport" },
   { label: "Opportunities", icon: Briefcase, href: "/student/opportunities" },
   { label: "Applications", icon: FileText, href: "/student/applications" },
   { label: "Resume & Portfolio", icon: FileEdit, href: "/student/resume" },
@@ -50,6 +52,7 @@ export default function StudentOpportunities() {
   const [loading, setLoading] = useState(true);
   const [applyingId, setApplyingId] = useState(null);
   const [generatingId, setGeneratingId] = useState(null);
+  const [activeExplainableMatch, setActiveExplainableMatch] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -315,10 +318,24 @@ export default function StudentOpportunities() {
                         </div>
                       </div>
 
-                      {matchInfo?.reasoning && (
-                        <p className="text-xs text-indigo-900 bg-indigo-50/50 rounded-lg p-2.5 mb-3 border border-indigo-100 font-medium">
-                          💡 Match Reasoning: {matchInfo.reasoning}
-                        </p>
+                      {matchInfo && (
+                        <div className="flex items-center justify-between gap-3 p-2.5 mb-3 rounded-xl border border-indigo-100 dark:border-white/10 bg-indigo-50/50 dark:bg-white/5 flex-wrap">
+                          <p className="text-xs text-indigo-900 dark:text-indigo-200 font-medium">
+                            💡 <span className="font-bold">Match Reasoning:</span> {matchInfo.reasoning}
+                          </p>
+                          <button
+                            onClick={() =>
+                              setActiveExplainableMatch({
+                                opportunityTitle: o.title,
+                                companyName: companyTitle,
+                                matchData: matchInfo,
+                              })
+                            }
+                            className="text-xs font-bold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 underline flex items-center gap-1 cursor-pointer shrink-0"
+                          >
+                            <Sparkles size={12} /> Why this match? (Explainable AI)
+                          </button>
+                        </div>
                       )}
 
                       {o.description && (
@@ -350,6 +367,27 @@ export default function StudentOpportunities() {
           </div>
         </motion.div>
       </div>
+
+      {/* Explainable AI Modal */}
+      {activeExplainableMatch && (
+        <ExplainableMatchModal
+          isOpen={Boolean(activeExplainableMatch)}
+          onClose={() => setActiveExplainableMatch(null)}
+          opportunityTitle={activeExplainableMatch.opportunityTitle}
+          companyName={activeExplainableMatch.companyName}
+          matchData={activeExplainableMatch.matchData}
+          onAddToRoadmap={async (gap) => {
+            try {
+              await api.post("/roadmaps/generate", {
+                studentId: user?.id,
+                targetRole: gap.skillName,
+              });
+            } catch (err) {
+              console.warn("Roadmap update notice:", err);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import express from "express";
+import { protect } from "../middleware/auth.js";
 import {
   createProject,
   getAllProjects,
@@ -7,12 +8,16 @@ import {
   submitMilestone,
   verifyMilestone,
   applyToProject,
+  getFacultySupervisedProjects,
+  reviewFacultyJointProject,
 } from "../controllers/projectController.js";
 
 const router = express.Router();
 
 router.post("/", createProject);
 router.get("/", getAllProjects);
+router.get("/faculty/supervised", protect, getFacultySupervisedProjects);
+router.post("/:id/co-guide-rating", protect, reviewFacultyJointProject);
 router.get("/:id", getProjectById);
 router.post("/:id/apply", applyToProject);
 router.patch("/:id/assign", assignProject);

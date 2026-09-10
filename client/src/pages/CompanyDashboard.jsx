@@ -9,6 +9,7 @@ import {
   BarChart3,
   Settings,
   Loader2,
+  Search,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
@@ -20,6 +21,7 @@ import api from "../services/api";
 
 export const companyItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/company" },
+  { label: "Talent Discovery", icon: Search, href: "/company/talent-search" },
   { label: "Post Opportunity", icon: Send, href: "/company/postopportunity" },
   { label: "Applications", icon: FileText, href: "/company/applications" },
   { label: "Internships", icon: Users, href: "/company/internships" },

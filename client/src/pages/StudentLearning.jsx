@@ -38,6 +38,7 @@ const items = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/student" },
   { label: "Profile", icon: User, href: "/student/profile" },
   { label: "Skills & Assessment", icon: Award, href: "/student/skills" },
+  { label: "Skill Passport", icon: Award, href: "/student/passport" },
   { label: "Opportunities", icon: Briefcase, href: "/student/opportunities" },
   { label: "Applications", icon: FileText, href: "/student/applications" },
   { label: "Resume & Portfolio", icon: FileEdit, href: "/student/resume" },
@@ -449,13 +450,28 @@ export default function StudentLearning() {
                   {p.enrolled && <CheckCircle2 size={18} className="text-emerald-500 shrink-0" />}
                 </div>
 
-                <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4">
+                <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-4 flex-wrap">
                   <span className="flex items-center gap-1 font-medium">
                     <Clock size={13} /> {p.duration}
                   </span>
-                  <span className="flex items-center gap-1 font-medium">
+                  <span className="flex items-center gap-1 font-medium bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded text-[11px] font-mono">
                     <BarChart2 size={13} /> {p.level}
                   </span>
+                  {p.accreditation && (
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                      {p.accreditation}
+                    </span>
+                  )}
+                  {p.link && (
+                    <a
+                      href={p.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5 ml-auto font-semibold"
+                    >
+                      Official Catalog <ExternalLink size={11} />
+                    </a>
+                  )}
                 </div>
 
                 <button

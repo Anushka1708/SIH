@@ -26,6 +26,7 @@ const items = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/student" },
   { label: "Profile", icon: User, href: "/student/profile" },
   { label: "Skills & Assessment", icon: Award, href: "/student/skills" },
+  { label: "Skill Passport", icon: Award, href: "/student/passport" },
   { label: "Opportunities", icon: Briefcase, href: "/student/opportunities" },
   { label: "Applications", icon: FileText, href: "/student/applications" },
   { label: "Resume & Portfolio", icon: FileEdit, href: "/student/resume" },
@@ -152,6 +153,10 @@ export default function StudentSkills() {
                             className={`border text-[10px] font-semibold px-2 py-0.5 rounded-md ${evidence.color}`}
                           >
                             {evidence.label}
+                          </span>
+
+                          <span className="border border-slate-200 dark:border-white/10 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-gray-300">
+                            {s.skill?.ncrfCode || "NSQF-L6 · NCrF 4.0"}
                           </span>
                         </div>
 

@@ -15,7 +15,21 @@ export const computeMatch = (studentSkills = [], requiredSkills = []) => {
       score: 100,
       matched: [],
       gaps: [],
+      detailedGaps: [],
       reasoning: "100% match: meets all required skills",
+      evidenceBreakdown: {
+        assessmentCount: 0,
+        projectCount: 0,
+        facultySignoffCount: 0,
+        selfReportedCount: 0,
+        evidenceWeight: 100,
+        verifiedSkillsCount: 0,
+      },
+      skillOverlap: {
+        matchedCount: 0,
+        totalRequired: 0,
+        overlapPercentage: 100,
+      },
     };
   }
 
@@ -23,14 +37,29 @@ export const computeMatch = (studentSkills = [], requiredSkills = []) => {
   let totalContribution = 0;
   const matched = [];
   const gaps = [];
+  const detailedGaps = [];
 
   // Map studentSkills by skill ObjectId string for quick lookup
   const studentSkillMap = new Map();
+  let assessmentCount = 0;
+  let projectCount = 0;
+  let facultySignoffCount = 0;
+  let selfReportedCount = 0;
+  let verifiedSkillsCount = 0;
+
   for (const entry of studentSkills) {
     const id = (entry?.skill?._id || entry?.skill)?.toString();
     if (id) {
       studentSkillMap.set(id, entry);
     }
+    if (entry?.verified) {
+      verifiedSkillsCount++;
+    }
+    const evType = entry?.evidenceType || (entry?.verified ? "assessment" : "self-reported");
+    if (evType === "assessment") assessmentCount++;
+    else if (evType === "project") projectCount++;
+    else if (evType === "faculty-signoff") facultySignoffCount++;
+    else selfReportedCount++;
   }
 
   for (const req of requiredSkills) {
@@ -42,9 +71,11 @@ export const computeMatch = (studentSkills = [], requiredSkills = []) => {
     totalWeight += weight;
 
     const studentEntry = skillId ? studentSkillMap.get(skillId) : null;
+    const studentLevel = studentEntry && typeof studentEntry.level === "number" ? studentEntry.level : 0;
+    const isVerified = Boolean(studentEntry?.verified);
+    const evType = studentEntry?.evidenceType || (isVerified ? "assessment" : "self-reported");
 
     if (studentEntry) {
-      const studentLevel = typeof studentEntry.level === "number" ? studentEntry.level : 0;
       const ratio = minLevel > 0 ? studentLevel / minLevel : 1;
       const contribution = weight * Math.min(1, Math.max(0, ratio));
       totalContribution += contribution;
@@ -53,14 +84,45 @@ export const computeMatch = (studentSkills = [], requiredSkills = []) => {
         matched.push(skillName);
       } else {
         gaps.push(skillName);
+        detailedGaps.push({
+          skillName,
+          skillId,
+          currentLevel: studentLevel,
+          requiredLevel: minLevel,
+          gapSize: minLevel - studentLevel,
+          isVerified,
+          evidenceType: evType,
+        });
       }
     } else {
       // Not found in student's skills
       gaps.push(skillName);
+      detailedGaps.push({
+        skillName,
+        skillId,
+        currentLevel: 0,
+        requiredLevel: minLevel,
+        gapSize: minLevel,
+        isVerified: false,
+        evidenceType: "missing",
+      });
     }
   }
 
   const score = totalWeight > 0 ? Math.round((totalContribution / totalWeight) * 100) : 0;
+
+  // Calculate Evidence Weight percentage
+  const totalEvidenceItems = assessmentCount + projectCount + facultySignoffCount + selfReportedCount;
+  const verifiedItems = assessmentCount + projectCount + facultySignoffCount;
+  const evidenceWeight = totalEvidenceItems > 0 
+    ? Math.round((verifiedItems / totalEvidenceItems) * 100) 
+    : (verifiedSkillsCount > 0 ? 85 : 40);
+
+  const skillOverlap = {
+    matchedCount: matched.length,
+    totalRequired: requiredSkills.length,
+    overlapPercentage: Math.round((matched.length / requiredSkills.length) * 100),
+  };
 
   // Build human-readable reasoning string
   const topMatched = matched.slice(0, 3).join(", ");
@@ -68,16 +130,31 @@ export const computeMatch = (studentSkills = [], requiredSkills = []) => {
 
   let reasoning = "";
   if (matched.length > 0 && gaps.length > 0) {
-    reasoning = `${score}% match: strong in ${topMatched}, gap in ${topGaps}`;
+    reasoning = `${score}% match (${matched.length}/${requiredSkills.length} skills): strong in ${topMatched}, missing ${topGaps}. Evidence confidence: ${evidenceWeight}%.`;
   } else if (matched.length > 0 && gaps.length === 0) {
-    reasoning = `${score}% match: strong in ${topMatched}, meets all required skills`;
+    reasoning = `${score}% match (${matched.length}/${requiredSkills.length} skills): meets all required skills with ${evidenceWeight}% verified evidence weight.`;
   } else if (matched.length === 0 && gaps.length > 0) {
-    reasoning = `${score}% match: no matching skills found yet, gap in ${topGaps}`;
+    reasoning = `${score}% match: 0/${requiredSkills.length} skills verified yet. Primary gaps in ${topGaps}.`;
   } else {
-    reasoning = `${score}% match: meets all required skills`;
+    reasoning = `${score}% match: meets all required competencies.`;
   }
 
-  return { score, matched, gaps, reasoning };
+  return {
+    score,
+    matched,
+    gaps,
+    detailedGaps,
+    reasoning,
+    evidenceBreakdown: {
+      assessmentCount,
+      projectCount,
+      facultySignoffCount,
+      selfReportedCount,
+      evidenceWeight,
+      verifiedSkillsCount,
+    },
+    skillOverlap,
+  };
 };
 
 /**
@@ -152,7 +229,9 @@ export const calculateOpportunityMatch = async (opportunityId, studentId) => {
     score: matchResult.score,
     matched: matchResult.matched,
     gaps: matchResult.gaps,
-    detailedGaps,
+    detailedGaps: matchResult.detailedGaps || detailedGaps,
     reasoning: matchResult.reasoning,
+    evidenceBreakdown: matchResult.evidenceBreakdown,
+    skillOverlap: matchResult.skillOverlap,
   };
 };

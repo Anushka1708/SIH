@@ -13,6 +13,7 @@ import {
   FolderKanban,
   CheckCircle2,
   Loader2,
+  Fingerprint,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
@@ -26,6 +27,7 @@ const items = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/student" },
   { label: "Profile", icon: User, href: "/student/profile" },
   { label: "Skills & Assessment", icon: Award, href: "/student/skills" },
+  { label: "Skill Passport", icon: Fingerprint, href: "/student/passport" },
   { label: "Opportunities", icon: Briefcase, href: "/student/opportunities" },
   { label: "Applications", icon: FileText, href: "/student/applications" },
   { label: "Resume & Portfolio", icon: FileEdit, href: "/student/resume" },

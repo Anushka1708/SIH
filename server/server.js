@@ -31,6 +31,7 @@ import resumeRoutes from "./src/routes/resumeRoutes.js";
 import aiRoutes from "./src/routes/aiRoutes.js";
 import assessmentRoutes from "./src/routes/assessmentRoutes.js";
 import facultyRoutes from "./src/routes/facultyRoutes.js";
+import passportRoutes from "./src/routes/passportRoutes.js";
 
 app.use("/api/auth", authRoutes);
 app.use("/api/skills", skillRoutes);
@@ -44,6 +45,7 @@ app.use("/api/resume", resumeRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/assessments", assessmentRoutes);
 app.use("/api/faculty", facultyRoutes);
+app.use("/api/passport", passportRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

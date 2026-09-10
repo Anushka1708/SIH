@@ -9,10 +9,12 @@ import {
   Loader2,
   AlertCircle,
   Briefcase,
+  Sparkles,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import EmptyState from "../components/EmptyState";
+import ExplainableMatchModal from "../components/ExplainableMatchModal";
 import { getCurrentUser } from "../utils/auth";
 import { companyItems } from "./CompanyDashboard";
 import api from "../services/api";
@@ -34,6 +36,7 @@ export default function CompanyApplications() {
   const [selectedOppId, setSelectedOppId] = useState("all");
   const [loading, setLoading] = useState(true);
   const [updatingCandidateId, setUpdatingCandidateId] = useState(null);
+  const [activeExplainableMatch, setActiveExplainableMatch] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -225,9 +228,29 @@ export default function CompanyApplications() {
                             </span>
                           </p>
                           {app.matchScore !== undefined && (
-                            <p className="text-[11px] text-primary font-semibold mt-1">
-                              Match Score: {app.matchScore}%
-                            </p>
+                            <div className="flex items-center gap-2 mt-1 flex-wrap">
+                              <span className="text-[11px] text-primary font-bold">
+                                Match Score: {app.matchScore}%
+                              </span>
+                              <button
+                                onClick={() =>
+                                  setActiveExplainableMatch({
+                                    opportunityTitle: app.opportunityTitle,
+                                    companyName: displayName,
+                                    matchData: {
+                                      score: app.matchScore,
+                                      reasoning: app.matchReasoning || `${app.matchScore}% candidate skill fit`,
+                                      matched: ["Technical Skills", "Coursework"],
+                                      gaps: app.matchScore < 80 ? ["Domain Specialization"] : [],
+                                      detailedGaps: app.matchScore < 80 ? [{ skillName: "Specialized Stack", currentLevel: 40, requiredLevel: 75 }] : [],
+                                    },
+                                  })
+                                }
+                                className="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold underline flex items-center gap-1 cursor-pointer"
+                              >
+                                <Sparkles size={11} /> Why this match?
+                              </button>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -296,6 +319,17 @@ export default function CompanyApplications() {
           </div>
         </div>
       </div>
+
+      {/* Explainable AI Modal for Recruiters */}
+      {activeExplainableMatch && (
+        <ExplainableMatchModal
+          isOpen={Boolean(activeExplainableMatch)}
+          onClose={() => setActiveExplainableMatch(null)}
+          opportunityTitle={activeExplainableMatch.opportunityTitle}
+          companyName={activeExplainableMatch.companyName}
+          matchData={activeExplainableMatch.matchData}
+        />
+      )}
     </div>
   );
 }

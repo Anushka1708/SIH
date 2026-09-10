@@ -1,3 +1,6 @@
+import StudentProfile from "../models/StudentProfile.js";
+import Opportunity from "../models/Opportunity.js";
+
 /**
  * Skill Gap & Explainable Matching Engine
  * Compares a student's verified/evidence-derived skill vector against required skills.
@@ -75,4 +78,81 @@ export const computeMatch = (studentSkills = [], requiredSkills = []) => {
   }
 
   return { score, matched, gaps, reasoning };
+};
+
+/**
+ * Calculates match between a student and an opportunity, returning populated documents,
+ * match score, reasoning, and detailed gap objects for roadmap generation.
+ *
+ * @param {string} opportunityId
+ * @param {string} studentId
+ * @returns {Promise<Object>} { studentProfile, opportunity, score, matched, gaps, detailedGaps, reasoning }
+ */
+export const calculateOpportunityMatch = async (opportunityId, studentId) => {
+  const studentProfile = await StudentProfile.findOne({
+    $or: [{ user: studentId }, { _id: studentId }],
+  }).populate("skills.skill", "name");
+
+  if (!studentProfile) {
+    const err = new Error("Student profile not found.");
+    err.status = 404;
+    throw err;
+  }
+
+  const opportunity = await Opportunity.findById(opportunityId).populate(
+    "requiredSkills.skill",
+    "name"
+  );
+
+  if (!opportunity) {
+    const err = new Error("Opportunity not found.");
+    err.status = 404;
+    throw err;
+  }
+
+  const normalizedRequired = (opportunity.requiredSkills || []).map((rs) => ({
+    skillId: rs.skill?._id || rs.skill,
+    skillName: rs.skill?.name || "Unknown",
+    minLevel: rs.minLevel !== undefined ? rs.minLevel : 50,
+    weight: rs.weight !== undefined ? rs.weight : 1,
+  }));
+
+  const matchResult = computeMatch(studentProfile.skills, normalizedRequired);
+
+  // Map student skills by ID
+  const studentSkillMap = new Map();
+  for (const entry of studentProfile.skills || []) {
+    const sId = (entry?.skill?._id || entry?.skill)?.toString();
+    if (sId) {
+      studentSkillMap.set(sId, entry);
+    }
+  }
+
+  const detailedGaps = [];
+  for (const req of normalizedRequired) {
+    const sId = req.skillId?.toString();
+    const studentEntry = sId ? studentSkillMap.get(sId) : null;
+    const currentLevel = studentEntry && typeof studentEntry.level === "number" ? studentEntry.level : 0;
+    const requiredLevel = req.minLevel || 50;
+
+    if (currentLevel < requiredLevel) {
+      detailedGaps.push({
+        skillName: req.skillName,
+        skillId: sId,
+        currentLevel,
+        requiredLevel,
+        gapSize: requiredLevel - currentLevel,
+      });
+    }
+  }
+
+  return {
+    studentProfile,
+    opportunity,
+    score: matchResult.score,
+    matched: matchResult.matched,
+    gaps: matchResult.gaps,
+    detailedGaps,
+    reasoning: matchResult.reasoning,
+  };
 };

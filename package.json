@@ -1,4 +1,12 @@
 {
+  "name": "skillbridge-monorepo",
+  "version": "1.0.0",
+  "description": "SkillBridge — Unified Academia-Industry Talent Infrastructure & Career Engine",
+  "main": "server/server.js",
+  "scripts": {
+    "build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
+    "start": "node server/server.js"
+  },
   "dependencies": {
     "react-router-dom": "^7.18.3"
   }

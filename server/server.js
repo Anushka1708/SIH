@@ -1,7 +1,12 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import { connectDB } from "./src/config/db.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import dns from "dns";
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
@@ -46,6 +51,16 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/assessments", assessmentRoutes);
 app.use("/api/faculty", facultyRoutes);
 app.use("/api/passport", passportRoutes);
+
+// Serve static assets from the React build directory in production mode
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+// Fallback route for client SPA navigation
+app.get("*", (req, res) => {
+  if (!req.path.startsWith("/api")) {
+    res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

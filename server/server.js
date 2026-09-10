@@ -56,16 +56,16 @@ app.use("/api/assessments", assessmentRoutes);
 app.use("/api/faculty", facultyRoutes);
 app.use("/api/passport", passportRoutes);
 
-if (fs.existsSync(clientDistPath)) {
-  app.use(express.static(clientDistPath));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(clientDistPath, "index.html"));
-  });
-} else {
-  app.get("*", (req, res) => {
-    res.status(500).send("Client build directory (client/dist) not found. Run npm run build.");
-  });
-}
+app.use(express.static(clientDistPath));
+
+app.get("*", (req, res) => {
+  const indexPath = path.join(clientDistPath, "index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send("Frontend assets not built. Run npm run build.");
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

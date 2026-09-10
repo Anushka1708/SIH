@@ -1,20 +1,7 @@
 services:
   - type: web
-    name: skillbridge
+    name: SIH
     env: node
-    plan: free
     buildCommand: npm run build
     startCommand: npm run start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
-      - key: MONGO_URI
-        sync: false
-      - key: JWT_SECRET
-        generateValue: true
-      - key: GEMINI_API_KEY
-        sync: false
-      - key: CLIENT_URL
-        sync: false
+

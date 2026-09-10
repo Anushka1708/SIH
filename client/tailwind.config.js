@@ -1,22 +1,33 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        bgDeep: '#0f172a',  // Dark background shade
-        surface: '#1e293b', // Card/Surface background shade
-        growth: '#22c55e',  // Brand accent green/growth color
-        clay: '#e2e8f0',    // Muted grey/clay shade
-      },
-      fontFamily: {
-        head: ['"Space Grotesk"', 'sans-serif'],
-        body: ['"IBM Plex Sans"', 'sans-serif'],
-      },
-    },
+ /** @type {import('tailwindcss').Config} */
+ export default {
+   content: ["./index.html", "./src/**/*.{js,jsx}"],
+   theme: {
+     extend: {
+colors: {
+  primary: "#4F46E5",
+  primaryDark: "#3730A3",
+  violet: "#7C3AED",
+  bg: "#F4F5FB",
+  sidebar1: "#151235",
+  sidebar2: "#211B4E",
+  muted: "#6B7280",
+  line: "#ECEBF5",   // renamed from "border"
+  green: "#16A34A",
+  greenSoft: "#E8F8EE",
+  amber: "#D97706",
+  amberSoft: "#FEF3E2",
+  red: "#DC2626",
+  redSoft: "#FDECEC",
+},
+       fontFamily: {
+         sans: ["Inter", "sans-serif"],
+         mono: ["Space Mono", "monospace"],
+       },
+       borderRadius: {
+         xl2: "18px",
+       },
+     },
   },
-  plugins: [],
-}
+   plugins: [],
+};
+

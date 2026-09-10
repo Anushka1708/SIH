@@ -1,5 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #F4F5FB;
+  color: #1E1B33;
+}
+
+/* Reusable component classes */
+.card {
+@apply bg-white rounded-2xl p-6 border border-[#ECEBF5];
+}
+.btn-primary {
+  @apply bg-primary text-white font-semibold px-6 py-3 rounded-xl inline-flex items-center gap-2 hover:bg-primaryDark transition;
+}
+.btn-ghost {
+  @apply bg-white text-[#1E1B33] font-semibold px-6 py-3 rounded-xl border border-[#ECEBF5] inline-flex items-center gap-2;
+}
+.stat-icon {
+  @apply w-9 h-9 rounded-[10px] flex items-center justify-center text-base;
+}
+.tag {
+  @apply inline-block text-[10.5px] px-2.5 py-1 rounded-lg bg-bg text-muted font-bold mr-1.5;
+}
+.tag-matched {
+  @apply bg-greenSoft text-green;
+}
+.tag-gap {
+  @apply bg-amberSoft text-amber;
+}
+.status-pill {
+  @apply px-3 py-1 rounded-full text-[11px] font-bold;
+}
+.rail-item {
+  @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] text-[#C9C5E8] font-medium mb-1 cursor-pointer;
+}
+.rail-item.active {
+  @apply bg-primary text-white;
+}
+.rail-item:hover:not(.active) {
+  @apply bg-white/5;
+}

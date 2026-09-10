@@ -43,8 +43,11 @@ const roadmapItemSchema = new mongoose.Schema(
     description: { type: String },
     relatedSkill: { type: mongoose.Schema.Types.ObjectId, ref: "Skill" },
     done: { type: Boolean, default: false },
+    youtubeVideoId: { type: String }, // e.g. "w7ejDZ8SWv8"
+    youtubeTitle: { type: String },   // e.g. "React JS Crash Course - Traversy Media"
+    youtubeChannel: { type: String }, // e.g. "Traversy Media"
   },
-  { _id: false }
+  { _id: true }
 );
 
 const studentProfileSchema = new mongoose.Schema(

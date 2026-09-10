@@ -161,7 +161,10 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
       )
     : SEARCH_SHORTCUTS.slice(0, 4);
 
-  const initials = (user?.name || "U")
+  const rawName = user?.name || "Guest";
+  const cleanName = rawName.replace(/\s*\((?:Google|Google User)\)\s*/gi, "").trim();
+
+  const initials = (cleanName || "U")
     .split(" ")
     .map((w) => w[0])
     .slice(0, 2)
@@ -417,7 +420,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
             </div>
             <div className="hidden md:block text-left">
               <p className="text-xs font-bold text-[#1E1B33] dark:text-[#F3F4F6] leading-tight group-hover:text-primary transition">
-                {user?.name || "Guest"}
+                {cleanName || "Guest"}
               </p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-[10px] text-muted dark:text-[#9CA3AF] leading-tight capitalize">
@@ -442,7 +445,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                 {/* User Name & Role Pill Header */}
                 <div className="px-3.5 py-2.5 border-b border-slate-100 dark:border-[#2E2A52] mb-1 bg-slate-50/50 dark:bg-[#1E1B3B]/50">
                   <p className="text-xs font-bold text-slate-800 dark:text-[#F3F4F6] truncate">
-                    {user?.name || "Guest User"}
+                    {cleanName || "Guest User"}
                   </p>
                   <p className="text-[10px] text-muted dark:text-[#9CA3AF] truncate mb-1.5">
                     {user?.email || ""}

@@ -72,7 +72,10 @@ export default function Sidebar({ brand, subtitle, items = [], active }) {
   };
 
   const dashboardUrl = getDashboardUrl();
-  const initials = (brand || user?.name || "U")
+  const rawBrand = brand || user?.name || "Guest User";
+  const cleanBrand = rawBrand.replace(/\s*\((?:Google|Google User)\)\s*/gi, "").trim();
+
+  const initials = (cleanBrand || "U")
     .split(" ")
     .map((w) => w[0])
     .slice(0, 2)
@@ -115,7 +118,7 @@ export default function Sidebar({ brand, subtitle, items = [], active }) {
         </div>
         <div className="overflow-hidden flex-1">
           <p className="text-sm font-semibold leading-tight text-white group-hover:text-indigo-200 transition truncate">
-            {brand || user?.name || "Guest User"}
+            {cleanBrand || "Guest User"}
           </p>
           <p className="text-[11px] text-[#9791C4] leading-tight capitalize mt-0.5">
             {subtitle || user?.role || "Member"}

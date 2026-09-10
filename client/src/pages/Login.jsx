@@ -64,19 +64,13 @@ export default function Login() {
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = () => {
     try {
       setGoogleLoading(true);
       setError("");
-      const data = await signInWithGoogle({ role: "student" });
-      if (data.token) {
-        localStorage.setItem("skillbridge_token", data.token);
-      }
-      loginUser(data.user);
-      redirectByRole(data.user.role);
+      signInWithGoogle({ role: "student" });
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Google authentication failed.");
-    } finally {
+      setError(err.message || "Could not launch Google Account Chooser.");
       setGoogleLoading(false);
     }
   };

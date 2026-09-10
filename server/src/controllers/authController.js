@@ -277,6 +277,11 @@ export const googleAuth = async (req, res) => {
       name = name || "Google Verified Student";
     }
 
+    // Clean up name formatting: strip any (Google) / (Google User) tags
+    if (name) {
+      name = name.replace(/\s*\((?:Google|Google User)\)\s*/gi, "").trim();
+    }
+
     const normalizedEmail = email.toLowerCase().trim();
     let user = await User.findOne({ email: normalizedEmail });
 

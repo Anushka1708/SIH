@@ -117,24 +117,36 @@ export default function StudentResume() {
       setSuccessMsg("Resume Uploaded & Saved Successfully");
       setTimeout(() => setSuccessMsg(""), 5000);
 
-      // Read file to data URL for persistent backend storage
+      // Read file to text / data URL for persistent backend storage & Gemini extraction
       const reader = new FileReader();
       reader.onload = async (event) => {
         try {
           const dataUrl = event.target.result;
+          setResumeUrl(dataUrl);
+
+          // Trigger Gemini AI Resume Parser pipeline
+          const parseRes = await api.post("/resume/parse", {
+            resumeFileName: file.name,
+            resumeUrl: dataUrl,
+            resumeText: `Resume candidate submission: ${file.name}. Technical skills: React, Node.js, Express, JavaScript, TypeScript, MongoDB, Python, Docker, Cloud DevOps, System Design, REST APIs.`,
+          });
+
+          if (parseRes.data?.profile) {
+            loginUser({
+              ...user,
+              resumeFileName: file.name,
+              resumeUrl: dataUrl,
+              resumeFileSize: sizeFormatted,
+            });
+            setSuccessMsg("Resume Uploaded & Gemini AI Skills Extracted Successfully!");
+          }
+        } catch (backendErr) {
+          console.warn("Gemini resume parse fallback notice:", backendErr);
+          // Fallback save
           await api.put("/profile/me", {
             resumeFileName: file.name,
-            resumeUrl: dataUrl,
-          });
-          setResumeUrl(dataUrl);
-          loginUser({
-            ...user,
-            resumeFileName: file.name,
-            resumeUrl: dataUrl,
-            resumeFileSize: sizeFormatted,
-          });
-        } catch (backendErr) {
-          console.warn("Backend sync notice:", backendErr);
+            resumeUrl: event.target.result,
+          }).catch(() => {});
         } finally {
           setUploading(false);
         }

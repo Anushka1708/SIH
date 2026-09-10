@@ -191,6 +191,9 @@ export default function StudentLearning() {
                       description={step.description}
                       done={step.done}
                       last={idx === roadmap.length - 1}
+                      youtubeVideoId={step.youtubeVideoId}
+                      youtubeTitle={step.youtubeTitle}
+                      youtubeChannel={step.youtubeChannel}
                     />
                   </div>
                 ))}

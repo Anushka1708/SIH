@@ -102,19 +102,13 @@ export default function Signup() {
     }
   };
 
-  const handleGoogleSignup = async () => {
+  const handleGoogleSignup = () => {
     try {
       setGoogleLoading(true);
       setError("");
-      const data = await signInWithGoogle({ role });
-      if (data.token) {
-        localStorage.setItem("skillbridge_token", data.token);
-      }
-      loginUser(data.user);
-      redirectByRole(data.user.role || role);
+      signInWithGoogle({ role });
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Google signup failed.");
-    } finally {
+      setError(err.message || "Could not launch Google Account Chooser.");
       setGoogleLoading(false);
     }
   };

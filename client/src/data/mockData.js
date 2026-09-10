@@ -87,7 +87,8 @@ export const institutionData = {
 };
 
 export const facultyData = {
-  name: "Dr. R. Sharma",
+  name: "Dr. Rajesh Verma",
+  designation: "Placement Head & Senior Professor",
   stats: [
     { label: "Total Students", value: 48, change: "+5%", icon: "🎓", color: "primary" },
     { label: "Active Courses", value: 6, change: "+2%", icon: "📚", color: "green" },

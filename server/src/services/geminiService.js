@@ -67,13 +67,41 @@ Do not include any conversational text. Return only the raw JSON array.`;
       throw new Error("Invalid response structure from Gemini: expected an array.");
     }
 
-    // Enforce strict schema conformity for StudentProfile.roadmap
-    const roadmap = parsed.map((item) => ({
-      title: String(item.title || "Targeted Skill Course"),
-      description: String(item.description || ""),
-      relatedSkill: item.relatedSkill ? String(item.relatedSkill) : undefined,
-      done: false,
-    }));
+    // Helper map of curated, famous YouTube tutorials for high-frequency competencies
+    const YOUTUBE_CURATIONS = {
+      react: { videoId: "bMknfKXIFA8", title: "React Course - Beginner's Tutorial for React JavaScript Library", channel: "freeCodeCamp.org" },
+      node: { videoId: "Oe421EPjeBE", title: "Node.js and Express.js - Full Course", channel: "freeCodeCamp.org" },
+      python: { videoId: "rfscVS0vtbw", title: "Python for Beginners - Full Course", channel: "freeCodeCamp.org" },
+      system: { videoId: "m8Icp_Cid5o", title: "System Design for Beginners Course", channel: "freeCodeCamp.org" },
+      docker: { videoId: "fqMOX6JJhGo", title: "Docker Tutorial for Beginners [FULL COURSE in 3 Hours]", channel: "TechWorld with Nana" },
+      cloud: { videoId: "2LaAJq1lB1Q", title: "AWS Certified Cloud Practitioner Training 2024", channel: "freeCodeCamp.org" },
+      typescript: { videoId: "d56mG7DezGs", title: "TypeScript Full Course for Beginners", channel: "Dave Gray" },
+      mongo: { videoId: "ofme2o29ngU", title: "MongoDB Tutorial for Beginners", channel: "Programming with Mosh" },
+      javascript: { videoId: "chx9Rs41W6g", title: "JavaScript Full Course for Beginners to Advanced", channel: "CodeWithHarry" },
+    };
+
+    // Enforce strict schema conformity for StudentProfile.roadmap & inject curated YouTube tutorials
+    const roadmap = parsed.map((item) => {
+      const titleLower = String(item.title || "").toLowerCase();
+      let matchedYt = { videoId: "bMknfKXIFA8", title: "Mastering Core Software Principles", channel: "freeCodeCamp.org" };
+
+      for (const [k, v] of Object.entries(YOUTUBE_CURATIONS)) {
+        if (titleLower.includes(k)) {
+          matchedYt = v;
+          break;
+        }
+      }
+
+      return {
+        title: String(item.title || "Targeted Skill Course"),
+        description: String(item.description || ""),
+        relatedSkill: item.relatedSkill ? String(item.relatedSkill) : undefined,
+        done: false,
+        youtubeVideoId: matchedYt.videoId,
+        youtubeTitle: matchedYt.title,
+        youtubeChannel: matchedYt.channel,
+      };
+    });
 
     return roadmap;
   } catch (error) {
@@ -81,3 +109,4 @@ Do not include any conversational text. Return only the raw JSON array.`;
     throw new Error(`Failed to generate roadmap: ${error.message}`);
   }
 };
+

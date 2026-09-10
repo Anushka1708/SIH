@@ -38,6 +38,7 @@ import FacultyMentorship from './pages/FacultyMentorship.jsx'
 import FacultyProfile from './pages/FacultyProfile.jsx'
 import FacultySettings from './pages/FacultySettings.jsx'
 
+import GoogleAuthCallback from './pages/GoogleAuthCallback.jsx'
 import AIChatbot from './components/AIChatbot.jsx'
 
 export default function App() {
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/auth/google/callback" element={<GoogleAuthCallback />} />
 
         {/* Student */}
         <Route path="/student" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>} />

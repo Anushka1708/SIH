@@ -25,32 +25,44 @@ import { getCurrentUser } from "../utils/auth";
 
 const SKILL_PREVIEWS = {
   "React.js": {
-    level: 90,
+    level: 92,
+    badge: "92% AI-Verified",
     evidence: "Assessment Verified · Score 92/100",
-    gap: "0% (Fully Eligible)",
+    mentor: "AI Faculty Evaluation Engine",
+    gap: "0% Gap (Direct Match)",
     tag: "Top 5% Cohort",
-    color: "bg-indigo-500",
+    gradient: "from-indigo-500 via-violet-500 to-cyan-400",
+    badgeColor: "bg-indigo-500/20 text-indigo-300 border-indigo-400/40",
   },
-  "Cloud DevOps": {
-    level: 65,
-    evidence: "Milestone 2/3 · AI Roadmap Active",
-    gap: "15% Target Gap Remaining",
-    tag: "In Progress",
-    color: "bg-amber-400",
-  },
-  "System Design": {
-    level: 85,
-    evidence: "Live Project Verified · Faculty Sign-off",
-    gap: "5% Target Gap",
-    tag: "Faculty Audited",
-    color: "bg-purple-500",
+  "Node.js": {
+    level: 88,
+    badge: "Certified",
+    evidence: "Microservices Architecture · Faculty Audited",
+    mentor: "AI Mentor & Faculty Sign-off",
+    gap: "0% Gap (Eligible)",
+    tag: "Production Ready",
+    gradient: "from-emerald-500 via-teal-500 to-cyan-400",
+    badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-400/40",
   },
   "Python AI": {
-    level: 88,
-    evidence: "Hackathon Verified · Codebase Audited",
-    gap: "0% (Eligible)",
-    tag: "Industry Verified",
-    color: "bg-emerald-400",
+    level: 94,
+    badge: "94% AI-Verified",
+    evidence: "LLM Pipelines & RAG · Codebase Audited",
+    mentor: "SkillBridge AI Evaluator",
+    gap: "0% Gap (Top Talent)",
+    tag: "Expert Vector",
+    gradient: "from-amber-400 via-orange-500 to-rose-400",
+    badgeColor: "bg-amber-500/20 text-amber-300 border-amber-400/40",
+  },
+  "Cloud DevOps": {
+    level: 85,
+    badge: "Certified",
+    evidence: "Docker & Kubernetes CI/CD · Live Milestone",
+    mentor: "Industry MoU Sign-off",
+    gap: "5% Target Gap",
+    tag: "High Demand",
+    gradient: "from-purple-500 via-violet-500 to-indigo-400",
+    badgeColor: "bg-purple-500/20 text-purple-300 border-purple-400/40",
   },
 };
 
@@ -293,101 +305,188 @@ export default function Landing() {
             </motion.div>
           </div>
 
-          {/* Right Column: High-Tech Hero Visual Mockup with Floating Animation & Interactive Badges */}
+          {/* Right Column: Custom Interactive SkillBridge UI Mockup with Ambient Glow */}
           <div className="lg:col-span-5 relative">
+            {/* Animated Ambient Glow Effects */}
+            <div className="absolute -top-10 -left-10 w-72 h-72 bg-gradient-to-tr from-indigo-600/35 to-violet-500/30 rounded-full blur-3xl pointer-events-none animate-pulse" />
+            <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-gradient-to-br from-violet-600/35 to-pink-500/25 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: "2s" }} />
+
             <motion.div
-              animate={{ y: [-5, 5, -5] }}
-              transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
-              className="relative"
+              animate={{ y: [-4, 4, -4] }}
+              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+              className="relative z-10"
             >
-              {/* Main Card with Real Student Imagery & Interactive Preview */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-white/5 backdrop-blur-xl">
-                <img
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
-                  alt="Students Collaborating"
-                  className="w-full h-72 object-cover opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#131032] via-[#131032]/65 to-transparent" />
-
-                <div className="absolute bottom-0 inset-x-0 p-5 text-white">
-                  <div className="flex items-center justify-between mb-2.5">
-                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <Zap size={14} className="text-amber-400" /> Live Match Engine
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      91% High Fit
+              {/* Glassmorphic Main Terminal Card */}
+              <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-b from-white/[0.14] to-white/[0.04] backdrop-blur-2xl p-5 md:p-6 text-white space-y-4">
+                {/* Mockup Window Header Bar */}
+                <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block shadow-sm" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block shadow-sm" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block shadow-sm" />
+                    <span className="ml-1 text-[11px] font-bold text-slate-300 tracking-wider uppercase">
+                      SkillBridge AI Talent Engine
                     </span>
                   </div>
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] font-extrabold text-emerald-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    LIVE TELEMETRY
+                  </span>
+                </div>
 
-                  <p className="text-xs font-bold text-slate-100">Frontend & Cloud Systems Engineer</p>
-                  <p className="text-[11px] text-indigo-200/80 mb-3">Flipkart Hiring Partner · Remote</p>
-
-                  {/* Interactive Skill Verification Preview Badges */}
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {Object.keys(SKILL_PREVIEWS).map((sk) => (
-                      <button
-                        key={sk}
-                        type="button"
-                        onClick={() => setActiveSkillKey(sk)}
-                        className={`text-[10px] px-2 py-0.5 rounded-md font-bold transition-all ${
-                          activeSkillKey === sk
-                            ? "bg-primary text-white shadow-sm ring-1 ring-white/30 scale-105"
-                            : "bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white"
-                        }`}
-                      >
-                        {sk}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="space-y-2 text-[11px] bg-white/5 p-2.5 rounded-xl border border-white/10">
+                {/* Candidate Vector Snapshot */}
+                <div className="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-black text-white text-sm shadow-md border border-white/20">
+                        AS
+                      </div>
+                      <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-black ring-2 ring-[#131032]">
+                        ✓
+                      </span>
+                    </div>
                     <div>
-                      <div className="flex justify-between text-[10px] text-slate-300 mb-0.5">
-                        <span className="font-semibold text-white">{activeSkillKey}</span>
-                        <span className="font-bold text-indigo-300">
-                          Level {SKILL_PREVIEWS[activeSkillKey].level}% ({SKILL_PREVIEWS[activeSkillKey].tag})
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="text-xs sm:text-sm font-bold text-white">Aarav Sharma</h4>
+                        <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-indigo-500/30 text-indigo-200 border border-indigo-400/30">
+                          B.Tech CSE
                         </span>
                       </div>
-                      <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <motion.div
-                          key={activeSkillKey}
-                          initial={{ width: 0 }}
-                          animate={{ width: `${SKILL_PREVIEWS[activeSkillKey].level}%` }}
-                          transition={{ duration: 0.4 }}
-                          className={`h-full rounded-full ${SKILL_PREVIEWS[activeSkillKey].color}`}
-                        />
-                      </div>
+                      <p className="text-[10px] text-indigo-200/80">IIT Bombay · Verified Competency Vector</p>
                     </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs sm:text-sm font-black text-emerald-400">96% Fit</span>
+                    <p className="text-[9px] text-slate-400 uppercase tracking-wider font-semibold">AI Talent Index</p>
+                  </div>
+                </div>
+
+                {/* Live Skill Verification Score & AI Badge Section */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-slate-200 flex items-center gap-1.5">
+                      <ShieldCheck size={14} className="text-indigo-400" />
+                      Live Verified Skills & AI Badges
+                    </span>
+                    <span className="text-[10px] text-indigo-300 font-medium">Click skill to inspect</span>
+                  </div>
+
+                  {/* Interactive Skill Filter Chips */}
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {Object.keys(SKILL_PREVIEWS).map((sk) => {
+                      const item = SKILL_PREVIEWS[sk];
+                      const isActive = activeSkillKey === sk;
+                      return (
+                        <button
+                          key={sk}
+                          type="button"
+                          onClick={() => setActiveSkillKey(sk)}
+                          className={`px-2.5 py-1.5 rounded-xl text-left border transition-all flex items-center justify-between ${
+                            isActive
+                              ? "bg-indigo-600/35 border-indigo-400/70 shadow-md ring-1 ring-indigo-400/40"
+                              : "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300"
+                          }`}
+                        >
+                          <span className="text-[11px] font-bold truncate">{sk}</span>
+                          <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-md border ${item.badgeColor}`}>
+                            {item.badge}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Active Skill Dynamic Telemetry Card */}
+                  <div className="p-3 rounded-2xl bg-white/[0.06] border border-white/15 space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-extrabold text-white flex items-center gap-1.5">
+                        <Award size={13} className="text-amber-400" />
+                        {activeSkillKey} • {SKILL_PREVIEWS[activeSkillKey].level}% Verified
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-300">
+                        {SKILL_PREVIEWS[activeSkillKey].gap}
+                      </span>
+                    </div>
+
+                    {/* Animated Progress Bar */}
+                    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden p-0.5">
+                      <motion.div
+                        key={activeSkillKey}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${SKILL_PREVIEWS[activeSkillKey].level}%` }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className={`h-full rounded-full bg-gradient-to-r ${SKILL_PREVIEWS[activeSkillKey].gradient}`}
+                      />
+                    </div>
+
                     <div className="flex items-center justify-between text-[10px] text-indigo-200/90 pt-0.5">
                       <span className="truncate">{SKILL_PREVIEWS[activeSkillKey].evidence}</span>
-                      <span className="text-emerald-300 font-semibold shrink-0 ml-1">
-                        {SKILL_PREVIEWS[activeSkillKey].gap}
+                      <span className="text-[9px] font-semibold text-slate-300 bg-white/10 px-1.5 py-0.5 rounded shrink-0 ml-1">
+                        {SKILL_PREVIEWS[activeSkillKey].mentor}
                       </span>
                     </div>
                   </div>
                 </div>
+
+                {/* Real-Time Industry Opportunity Matching Card Preview */}
+                <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#1E1B4B]/80 to-[#131032]/90 border border-indigo-500/30 shadow-lg space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <span className="p-1 rounded-lg bg-indigo-500/20 text-indigo-300">
+                        <Briefcase size={12} />
+                      </span>
+                      <span className="text-[11px] font-black uppercase tracking-wider text-indigo-200">
+                        Real-Time Opportunity Match
+                      </span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 animate-pulse">
+                      96% High Fit
+                    </span>
+                  </div>
+
+                  <div>
+                    <h5 className="text-xs font-bold text-white">Full Stack AI Engineer Intern</h5>
+                    <p className="text-[10px] text-indigo-200/70">TechCorp Partner Ecosystem · ₹65,000/month</p>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                    <span className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/20 flex items-center gap-1">
+                      ✓ React.js (92%)
+                    </span>
+                    <span className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/20 flex items-center gap-1">
+                      ✓ Node.js (88%)
+                    </span>
+                    <span className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/20 flex items-center gap-1">
+                      ✓ Python AI (94%)
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              {/* Floating Glassmorphic Competency Matrix Card */}
+              {/* Floating Top-Right AI Faculty Verification Badge */}
               <motion.div
-                whileHover={{ y: -3 }}
-                className="absolute -bottom-5 -left-5 bg-[#1D1845]/95 backdrop-blur-xl border border-white/20 p-3.5 rounded-2xl shadow-xl max-w-xs text-white hidden sm:flex items-center gap-3"
+                whileHover={{ scale: 1.05 }}
+                className="absolute -top-4 -right-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white backdrop-blur-md px-3.5 py-1.5 rounded-2xl shadow-xl border border-emerald-400/40 flex items-center gap-1.5 text-xs font-bold"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center shrink-0 shadow-sm">
-                  <ShieldCheck size={20} className="text-white" />
+                <CheckCircle2 size={15} className="text-emerald-200" />
+                <span>AI Faculty Verified</span>
+              </motion.div>
+
+              {/* Floating Bottom-Left Competency Matrix Badge */}
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                className="absolute -bottom-4 -left-3 bg-[#130F2E]/95 backdrop-blur-xl border border-indigo-400/30 p-2.5 px-3.5 rounded-2xl shadow-2xl text-white hidden sm:flex items-center gap-2.5"
+              >
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shrink-0 shadow-sm">
+                  <Sparkles size={16} className="text-amber-300" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold leading-tight">Verified Competency Matrix</p>
-                  <p className="text-[10px] text-indigo-200/80 leading-tight mt-0.5">
-                    Evidence-derived skill vectors validated by faculty & corporate MoUs.
+                  <p className="text-[11px] font-bold leading-tight">Instant Recruiter Fast-Track</p>
+                  <p className="text-[9px] text-indigo-200/80 leading-tight">
+                    Audited competency vector unlocks direct interviews.
                   </p>
                 </div>
               </motion.div>
-
-              {/* Floating Top-Right Verified Badge */}
-              <div className="absolute -top-4 -right-4 bg-emerald-600/90 text-white backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-lg border border-emerald-400/30 flex items-center gap-1.5 text-xs font-bold">
-                <CheckCircle2 size={15} /> Audited Credentials
-              </div>
             </motion.div>
           </div>
         </div>

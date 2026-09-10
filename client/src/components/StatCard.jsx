@@ -15,15 +15,22 @@ const colorMap = {
   red: { bg: "bg-redSoft", text: "text-red" },
 };
 
-export default function StatCard({ icon, label, value, change, color = "primary" }) {
+export default function StatCard({ icon, label, value, change, color = "primary", onClick }) {
   const c = colorMap[color] || colorMap.primary;
   return (
-    <div className="card flex-1 min-w-[180px]">
+    <div
+      onClick={onClick}
+      className={`card flex-1 min-w-[180px] transition-all duration-200 ${
+        onClick
+          ? "cursor-pointer hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg active:scale-[0.98]"
+          : ""
+      }`}
+    >
       <div className="flex items-center gap-3 mb-3">
         <div className={`stat-icon ${c.bg} ${c.text}`}>{icon}</div>
         <p className="text-sm text-muted font-medium">{label}</p>
       </div>
-      <p className="text-2xl font-extrabold text-[#1E1B33]">{value}</p>
+      <p className="text-2xl font-extrabold text-[#1E1B33] dark:text-[#F3F4F6]">{value}</p>
       {change && <p className={`text-xs mt-1 font-semibold ${c.text}`}>{change}</p>}
     </div>
   );

@@ -12,30 +12,30 @@ async function parseResumeWithGemini(resumeText) {
   if (apiKey) {
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      // Try gemini-1.5-flash or gemini-2.0-flash
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-3.6-flash",
         generationConfig: {
           responseMimeType: "application/json",
           temperature: 0.1,
         },
       });
 
-      const prompt = `You are an expert technical recruiter and resume parser for Indian engineering candidates.
-Extract candidate information from the following resume text into structured JSON.
+      const prompt = `You are a strict, highly accurate technical recruiter and resume parser.
+Extract ONLY candidate information that is explicitly stated in the resume text below.
+DO NOT hallucinate or assume any skills not explicitly mentioned.
 
 Return a JSON object with this exact structure:
 {
-  "name": "<Candidate Full Name>",
-  "email": "<Candidate Email>",
-  "skills": ["<skill1>", "<skill2>", ...],
-  "summary": "<2-3 sentence professional summary>",
-  "experience": "<Work / internship experience summary>",
-  "projects": "<Key academic or personal projects>"
+  "name": "<Candidate Full Name or empty string>",
+  "email": "<Candidate Email or empty string>",
+  "skills": ["<explicit skill 1>", "<explicit skill 2>", ...],
+  "summary": "<2-3 sentence professional summary based strictly on the text>",
+  "experience": "<Work or internship experience summary>",
+  "projects": "<Projects explicitly listed in the text>"
 }
 
 Resume Text:
-${resumeText.substring(0, 10000)}
+${resumeText.substring(0, 15000)}
 `;
 
       const result = await model.generateContent(prompt);
@@ -52,28 +52,29 @@ ${resumeText.substring(0, 10000)}
     }
   }
 
-  // Fallback NLP heuristic parser
+  // Fallback NLP heuristic parser - strict matching against resumeText
   const knownTech = [
     "React", "Node.js", "JavaScript", "TypeScript", "Python", "Java", "C++",
     "MongoDB", "PostgreSQL", "Docker", "Kubernetes", "AWS", "Git", "System Design",
     "Express", "Tailwind CSS", "HTML5", "CSS3", "REST APIs", "GraphQL", "Data Structures",
+    "Redux", "SQL", "Next.js", "Flask", "Django", "Linux", "C#", ".NET",
   ];
 
   const extracted = [];
   for (const tech of knownTech) {
-    const regex = new RegExp(`\\b${tech.replace(/[.+]/g, "\\$&")}\\b`, "i");
+    const regex = new RegExp(`(?:\\b|[^a-zA-Z0-9])${tech.replace(/[.+]/g, "\\$&")}(?:\\b|[^a-zA-Z0-9])`, "i");
     if (regex.test(resumeText)) {
       extracted.push(tech);
     }
   }
 
   return {
-    name: "Aarav Sharma",
-    email: "student@demo.com",
-    skills: extracted.length > 0 ? extracted : ["React", "Node.js", "JavaScript", "Python", "MongoDB"],
-    summary: "Dedicated software engineer proficient in modern full-stack web architectures and scalable cloud solutions.",
-    experience: "Software Development Intern at TechCorp",
-    projects: "Distributed Telemetry Service & Microservices Gateway",
+    name: "",
+    email: "",
+    skills: extracted,
+    summary: "Professional profile extracted from technical resume.",
+    experience: "Technical project experience and internships.",
+    projects: "Technical deliverables and applications.",
   };
 }
 
@@ -110,9 +111,11 @@ export const parseResume = async (req, res) => {
       });
     }
 
-    // Save resume file metadata
+    // Save resume file metadata & raw text permanently
     if (resumeFileName) profile.resumeFileName = resumeFileName;
     if (resumeUrl) profile.resumeUrl = resumeUrl;
+    profile.resumeRawText = textToAnalyze;
+    profile.parsedResumeData = parsedData;
     if (parsedData.summary) profile.bio = parsedData.summary;
 
     // Persist parsed skills into StudentProfile.skills
@@ -177,3 +180,35 @@ export const parseResume = async (req, res) => {
     return res.status(500).json({ error: error.message || "Failed to parse resume." });
   }
 };
+
+/**
+ * GET /api/resume/my-resume
+ * Retrieves permanently saved resume details and parsed skills for the logged-in student.
+ */
+export const getMyResume = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized: student identity required." });
+    }
+
+    const profile = await StudentProfile.findOne({ user: userId }).populate("skills.skill");
+    if (!profile) {
+      return res.status(404).json({ error: "Profile not found." });
+    }
+
+    return res.json({
+      success: true,
+      resumeFileName: profile.resumeFileName || "",
+      resumeUrl: profile.resumeUrl || "",
+      resumeRawText: profile.resumeRawText || "",
+      parsedResumeData: profile.parsedResumeData || null,
+      skills: profile.skills || [],
+      portfolio: profile.portfolio || [],
+    });
+  } catch (error) {
+    console.error("getMyResume error:", error);
+    return res.status(500).json({ error: error.message || "Failed to fetch resume details." });
+  }
+};
+

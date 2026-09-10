@@ -20,13 +20,22 @@ export const generateRoadmapForGaps = async (gaps = []) => {
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
-    generationConfig: {
-      responseMimeType: "application/json",
-      temperature: 0.2,
-    },
-  });
+  const candidateModels = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.0-flash-001"];
+  let model = null;
+  for (const m of candidateModels) {
+    try {
+      model = genAI.getGenerativeModel({
+        model: m,
+        generationConfig: {
+          responseMimeType: "application/json",
+          temperature: 0.2,
+        },
+      });
+      break;
+    } catch (e) {
+      console.warn(`Model init notice for ${m}:`, e.message);
+    }
+  }
 
   // Sort gaps by largest gap size first
   const sortedGaps = [...gaps].sort((a, b) => (b.gapSize || 0) - (a.gapSize || 0));

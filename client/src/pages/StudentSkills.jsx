@@ -13,10 +13,12 @@ import {
   Loader2,
   ShieldCheck,
   AlertCircle,
+  HelpCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import AssessmentModal from "../components/AssessmentModal";
 import { getCurrentUser } from "../utils/auth";
 import api from "../services/api";
 
@@ -44,7 +46,7 @@ export default function StudentSkills() {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [taking, setTaking] = useState(null);
+  const [activeModalSkill, setActiveModalSkill] = useState(null);
 
   useEffect(() => {
     fetchSkills();
@@ -59,58 +61,17 @@ export default function StudentSkills() {
       setSkills(profileSkills);
     } catch (err) {
       console.error("Failed to load skills:", err);
-      setError(err.response?.data?.message || "Failed to load skills from server.");
+      setError("Failed to load skills profile.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleTakeAssessment = async (skillEntry) => {
-    const skillId = (skillEntry.skill?._id || skillEntry.skill)?.toString();
-    const skillName = skillEntry.skill?.name || "Skill";
-    setTaking(skillId);
-    setError("");
-
-    try {
-      // Trigger Gemini AI Faculty Evaluator pipeline
-      const res = await api.post("/verification/ai-evaluate", {
-        skillId,
-        submissionType: "assessment",
-        content: `Comprehensive evaluation submission for ${skillName} including test answers, code repository analysis, and algorithmic implementations.`,
-      });
-
-      if (res.data?.profile?.skills) {
-        setSkills(res.data.profile.skills);
-      } else {
-        // Fallback refresh
-        const profRes = await api.get("/profile/me");
-        if (profRes.data?.profile?.skills) {
-          setSkills(profRes.data.profile.skills);
-        }
-      }
-    } catch (err) {
-      console.error("Failed to run AI Faculty verification:", err);
-      // Fallback local update if offline
-      try {
-        const newLevel = Math.min(100, Math.max(85, (skillEntry.level || 0) + 25));
-        const res = await api.put("/profile/me", {
-          skills: [
-            {
-              skill: skillId,
-              level: newLevel,
-              evidenceType: "faculty-signoff",
-              evidenceRef: `AI-FACULTY-EVAL-${Date.now()}`,
-            },
-          ],
-        });
-        if (res.data.profile?.skills) {
-          setSkills(res.data.profile.skills);
-        }
-      } catch (fallbackErr) {
-        setError(fallbackErr.response?.data?.message || "Failed to update assessment score.");
-      }
-    } finally {
-      setTaking(null);
+  const handleAssessmentComplete = (updatedSkills) => {
+    if (updatedSkills) {
+      setSkills(updatedSkills);
+    } else {
+      fetchSkills();
     }
   };
 
@@ -126,13 +87,15 @@ export default function StudentSkills() {
           className="p-6 md:p-8 max-w-3xl w-full mx-auto"
         >
           <div className="flex items-center justify-between mb-1">
-            <h2 className="text-2xl font-extrabold text-[#1E1B33]">Skills & Assessment</h2>
+            <h2 className="text-2xl font-extrabold text-[#1E1B33] dark:text-[#F3F4F6]">
+              Skills & Assessment
+            </h2>
             <span className="text-xs text-muted font-medium">
               Evidence-Based Skill Vector
             </span>
           </div>
           <p className="text-muted text-xs md:text-sm mb-6">
-            Take assessments and complete live projects to verify competencies and boost match scores.
+            Complete interactive assessments or submit live project deliverables to verify competencies and boost your match accuracy.
           </p>
 
           {error && (
@@ -151,9 +114,11 @@ export default function StudentSkills() {
             ) : skills.length === 0 ? (
               <div className="py-12 text-center text-muted">
                 <ShieldCheck className="mx-auto mb-3 text-muted" size={32} />
-                <p className="font-semibold text-sm text-[#1E1B33]">No skills recorded yet</p>
+                <p className="font-semibold text-sm text-[#1E1B33] dark:text-[#F3F4F6]">
+                  No skills recorded yet
+                </p>
                 <p className="text-xs mt-1 max-w-sm mx-auto">
-                  Complete your profile or participate in live industry projects to earn verified skill badges.
+                  Upload your resume or add target competencies to take interactive quiz assessments.
                 </p>
               </div>
             ) : (
@@ -173,7 +138,9 @@ export default function StudentSkills() {
                           ) : (
                             <Circle size={16} className="text-muted" />
                           )}
-                          <span className="text-sm font-medium text-[#1E1B33]">{skillName}</span>
+                          <span className="text-sm font-semibold text-[#1E1B33] dark:text-[#F3F4F6]">
+                            {skillName}
+                          </span>
 
                           {s.verified && (
                             <span className="status-pill bg-greenSoft text-green text-[11px] font-semibold">
@@ -191,21 +158,16 @@ export default function StudentSkills() {
                         <div className="flex items-center gap-3">
                           <span className="text-xs text-muted font-mono font-medium">{level}%</span>
                           <button
-                            onClick={() => handleTakeAssessment(s)}
-                            disabled={taking === skillId}
-                            className="btn-primary !px-4 !py-1.5 text-xs flex items-center gap-1.5 disabled:opacity-60"
+                            onClick={() => setActiveModalSkill(s)}
+                            className="btn-primary !px-4 !py-1.5 text-xs flex items-center gap-1.5 shadow-sm"
                           >
-                            {taking === skillId && <Loader2 size={12} className="animate-spin" />}
-                            {taking === skillId
-                              ? "Testing..."
-                              : level > 0
-                              ? "Retake"
-                              : "Take Test"}
+                            <HelpCircle size={12} />
+                            {s.verified ? "Retake Quiz" : "Take Assessment"}
                           </button>
                         </div>
                       </div>
 
-                      <div className="h-2 bg-bg rounded-full overflow-hidden">
+                      <div className="h-2 bg-bg dark:bg-[#1E1B3B] rounded-full overflow-hidden">
                         <div
                           className="h-full bg-primary rounded-full transition-all duration-500"
                           style={{ width: `${level}%` }}
@@ -219,6 +181,15 @@ export default function StudentSkills() {
           </div>
         </motion.div>
       </div>
+
+      {/* Interactive Assessment Modal */}
+      {activeModalSkill && (
+        <AssessmentModal
+          skillEntry={activeModalSkill}
+          onClose={() => setActiveModalSkill(null)}
+          onVerified={handleAssessmentComplete}
+        />
+      )}
     </div>
   );
 }

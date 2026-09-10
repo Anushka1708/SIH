@@ -84,8 +84,39 @@ export default function AIChatbot() {
     setInput("");
     setIsTyping(true);
 
-    // Generate intelligent contextual response
-    setTimeout(() => {
+    try {
+      const response = await api.post("/ai/chat", { message: query });
+      const replyText =
+        response.data?.reply ||
+        "I'm here to help you navigate your learning and career pathway on SkillBridge.";
+
+      // Determine optional helpful action buttons based on query
+      const q = query.toLowerCase();
+      let actions = undefined;
+      if (q.includes("skill") || q.includes("test") || q.includes("quiz") || q.includes("assessment") || q.includes("verify")) {
+        actions = [{ label: "Skills & Assessment", path: "/student/skills" }];
+      } else if (q.includes("opportunity") || q.includes("job") || q.includes("internship") || q.includes("match")) {
+        actions = [{ label: "Browse Opportunities", path: "/student/opportunities" }];
+      } else if (q.includes("resume") || q.includes("cv") || q.includes("portfolio")) {
+        actions = [{ label: "Resume Manager", path: "/student/resume" }];
+      } else if (q.includes("project") || q.includes("live") || q.includes("milestone")) {
+        actions = [{ label: "Industry Projects", path: "/student/dashboard" }];
+      } else if (q.includes("roadmap") || q.includes("learning")) {
+        actions = [{ label: "Learning Roadmap", path: "/student/learning" }];
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${Date.now()}`,
+          role: "assistant",
+          text: replyText,
+          actions,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        },
+      ]);
+    } catch (err) {
+      console.warn("AI Chatbot API error, using contextual fallback:", err);
       const botResponse = generateContextualReply(query, user, studentContext, navigate);
       setMessages((prev) => [
         ...prev,
@@ -97,8 +128,9 @@ export default function AIChatbot() {
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         },
       ]);
+    } finally {
       setIsTyping(false);
-    }, 600);
+    }
   };
 
   // Conversational intelligence engine

@@ -172,7 +172,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
     .toUpperCase();
 
   return (
-    <header className="flex items-center justify-between px-6 py-3.5 border-b border-[#ECEBF5] bg-white/95 backdrop-blur-md sticky top-0 z-40">
+    <header className="flex items-center justify-between px-6 py-3.5 border-b border-[#E2E8F0] dark:border-[#2E2A52] bg-white/95 dark:bg-[#130F2E]/95 backdrop-blur-md sticky top-0 z-40">
       {/* Mobile Branding / Dashboard Link */}
       <div className="md:hidden flex items-center mr-3">
         <Link
@@ -187,15 +187,15 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
       {/* Interactive Search Bar */}
       <div ref={searchRef} className="relative flex-1 max-w-lg">
         <div
-          className={`flex items-center gap-2.5 bg-[#F4F5FB] rounded-xl px-3.5 py-2.5 border transition-all ${
+          className={`flex items-center gap-2.5 bg-[#F4F5FB] dark:bg-[#1E1B3B] rounded-xl px-3.5 py-2.5 border transition-all ${
             isSearchFocused
-              ? "border-primary bg-white shadow-sm ring-2 ring-primary/10"
-              : "border-transparent hover:border-slate-300"
+              ? "border-primary bg-white dark:bg-[#130F2E] shadow-sm ring-2 ring-primary/10"
+              : "border-transparent hover:border-slate-300 dark:hover:border-slate-600"
           }`}
         >
-          <Search size={16} className={isSearchFocused ? "text-primary" : "text-muted"} />
+          <Search size={16} className={isSearchFocused ? "text-primary" : "text-slate-400"} />
           <input
-            className="bg-transparent outline-none text-xs md:text-sm w-full text-[#1E1B33] placeholder:text-muted"
+            className="bg-transparent outline-none text-xs md:text-sm w-full text-[#0F172A] dark:text-[#F3F4F6] placeholder:text-slate-400"
             placeholder={placeholder}
             type="text"
             value={searchQuery}
@@ -206,7 +206,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="text-muted hover:text-slate-800 transition"
+              className="text-slate-400 hover:text-slate-800 dark:hover:text-white transition"
               title="Clear search"
             >
               <X size={14} />
@@ -222,11 +222,11 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 6 }}
               transition={{ duration: 0.15 }}
-              className="absolute left-0 right-0 top-12 bg-white rounded-2xl border border-[#ECEBF5] shadow-xl p-3 z-50"
+              className="absolute left-0 right-0 top-12 bg-white dark:bg-[#130F2E] rounded-2xl border border-[#E2E8F0] dark:border-[#2E2A52] shadow-xl p-3 z-50"
             >
-              <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-slate-100 text-[11px] font-semibold text-muted uppercase tracking-wider">
+              <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-slate-100 dark:border-[#2E2A52] text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 <span>{searchQuery ? "Filtered Suggestions" : "Quick Actions"}</span>
-                <span className="text-[10px] normal-case bg-slate-100 px-1.5 py-0.5 rounded text-slate-500">
+                <span className="text-[10px] normal-case bg-slate-100 dark:bg-[#1E1B3B] px-1.5 py-0.5 rounded text-slate-500 dark:text-slate-400">
                   Press Enter to search
                 </span>
               </div>
@@ -239,17 +239,17 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                       setIsSearchFocused(false);
                       navigate(item.href);
                     }}
-                    className="flex items-center justify-between px-3 py-2 rounded-xl text-left hover:bg-slate-50 transition group"
+                    className="flex items-center justify-between px-3 py-2 rounded-xl text-left hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition group"
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-indigo-50 text-primary flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-500/20 text-primary dark:text-indigo-300 flex items-center justify-center">
                         <item.icon size={14} />
                       </div>
-                      <span className="text-xs font-semibold text-slate-800 group-hover:text-primary transition">
+                      <span className="text-xs font-semibold text-[#0F172A] dark:text-[#F3F4F6] group-hover:text-primary transition">
                         {item.label}
                       </span>
                     </div>
-                    <span className="text-[10px] text-muted">{item.category}</span>
+                    <span className="text-[10px] text-slate-400">{item.category}</span>
                   </button>
                 ))}
 
@@ -259,10 +259,12 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                       setIsSearchFocused(false);
                       navigate(`/student/opportunities?search=${encodeURIComponent(searchQuery.trim())}`);
                     }}
-                    className="flex items-center justify-between px-3 py-2 mt-1 rounded-xl bg-indigo-50/70 hover:bg-indigo-100/70 text-primary text-xs font-semibold transition"
+                    className="flex items-center justify-between px-3 py-2 rounded-xl text-left hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition group mt-1 pt-2 border-t border-slate-100 dark:border-[#2E2A52]"
                   >
-                    <span>Search all postings for "{searchQuery}"</span>
-                    <ExternalLink size={12} />
+                    <span className="text-xs font-semibold text-primary">
+                      Search opportunities for "{searchQuery.trim()}"
+                    </span>
+                    <span className="text-[10px] text-slate-400">Press Enter ↵</span>
                   </button>
                 )}
               </div>
@@ -280,17 +282,12 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
               setShowNotifications(!showNotifications);
               setShowUserMenu(false);
             }}
-            className={`relative p-2 rounded-xl text-muted hover:text-primary transition hover:bg-slate-100 ${
-              showNotifications ? "bg-slate-100 text-primary" : ""
-            }`}
+            className="relative p-2 rounded-xl text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition"
             title="Notifications"
           >
-            <Bell size={19} />
+            <Bell size={18} />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500" />
-              </span>
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white dark:ring-[#130F2E] animate-pulse" />
             )}
           </button>
 
@@ -302,12 +299,12 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.96 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 top-12 w-80 sm:w-96 bg-white rounded-2xl border border-[#ECEBF5] shadow-2xl overflow-hidden z-50"
+                className="absolute right-0 top-12 w-80 sm:w-96 bg-white dark:bg-[#130F2E] rounded-2xl border border-[#E2E8F0] dark:border-[#2E2A52] shadow-2xl overflow-hidden z-50"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/50">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-[#E2E8F0] dark:border-[#2E2A52] bg-slate-50 dark:bg-[#1E1B3B]/60">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-[#1E1B33]">Notifications</span>
+                    <span className="text-xs font-bold text-[#0F172A] dark:text-[#F3F4F6]">Notifications</span>
                     {unreadCount > 0 && (
                       <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-primary text-white">
                         {unreadCount} new
@@ -327,7 +324,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                     {notifications.length > 0 && (
                       <button
                         onClick={handleClearNotifications}
-                        className="text-[11px] text-muted hover:text-rose-600 transition flex items-center gap-1"
+                        className="text-[11px] text-slate-400 hover:text-rose-600 transition flex items-center gap-1"
                         title="Clear all"
                       >
                         <Trash2 size={12} />
@@ -337,14 +334,14 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                 </div>
 
                 {/* Notifications List */}
-                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
+                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-[#2E2A52]">
                   {notifications.length === 0 ? (
                     <div className="p-8 text-center flex flex-col items-center justify-center">
-                      <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-primary flex items-center justify-center mb-2">
+                      <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 text-primary flex items-center justify-center mb-2">
                         <Bell size={20} />
                       </div>
-                      <p className="text-xs font-bold text-slate-800">No new notifications</p>
-                      <p className="text-[11px] text-muted mt-0.5">
+                      <p className="text-xs font-bold text-[#0F172A] dark:text-[#F3F4F6]">No new notifications</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                         You're completely up to date with platform updates!
                       </p>
                     </div>
@@ -353,18 +350,18 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                       <div
                         key={notif.id}
                         onClick={() => handleNotificationClick(notif)}
-                        className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex gap-3 ${
-                          !notif.read ? "bg-indigo-50/20" : ""
+                        className={`p-3.5 hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition cursor-pointer flex gap-3 ${
+                          !notif.read ? "bg-indigo-50/30 dark:bg-indigo-500/10" : ""
                         }`}
                       >
                         <div className="mt-0.5">
                           <div
                             className={`w-7 h-7 rounded-xl flex items-center justify-center ${
                               notif.type === "opportunity"
-                                ? "bg-indigo-100 text-primary"
+                                ? "bg-indigo-100 text-primary dark:bg-indigo-500/30 dark:text-indigo-300"
                                 : notif.type === "skill"
-                                ? "bg-emerald-100 text-emerald-700"
-                                : "bg-purple-100 text-purple-700"
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/30 dark:text-emerald-300"
+                                : "bg-purple-100 text-purple-700 dark:bg-purple-500/30 dark:text-purple-300"
                             }`}
                           >
                             {notif.type === "opportunity" ? (
@@ -378,12 +375,12 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
-                            <p className="text-xs font-bold text-[#1E1B33]">{notif.title}</p>
+                            <p className="text-xs font-bold text-[#0F172A] dark:text-[#F3F4F6]">{notif.title}</p>
                             {!notif.read && (
                               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                             )}
                           </div>
-                          <p className="text-[11px] text-muted mt-0.5 leading-relaxed">{notif.desc}</p>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{notif.desc}</p>
                           <p className="text-[10px] text-slate-400 mt-1">{notif.time}</p>
                         </div>
                       </div>
@@ -392,7 +389,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                 </div>
 
                 {/* Footer */}
-                <div className="p-2 border-t border-slate-100 bg-slate-50/50 text-center">
+                <div className="p-2 border-t border-[#E2E8F0] dark:border-[#2E2A52] bg-slate-50 dark:bg-[#1E1B3B]/60 text-center">
                   <Link
                     to={getDashboardUrl()}
                     onClick={() => setShowNotifications(false)}
@@ -419,17 +416,17 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
               {initials}
             </div>
             <div className="hidden md:block text-left">
-              <p className="text-xs font-bold text-[#1E1B33] dark:text-[#F3F4F6] leading-tight group-hover:text-primary transition">
+              <p className="text-xs font-bold text-[#0F172A] dark:text-[#F3F4F6] leading-tight group-hover:text-primary transition">
                 {cleanName || "Guest"}
               </p>
               <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[10px] text-muted dark:text-[#9CA3AF] leading-tight capitalize">
+                <span className="text-[10px] text-slate-500 dark:text-[#9CA3AF] leading-tight capitalize">
                   {user?.role || "Member"}
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               </div>
             </div>
-            <ChevronDown size={14} className="text-muted hidden md:block" />
+            <ChevronDown size={14} className="text-slate-400 hidden md:block" />
           </button>
 
           {/* User Options Dropdown */}
@@ -440,14 +437,14 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 6, scale: 0.97 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 top-12 bg-white dark:bg-[#130F2E] border border-[#ECEBF5] dark:border-[#2E2A52] rounded-2xl shadow-xl py-2 w-56 z-50 overflow-hidden"
+                className="absolute right-0 top-12 bg-white dark:bg-[#130F2E] border border-[#E2E8F0] dark:border-[#2E2A52] rounded-2xl shadow-xl py-2 w-56 z-50 overflow-hidden"
               >
                 {/* User Name & Role Pill Header */}
-                <div className="px-3.5 py-2.5 border-b border-slate-100 dark:border-[#2E2A52] mb-1 bg-slate-50/50 dark:bg-[#1E1B3B]/50">
-                  <p className="text-xs font-bold text-slate-800 dark:text-[#F3F4F6] truncate">
+                <div className="px-3.5 py-2.5 border-b border-[#E2E8F0] dark:border-[#2E2A52] mb-1 bg-slate-50 dark:bg-[#1E1B3B]/50">
+                  <p className="text-xs font-bold text-[#0F172A] dark:text-[#F3F4F6] truncate">
                     {cleanName || "Guest User"}
                   </p>
-                  <p className="text-[10px] text-muted dark:text-[#9CA3AF] truncate mb-1.5">
+                  <p className="text-[10px] text-slate-500 dark:text-[#9CA3AF] truncate mb-1.5">
                     {user?.email || ""}
                   </p>
                   <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-500/20 text-primary dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/30">
@@ -460,18 +457,18 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                   <Link
                     to={user?.role ? `/${user.role}/profile` : "/student/profile"}
                     onClick={() => setShowUserMenu(false)}
-                    className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-[#F3F4F6] hover:bg-slate-50 dark:hover:bg-[#1E1B3B] transition"
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-[#0F172A] dark:text-[#F3F4F6] hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition"
                   >
-                    <User size={15} className="text-muted dark:text-indigo-400" />
+                    <User size={15} className="text-slate-500 dark:text-indigo-400" />
                     <span>My Profile</span>
                   </Link>
 
                   <Link
                     to={user?.role ? `/${user.role}/settings` : "/student/settings"}
                     onClick={() => setShowUserMenu(false)}
-                    className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-[#F3F4F6] hover:bg-slate-50 dark:hover:bg-[#1E1B3B] transition"
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-[#0F172A] dark:text-[#F3F4F6] hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition"
                   >
-                    <Settings size={15} className="text-muted dark:text-indigo-400" />
+                    <Settings size={15} className="text-slate-500 dark:text-indigo-400" />
                     <span>Account Settings</span>
                   </Link>
 
@@ -481,7 +478,7 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                       const next = toggleTheme();
                       setCurrentTheme(next);
                     }}
-                    className="w-full flex items-center justify-between px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-[#F3F4F6] hover:bg-slate-50 dark:hover:bg-[#1E1B3B] transition text-left"
+                    className="w-full flex items-center justify-between px-3.5 py-2 text-xs font-medium text-[#0F172A] dark:text-[#F3F4F6] hover:bg-slate-100 dark:hover:bg-[#1E1B3B] transition text-left"
                   >
                     <div className="flex items-center gap-2.5">
                       {isCurrentlyDark() ? (
@@ -491,13 +488,13 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
                       )}
                       <span>Theme</span>
                     </div>
-                    <span className="text-[10px] font-semibold text-muted dark:text-[#9CA3AF] uppercase bg-slate-100 dark:bg-[#1E1B3B] px-1.5 py-0.5 rounded border border-slate-200 dark:border-[#2E2A52]">
+                    <span className="text-[10px] font-semibold text-slate-500 dark:text-[#9CA3AF] uppercase bg-slate-100 dark:bg-[#1E1B3B] px-1.5 py-0.5 rounded border border-[#E2E8F0] dark:border-[#2E2A52]">
                       {isCurrentlyDark() ? "Dark" : "Light"}
                     </span>
                   </button>
                 </div>
 
-                <div className="border-t border-slate-100 dark:border-[#2E2A52] my-1" />
+                <div className="border-t border-[#E2E8F0] dark:border-[#2E2A52] my-1" />
 
                 {/* Sign Out */}
                 <button

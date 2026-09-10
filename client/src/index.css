@@ -96,6 +96,56 @@ body {
   background: #94A3B8;
 }
 
+/* Light mode crisp contrast rules */
+html:not(.dark) body,
+.light body {
+  background-color: #F8FAFC;
+  color: #0F172A;
+}
+
+html:not(.dark) .card,
+.light .card {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+html:not(.dark) .inner-card,
+.light .inner-card {
+  background-color: #F8FAFC !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
+.light input:not([type="checkbox"]):not([type="radio"]),
+html:not(.dark) select,
+.light select,
+html:not(.dark) textarea,
+.light textarea {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html:not(.dark) input::placeholder,
+.light input::placeholder,
+html:not(.dark) textarea::placeholder,
+.light textarea::placeholder {
+  color: #64748B !important;
+}
+
+html:not(.dark) select option,
+.light select option {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+}
+
+html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, html:not(.dark) h5, html:not(.dark) h6,
+.light h1, .light h2, .light h3, .light h4, .light h5, .light h6 {
+  color: #0F172A;
+}
+
 /* Dark mode theme overrides */
 html.dark body,
 .dark body {

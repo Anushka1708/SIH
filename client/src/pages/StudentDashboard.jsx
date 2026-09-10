@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   User,
@@ -36,6 +36,7 @@ const items = [
 import { motion } from "framer-motion";
 
 export default function StudentDashboard() {
+  const navigate = useNavigate();
   const user = getCurrentUser();
   const displayName = user?.name || "Student";
   const firstName = displayName.split(" ")[0];
@@ -143,33 +144,39 @@ export default function StudentDashboard() {
             <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
           </div>
 
-          {/* Live Summary Stat Cards */}
+          {/* Live Summary Stat Cards (Interactive & Clickable) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <StatCard
               icon="✅"
               label="Profile Completion"
               value={`${profile?.profileCompletion || (profile?.resumeUrl || profile?.resumeFileName ? 100 : profile?.college ? 85 : 50)}%`}
-              change={profile?.resumeUrl || profile?.resumeFileName ? "Resume Verified" : "Verified"}
+              change={profile?.resumeUrl || profile?.resumeFileName ? "Resume Verified" : "Click to manage resume"}
               color="green"
+              onClick={() => navigate("/student/resume")}
             />
             <StatCard
               icon="🏅"
               label="Skills Verified"
               value={verifiedCount}
-              change={`${skillsCount} total skills`}
+              change={`${skillsCount} total skills · Click to test`}
               color="primary"
+              onClick={() => navigate("/student/skills")}
             />
             <StatCard
               icon="📝"
               label="Assessments Completed"
               value={assessmentsCount}
+              change="Click to take assessments"
               color="primary"
+              onClick={() => navigate("/student/skills")}
             />
             <StatCard
               icon="📄"
               label="Active Applications"
               value={applicationCount}
+              change="Click to view tracker"
               color="amber"
+              onClick={() => navigate("/student/applications")}
             />
           </div>
 

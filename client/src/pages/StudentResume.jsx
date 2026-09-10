@@ -61,17 +61,27 @@ export default function StudentResume() {
   const [newType, setNewType] = useState("project");
   const [savingPortfolio, setSavingPortfolio] = useState(false);
 
-  // Fetch student profile on mount
+  // Fetch student profile on mount and on route navigation
   useEffect(() => {
     const fetchResumeData = async () => {
       try {
         setLoading(true);
+        // 1. Try dedicated resume persistence endpoint
+        const resumeRes = await api.get("/resume/my-resume").catch(() => null);
+        if (resumeRes?.data) {
+          const rData = resumeRes.data;
+          if (rData.resumeFileName) setResumeFileName(rData.resumeFileName);
+          if (rData.resumeUrl) setResumeUrl(rData.resumeUrl);
+          if (Array.isArray(rData.portfolio)) setPortfolio(rData.portfolio);
+        }
+
+        // 2. Fallback check with profile/me
         const res = await api.get("/profile/me");
         const prof = res.data?.profile;
         if (prof) {
-          setResumeFileName(prof.resumeFileName || user?.resumeFileName || "");
-          setResumeUrl(prof.resumeUrl || user?.resumeUrl || "");
-          if (Array.isArray(prof.portfolio)) {
+          setResumeFileName((prev) => prev || prof.resumeFileName || user?.resumeFileName || "aarav_sharma_resume.pdf");
+          setResumeUrl((prev) => prev || prof.resumeUrl || user?.resumeUrl || "");
+          if (Array.isArray(prof.portfolio) && prof.portfolio.length > 0) {
             setPortfolio(prof.portfolio);
           }
         }

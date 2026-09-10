@@ -1,32 +1,46 @@
-import { LayoutDashboard, Send, FileText, Users, FolderKanban, BarChart3, Settings } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { getCurrentUser } from "../utils/auth";
+import { companyItems } from "./CompanyDashboard";
 
-const items = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/company" },
-  { label: "Post Opportunity", icon: Send, href: "/company/postopportunity" },
-  { label: "Applications", icon: FileText, href: "/company/applications" },
-  { label: "Internships", icon: Users, href: "/company/internships" },
-  { label: "Projects", icon: FolderKanban, href: "/company/projects" },
-  { label: "Profile", icon: Users, href: "/company/profile" },
-  { label: "Analytics", icon: BarChart3, href: "/company/analytics" },
-  { label: "Settings", icon: Settings, href: "/company/settings" },
+const internships = [
+  { title: "Frontend Developer Intern", applicants: 24, status: "Active" },
+  { title: "Backend Developer Intern", applicants: 18, status: "Active" },
+  { title: "UI/UX Design Intern", applicants: 12, status: "Closing Soon" },
 ];
+
+const statusStyle = { Active: "bg-greenSoft text-green", "Closing Soon": "bg-amberSoft text-amber" };
 
 export default function CompanyInternships() {
   const user = getCurrentUser();
+  const displayName = user?.companyName || user?.name || "Company";
+
   return (
     <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={user?.companyName || user?.name} subtitle="Company" items={items} />
+      <Sidebar brand={displayName} subtitle="Company" items={companyItems} active="Internships" />
       <div className="flex-1">
-        <Topbar placeholder="Search candidates, skills..." />
+        <Topbar placeholder="Search internships..." />
         <div className="p-6">
-          <h2 className="text-xl font-extrabold mb-1">Internships</h2>
-          <p className="text-muted text-sm mb-6">Manage your posted internships.</p>
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-xl font-extrabold mb-1">Internships</h2>
+              <p className="text-muted text-sm">Manage all your posted internship listings.</p>
+            </div>
+            <a href="/company/postopportunity" className="btn-primary !px-4 !py-2 text-sm">+ New Internship</a>
+          </div>
+
           <div className="card">
-            {/* TODO: list of active internships with edit/close actions */}
-            <p className="text-sm text-muted">Internships list goes here.</p>
+            <ul>
+              {internships.map((i) => (
+                <li key={i.title} className="flex justify-between items-center py-3 border-b border-line last:border-none">
+                  <div>
+                    <p className="text-sm font-semibold text-[#1E1B33]">{i.title}</p>
+                    <p className="text-xs text-muted">{i.applicants} applicants</p>
+                  </div>
+                  <span className={`status-pill ${statusStyle[i.status]}`}>{i.status}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

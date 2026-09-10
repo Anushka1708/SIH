@@ -1,32 +1,44 @@
-import { LayoutDashboard, Send, FileText, Users, FolderKanban, BarChart3, Settings } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import EmptyState from "../components/EmptyState";
 import { getCurrentUser } from "../utils/auth";
+import { companyItems } from "./CompanyDashboard";
 
-const items = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/company" },
-  { label: "Post Opportunity", icon: Send, href: "/company/postopportunity" },
-  { label: "Applications", icon: FileText, href: "/company/applications" },
-  { label: "Internships", icon: Users, href: "/company/internships" },
-  { label: "Projects", icon: FolderKanban, href: "/company/projects" },
-  { label: "Profile", icon: Users, href: "/company/profile" },
-  { label: "Analytics", icon: BarChart3, href: "/company/analytics" },
-  { label: "Settings", icon: Settings, href: "/company/settings" },
+const projects = [
+  { title: "E-commerce Redesign", team: 4, status: "In Progress" },
+  { title: "AI Chatbot POC", team: 2, status: "Planning" },
 ];
+const statusStyle = { "In Progress": "bg-[#EEF0FD] text-primary", Planning: "bg-amberSoft text-amber" };
 
 export default function CompanyProjects() {
   const user = getCurrentUser();
+  const displayName = user?.companyName || user?.name || "Company";
+
   return (
     <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={user?.companyName || user?.name} subtitle="Company" items={items} />
+      <Sidebar brand={displayName} subtitle="Company" items={companyItems} active="Projects" />
       <div className="flex-1">
-        <Topbar placeholder="Search candidates, skills..." />
+        <Topbar placeholder="Search projects..." />
         <div className="p-6">
           <h2 className="text-xl font-extrabold mb-1">Projects</h2>
-          <p className="text-muted text-sm mb-6">Manage collaborative projects posted for students.</p>
+          <p className="text-muted text-sm mb-6">Real-world projects offered to students for hands-on experience.</p>
+
           <div className="card">
-            {/* TODO: project cards with status */}
-            <p className="text-sm text-muted">Projects list goes here.</p>
+            {projects.length > 0 ? (
+              <ul>
+                {projects.map((p) => (
+                  <li key={p.title} className="flex justify-between items-center py-3 border-b border-line last:border-none">
+                    <div>
+                      <p className="text-sm font-semibold text-[#1E1B33]">{p.title}</p>
+                      <p className="text-xs text-muted">{p.team} students assigned</p>
+                    </div>
+                    <span className={`status-pill ${statusStyle[p.status]}`}>{p.status}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <EmptyState title="No projects yet" message="Create a project to collaborate with students." />
+            )}
           </div>
         </div>
       </div>

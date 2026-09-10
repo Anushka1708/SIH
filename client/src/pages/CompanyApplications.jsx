@@ -1,32 +1,30 @@
-import { LayoutDashboard, Send, FileText, Users, FolderKanban, BarChart3, Settings } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import ActivityCard from "../components/ActivityCard";
+import EmptyState from "../components/EmptyState";
 import { getCurrentUser } from "../utils/auth";
-
-const items = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/company" },
-  { label: "Post Opportunity", icon: Send, href: "/company/postopportunity" },
-  { label: "Applications", icon: FileText, href: "/company/applications" },
-  { label: "Internships", icon: Users, href: "/company/internships" },
-  { label: "Projects", icon: FolderKanban, href: "/company/projects" },
-  { label: "Profile", icon: Users, href: "/company/profile" },
-  { label: "Analytics", icon: BarChart3, href: "/company/analytics" },
-  { label: "Settings", icon: Settings, href: "/company/settings" },
-];
+import { companyData as d } from "../data/mockData";
+import { companyItems } from "./CompanyDashboard";
 
 export default function CompanyApplications() {
   const user = getCurrentUser();
+  const displayName = user?.companyName || user?.name || "Company";
+
   return (
     <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={user?.companyName || user?.name} subtitle="Company" items={items} />
+      <Sidebar brand={displayName} subtitle="Company" items={companyItems} active="Applications" />
       <div className="flex-1">
-        <Topbar placeholder="Search candidates, skills..." />
+        <Topbar placeholder="Search applicants..." />
         <div className="p-6">
           <h2 className="text-xl font-extrabold mb-1">Applications</h2>
-          <p className="text-muted text-sm mb-6">Review candidates who applied to your listings.</p>
+          <p className="text-muted text-sm mb-6">Review and manage candidates who applied to your postings.</p>
+
           <div className="card">
-            {/* TODO: list of ActivityCard with filter by status */}
-            <p className="text-sm text-muted">Applications list goes here.</p>
+            {d.recentApplications.length > 0 ? (
+              d.recentApplications.map((a) => <ActivityCard key={a.name} {...a} />)
+            ) : (
+              <EmptyState title="No applications yet" message="Once students apply, they'll show up here." />
+            )}
           </div>
         </div>
       </div>

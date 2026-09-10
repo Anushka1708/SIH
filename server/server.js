@@ -29,6 +29,7 @@ import projectRoutes from "./src/routes/projectRoutes.js";
 import verificationRoutes from "./src/routes/verificationRoutes.js";
 import resumeRoutes from "./src/routes/resumeRoutes.js";
 import aiRoutes from "./src/routes/aiRoutes.js";
+import assessmentRoutes from "./src/routes/assessmentRoutes.js";
 
 app.use("/api/auth", authRoutes);
 app.use("/api/skills", skillRoutes);
@@ -40,6 +41,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/verification", verificationRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/assessments", assessmentRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

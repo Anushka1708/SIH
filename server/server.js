@@ -55,11 +55,9 @@ app.use("/api/passport", passportRoutes);
 // Serve static assets from the React build directory in production mode
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// Fallback route for client SPA navigation
+// Single Page Application (SPA) Catch-All Fallback
 app.get("*", (req, res) => {
-  if (!req.path.startsWith("/api")) {
-    res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
-  }
+  res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;

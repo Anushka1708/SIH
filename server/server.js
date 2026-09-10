@@ -3,6 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./src/config/db.js";
 
+import dns from "dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
 dotenv.config();
 connectDB();
 
@@ -15,10 +18,10 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "SIH26044 server running" });
 });
 
-// Route mounts will go here as each module is built, e.g.:
-// import authRoutes from "./src/routes/authRoutes.js";
-// app.use("/api/auth", authRoutes);
+import authRoutes from "./src/routes/authRoutes.js";
 import skillRoutes from "./src/routes/skillRoutes.js";
+
+app.use("/api/auth", authRoutes);
 app.use("/api/skills", skillRoutes);
 
 const PORT = process.env.PORT || 5000;

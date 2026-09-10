@@ -5,6 +5,7 @@ const facultyProfileSchema = new mongoose.Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
 
     institution: { type: mongoose.Schema.Types.ObjectId, ref: "InstitutionProfile" },
+    institutionNameRaw: { type: String, trim: true },
     department: { type: String, trim: true },
     designation: { type: String, trim: true }, // e.g. "Assistant Professor"
     expertiseSkills: [{ type: mongoose.Schema.Types.ObjectId, ref: "Skill" }],

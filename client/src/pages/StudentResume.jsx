@@ -22,10 +22,12 @@ import {
   Loader2,
   AlertCircle,
   Sparkles,
+  Brain,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import InitialDiagnosticModal from "../components/InitialDiagnosticModal";
 import { getCurrentUser, loginUser } from "../utils/auth";
 import api from "../services/api";
 
@@ -60,6 +62,9 @@ export default function StudentResume() {
   const [newLink, setNewLink] = useState("");
   const [newType, setNewType] = useState("project");
   const [savingPortfolio, setSavingPortfolio] = useState(false);
+
+  const [showDiagnosticModal, setShowDiagnosticModal] = useState(false);
+  const [diagnosticSkills, setDiagnosticSkills] = useState([]);
 
   // Fetch student profile on mount and on route navigation
   useEffect(() => {
@@ -148,10 +153,14 @@ export default function StudentResume() {
               resumeUrl: dataUrl,
               resumeFileSize: sizeFormatted,
             });
-            setSuccessMsg("Resume Uploaded & Gemini AI Skills Extracted Successfully!");
+            setSuccessMsg("Resume Uploaded & SkillBridge AI Skills Extracted Successfully!");
+            if (parseRes.data?.extractedSkills?.length > 0) {
+              setDiagnosticSkills(parseRes.data.extractedSkills);
+              setTimeout(() => setShowDiagnosticModal(true), 600);
+            }
           }
         } catch (backendErr) {
-          console.warn("Gemini resume parse fallback notice:", backendErr);
+          console.warn("SkillBridge AI resume parse fallback notice:", backendErr);
           // Fallback save
           await api.put("/profile/me", {
             resumeFileName: file.name,
@@ -624,8 +633,51 @@ export default function StudentResume() {
               </div>
             )}
           </div>
+
+          {/* Initial Comprehensive Diagnostic Assessment Banner */}
+          {hasResume && (
+            <div className="bg-white dark:bg-[#130F2E] border border-indigo-200 dark:border-indigo-900/60 rounded-2xl p-5 mt-6 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gradient-to-r from-indigo-50/50 via-white to-white dark:from-indigo-950/20 dark:via-[#130F2E] dark:to-[#130F2E]">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/30 shrink-0">
+                  <Brain size={24} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs sm:text-sm font-black text-[#0F172A] dark:text-[#F3F4F6]">
+                      Initial Comprehensive Diagnostic Assessment
+                    </p>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                      15 Questions
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Calibrate your true baseline skill scores across all extracted resume competencies through an adaptive evaluation.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDiagnosticModal(true)}
+                className="btn-primary !px-5 !py-2.5 text-xs font-bold shrink-0 shadow-md shadow-indigo-600/30 flex items-center gap-1.5"
+              >
+                <Brain size={14} />
+                <span>Launch Diagnostic Test</span>
+              </button>
+            </div>
+          )}
         </motion.div>
       </div>
+
+      {/* Initial Diagnostic Modal */}
+      {showDiagnosticModal && (
+        <InitialDiagnosticModal
+          skills={diagnosticSkills}
+          onClose={() => setShowDiagnosticModal(false)}
+          onCompleted={(updatedSkills) => {
+            setShowDiagnosticModal(false);
+            setSuccessMsg("Initial Diagnostic Assessment completed! Your skill vector is now calibrated.");
+          }}
+        />
+      )}
     </div>
   );
 }

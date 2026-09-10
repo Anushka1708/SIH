@@ -156,13 +156,15 @@ export default function StudentSkills() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                          <span className="text-xs text-muted font-mono font-medium">{level}%</span>
+                          <span className="text-xs text-muted font-mono font-bold">
+                            {level === 0 ? "Unassessed" : `${level}%`}
+                          </span>
                           <button
                             onClick={() => setActiveModalSkill(s)}
                             className="btn-primary !px-4 !py-1.5 text-xs flex items-center gap-1.5 shadow-sm"
                           >
                             <HelpCircle size={12} />
-                            {s.verified ? "Retake Quiz" : "Take Assessment"}
+                            {s.verified ? "Retake Topic Test" : level > 0 ? "Retake Test" : "Start Assessment"}
                           </button>
                         </div>
                       </div>

@@ -153,7 +153,7 @@ export default function AIChatbot() {
     // 2. AI Faculty Verification Query
     if (q.includes("verify") || q.includes("faculty") || q.includes("assessment") || q.includes("test")) {
       return {
-        text: `SkillBridge features an instant AI Faculty Mentor Agent powered by Google Gemini! To verify your skills:\n1. Head to 'Skills & Assessment'.\n2. Click 'Take Test' or 'Retake' next to any skill.\n3. The AI Faculty Agent evaluates your submission and signs off an official digital competency credential!`,
+        text: `SkillBridge features an instant AI Faculty Mentor Agent! To verify your skills:\n1. Head to 'Skills & Assessment'.\n2. Click 'Take Test' or 'Retake' next to any skill.\n3. The AI Faculty Agent evaluates your submission and signs off an official digital competency credential!`,
         actions: [
           { label: "Go to Skills & Assessment", path: "/student/skills" },
         ],
@@ -291,7 +291,7 @@ export default function AIChatbot() {
                 <Zap size={11} className="text-amber-500" />
                 Role: {user.role ? user.role.toUpperCase() : "STUDENT"}
               </span>
-              <span className="text-muted dark:text-[#9CA3AF]">Gemini 1.5 Flash</span>
+              <span className="text-muted dark:text-[#9CA3AF]">SkillBridge AI Engine</span>
             </div>
 
             {/* Messages Scroll Area */}

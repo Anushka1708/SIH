@@ -130,7 +130,7 @@ export default function StudentOpportunities() {
         opportunityId: oppId,
       });
 
-      setSuccess("AI Roadmap generated with Gemini! Redirecting to Learning Programs...");
+      setSuccess("AI Roadmap generated with SkillBridge AI! Redirecting to Learning Programs...");
       setTimeout(() => {
         navigate("/student/learning");
       }, 1500);

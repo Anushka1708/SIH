@@ -147,19 +147,19 @@ export const parseResume = async (req, res) => {
       );
 
       if (existingIndex > -1) {
-        // Upgrade level if currently 0 or self-reported
-        if (!profile.skills[existingIndex].verified && (profile.skills[existingIndex].level || 0) < 70) {
-          profile.skills[existingIndex].level = 75;
-          profile.skills[existingIndex].evidenceType = "assessment";
-          profile.skills[existingIndex].evidenceRef = "RESUME-EXTRACTED";
+        // Only modify if not already assessed or verified
+        if (!profile.skills[existingIndex].verified && !profile.skills[existingIndex].level) {
+          profile.skills[existingIndex].level = 0;
+          profile.skills[existingIndex].evidenceType = "self-reported";
+          profile.skills[existingIndex].evidenceRef = "RESUME-PENDING-DIAGNOSTIC";
         }
       } else {
         profile.skills.push({
           skill: skillDoc._id,
-          level: 75,
+          level: 0,
           verified: false,
-          evidenceType: "assessment",
-          evidenceRef: "RESUME-EXTRACTED",
+          evidenceType: "self-reported",
+          evidenceRef: "RESUME-PENDING-DIAGNOSTIC",
         });
       }
     }
@@ -171,7 +171,9 @@ export const parseResume = async (req, res) => {
 
     return res.json({
       success: true,
-      message: "Resume parsed successfully with Gemini AI. Skills updated permanently!",
+      message: "Resume parsed successfully. Initial skills extracted and pending diagnostic assessment!",
+      requiresDiagnostic: true,
+      extractedSkills: parsedData.skills || [],
       parsedData,
       profile: populated,
     });

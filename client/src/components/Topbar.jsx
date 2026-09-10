@@ -44,7 +44,7 @@ const INITIAL_NOTIFICATIONS = [
   },
   {
     id: 3,
-    title: "Gemini AI Roadmap Updated",
+    title: "AI Roadmap Updated",
     desc: "New milestones generated for Cloud DevOps engineering path.",
     time: "1d ago",
     read: true,

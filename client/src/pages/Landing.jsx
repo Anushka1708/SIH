@@ -33,7 +33,7 @@ const SKILL_PREVIEWS = {
   },
   "Cloud DevOps": {
     level: 65,
-    evidence: "Milestone 2/3 · Gemini Roadmap Active",
+    evidence: "Milestone 2/3 · AI Roadmap Active",
     gap: "15% Target Gap Remaining",
     tag: "In Progress",
     color: "bg-amber-400",
@@ -64,8 +64,8 @@ const features = [
   {
     icon: Sparkles,
     title: "AI Eligibility Roadmaps",
-    desc: "Powered by Google Gemini AI. When competency gaps are identified, students receive step-by-step learning roadmaps to reach 100% eligibility.",
-    badge: "Gemini 1.5",
+    desc: "Powered by SkillBridge AI. When competency gaps are identified, students receive step-by-step learning roadmaps to reach 100% eligibility.",
+    badge: "AI Roadmap",
   },
   {
     icon: Handshake,
@@ -98,7 +98,7 @@ const pillars = [
     category: "For Students",
     title: "Graduate with an Audited Skill Vector, Not Just a GPA",
     description:
-      "Transform academic projects, hackathons, and certifications into a recruiter-verified competency profile. Get matched to high-fit internships and receive tailored Gemini AI roadmaps.",
+      "Transform academic projects, hackathons, and certifications into a recruiter-verified competency profile. Get matched to high-fit internships and receive tailored SkillBridge AI roadmaps.",
     image:
       "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
     points: [
@@ -253,7 +253,7 @@ export default function Landing() {
 
               <p className="text-[#C9C5E8] text-sm md:text-base mb-8 max-w-xl leading-relaxed">
                 Connect students, faculty mentors, accredited colleges, and corporate recruiters
-                through verified skill vectors, Gemini-driven learning roadmaps, and real-world project pipelines.
+                through verified skill vectors, AI-driven learning roadmaps, and real-world project pipelines.
               </p>
 
               <div className="flex flex-wrap gap-3.5 mb-10">

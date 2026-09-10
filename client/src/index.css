@@ -117,6 +117,53 @@ html:not(.dark) .inner-card,
   color: #0F172A !important;
 }
 
+html:not(.dark) .text-muted,
+.light .text-muted {
+  color: #475569 !important;
+}
+
+html:not(.dark) .text-\[\#1E1B33\],
+.light .text-\[\#1E1B33\],
+html:not(.dark) [class*="text-[#1E1B33]"],
+.light [class*="text-[#1E1B33]"] {
+  color: #0F172A !important;
+}
+
+html:not(.dark) .border-\[\#ECEBF5\],
+.light .border-\[\#ECEBF5\],
+html:not(.dark) [class*="border-[#ECEBF5]"],
+.light [class*="border-[#ECEBF5]"],
+html:not(.dark) .border-line,
+.light .border-line {
+  border-color: #E2E8F0 !important;
+}
+
+html:not(.dark) table,
+.light table {
+  background-color: #FFFFFF;
+  color: #0F172A;
+  border-color: #E2E8F0;
+}
+
+html:not(.dark) th,
+.light th {
+  background-color: #F8FAFC !important;
+  color: #334155 !important;
+  border-color: #E2E8F0 !important;
+  font-weight: 700 !important;
+}
+
+html:not(.dark) td,
+.light td {
+  color: #0F172A !important;
+  border-color: #E2E8F0 !important;
+}
+
+html:not(.dark) tr:hover,
+.light tr:hover {
+  background-color: #F1F5F9 !important;
+}
+
 html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
 .light input:not([type="checkbox"]):not([type="radio"]),
 html:not(.dark) select,
@@ -143,7 +190,7 @@ html:not(.dark) select option,
 
 html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4, html:not(.dark) h5, html:not(.dark) h6,
 .light h1, .light h2, .light h3, .light h4, .light h5, .light h6 {
-  color: #0F172A;
+  color: #0F172A !important;
 }
 
 /* Dark mode theme overrides */

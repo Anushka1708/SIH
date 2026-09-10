@@ -126,7 +126,7 @@ export default function FacultyDashboard() {
             </div>
             <div className="flex items-center gap-2 text-xs bg-indigo-50 dark:bg-[#1E1B3B] text-primary dark:text-indigo-300 px-3 py-2 rounded-xl border border-indigo-200 dark:border-[#2E2A52]">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-semibold">Gemini 1.5/2.0 Faculty Agent routing submissions 24/7</span>
+              <span className="font-semibold">SkillBridge AI Faculty Agent routing submissions 24/7</span>
             </div>
           </div>
 

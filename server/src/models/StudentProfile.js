@@ -56,6 +56,9 @@ const studentProfileSchema = new mongoose.Schema(
     branch: { type: String, trim: true },
     year: { type: Number, min: 1, max: 6 },
     resumeUrl: { type: String },
+    resumeFileName: { type: String },
+    bio: { type: String },
+    contactNumber: { type: String, trim: true },
 
     skills: [skillEntrySchema],
     targetRoles: [{ type: String, trim: true }], // e.g. "Frontend Developer" — used to pick which Opportunity/role to gap-check against

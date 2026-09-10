@@ -24,7 +24,7 @@ const applicantSchema = new mongoose.Schema(
     student: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     status: {
       type: String,
-      enum: ["applied", "shortlisted", "interview", "hired", "rejected"],
+      enum: ["applied", "reviewing", "shortlisted", "interview", "hired", "accepted", "rejected"],
       default: "applied",
     },
     matchScore: { type: Number, min: 0, max: 100 }, // filled in by the matching engine at apply-time
@@ -37,6 +37,7 @@ const applicantSchema = new mongoose.Schema(
 const opportunitySchema = new mongoose.Schema(
   {
     postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // company user
+    company: { type: mongoose.Schema.Types.ObjectId, ref: "CompanyProfile" },
     title: { type: String, required: true, trim: true },
     type: {
       type: String,
@@ -50,6 +51,7 @@ const opportunitySchema = new mongoose.Schema(
     isRemote: { type: Boolean, default: false },
     stipend: { type: String }, // kept as string to allow "₹15k/month" style display values, matches frontend mock format
     deadline: { type: Date },
+    applicationDeadline: { type: Date },
 
     status: { type: String, enum: ["open", "closed"], default: "open" },
     applicants: [applicantSchema],

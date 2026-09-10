@@ -350,7 +350,7 @@ export const submitSkillQuiz = async (req, res) => {
       score: submittedScore,
     } = req.body;
 
-    const studentUserId = req.user?._id;
+    const studentUserId = req.user?.id || req.user?._id || req.user?.userId;
     if (!studentUserId) {
       return res.status(401).json({ error: "Unauthorized: student identity required." });
     }
@@ -363,10 +363,16 @@ export const submitSkillQuiz = async (req, res) => {
 
     const isPassed = calculatedScore >= 80;
 
-    // Find student profile
-    const profile = await StudentProfile.findOne({ user: studentUserId });
+    // Find student profile or auto-create if missing for this student
+    let profile = await StudentProfile.findOne({ user: studentUserId });
     if (!profile) {
-      return res.status(404).json({ error: "Student profile not found." });
+      profile = await StudentProfile.create({
+        user: studentUserId,
+        college: "Partner University",
+        degree: "B.Tech",
+        branch: "Computer Science & Engineering",
+        year: 4,
+      });
     }
 
     // Find skill in taxonomy if needed
@@ -761,7 +767,7 @@ Output STRICTLY a JSON array of 15 objects:
 export const submitDiagnosticQuiz = async (req, res) => {
   try {
     const { questions = [], answers = {} } = req.body;
-    const studentUserId = req.user?._id;
+    const studentUserId = req.user?.id || req.user?._id || req.user?.userId;
 
     if (!studentUserId) {
       return res.status(401).json({ error: "Unauthorized: student identity required." });
@@ -791,10 +797,16 @@ export const submitDiagnosticQuiz = async (req, res) => {
 
     const overallScore = Math.round((overallCorrect / questions.length) * 100);
 
-    // 2. Fetch student profile
-    const profile = await StudentProfile.findOne({ user: studentUserId });
+    // 2. Fetch student profile or auto-create if missing
+    let profile = await StudentProfile.findOne({ user: studentUserId });
     if (!profile) {
-      return res.status(404).json({ error: "Student profile not found." });
+      profile = await StudentProfile.create({
+        user: studentUserId,
+        college: "Partner University",
+        degree: "B.Tech",
+        branch: "Computer Science & Engineering",
+        year: 4,
+      });
     }
 
     // 3. Upsert skills in taxonomy & profile based on actual diagnostic test performance

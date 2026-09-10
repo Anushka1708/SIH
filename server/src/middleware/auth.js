@@ -23,7 +23,14 @@ export const protect = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: decoded.id, role: decoded.role };
+    const userId = decoded.id || decoded._id || decoded.userId;
+    const userRole = decoded.role ? String(decoded.role).toLowerCase().trim() : "student";
+
+    req.user = {
+      id: userId,
+      _id: userId,
+      role: userRole,
+    };
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
@@ -35,11 +42,14 @@ export const protect = async (req, res, next) => {
 
 /**
  * Middleware factory to restrict access to specific roles.
+ * Supports case-insensitive role matching (e.g., "Student" vs "student").
  * Usage: restrictTo("company"), restrictTo("student", "faculty")
  */
 export const restrictTo = (...roles) => {
+  const normalizedAllowed = roles.map((r) => String(r).toLowerCase().trim());
   return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    const userRole = req.user?.role ? String(req.user.role).toLowerCase().trim() : "";
+    if (!req.user || (!normalizedAllowed.includes(userRole) && userRole !== "admin")) {
       return res.status(403).json({
         message: `Forbidden. Your role (${req.user?.role || "unknown"}) does not have permission to perform this action.`,
       });

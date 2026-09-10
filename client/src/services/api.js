@@ -9,7 +9,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("skillbridge_token");
+    const token = localStorage.getItem("skillbridge_token") || localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,6 +26,14 @@ api.interceptors.response.use(
         new CustomEvent("skillbridge:network-error", {
           detail: {
             message: "Unable to connect to SkillBridge server. Please check your internet or retry.",
+          },
+        })
+      );
+    } else if (error.response?.status === 401) {
+      window.dispatchEvent(
+        new CustomEvent("skillbridge:auth-expired", {
+          detail: {
+            message: error.response?.data?.message || "Session expired. Please log in again to continue.",
           },
         })
       );

@@ -116,7 +116,9 @@ export default function InitialDiagnosticModal({ skills = [], onClose, onComplet
       try {
         setLoading(true);
         setError("");
-        const res = await api.post("/assessments/generate-diagnostic", { skills });
+        const token = localStorage.getItem("skillbridge_token") || localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await api.post("/assessments/generate-diagnostic", { skills }, { headers });
         if (isMounted) {
           if (res.data?.questions && res.data.questions.length > 0) {
             setQuestions(res.data.questions);
@@ -127,7 +129,11 @@ export default function InitialDiagnosticModal({ skills = [], onClose, onComplet
       } catch (err) {
         console.error("Diagnostic generation failed:", err);
         if (isMounted) {
-          setError("Failed to generate diagnostic assessment.");
+          if (err.response?.status === 401) {
+            setError("Your session has expired. Please log in again to take the diagnostic assessment.");
+          } else {
+            setError("Failed to generate diagnostic assessment.");
+          }
         }
       } finally {
         if (isMounted) {
@@ -161,15 +167,26 @@ export default function InitialDiagnosticModal({ skills = [], onClose, onComplet
     try {
       setError("");
       setSubmitting(true);
-      const res = await api.post("/assessments/submit-diagnostic", {
-        questions,
-        answers: selectedAnswers,
-      });
+      const token = localStorage.getItem("skillbridge_token") || localStorage.getItem("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+      const res = await api.post(
+        "/assessments/submit-diagnostic",
+        {
+          questions,
+          answers: selectedAnswers,
+        },
+        { headers }
+      );
 
       setResult(res.data);
     } catch (err) {
       console.error("Diagnostic submission failed:", err);
-      setError(err.response?.data?.error || "Failed to submit diagnostic assessment.");
+      if (err.response?.status === 401) {
+        setError("Your session has expired or authorization is required. Please log in again to record your score.");
+      } else {
+        setError(err.response?.data?.error || "Failed to submit diagnostic assessment.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -413,9 +430,29 @@ export default function InitialDiagnosticModal({ skills = [], onClose, onComplet
             /* Interactive 15-Question Step Wizard */
             <div className="space-y-5">
               {error && (
-                <div className="flex items-center gap-2 text-xs text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 p-3 rounded-xl border border-rose-200 dark:border-rose-900">
-                  <AlertCircle size={15} className="shrink-0" />
-                  <span>{error}</span>
+                <div className="flex items-center justify-between gap-3 text-xs text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 p-3 rounded-xl border border-rose-200 dark:border-rose-900">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle size={16} className="shrink-0 text-rose-500" />
+                    <span>{error}</span>
+                  </div>
+                  {error.toLowerCase().includes("session") || error.toLowerCase().includes("log in") ? (
+                    <a
+                      href="/login"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-lg bg-rose-600 text-white font-bold text-[11px] hover:bg-rose-700 transition shrink-0"
+                    >
+                      Log In ↗
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setError("")}
+                      className="text-rose-500 hover:text-rose-700 font-bold text-xs"
+                    >
+                      Dismiss
+                    </button>
+                  )}
                 </div>
               )}
 

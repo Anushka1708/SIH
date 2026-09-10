@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, ArrowLeft } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { loginUser } from "../utils/auth";
 import api from "../services/api";
 
 export default function Login() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -100,11 +101,18 @@ export default function Login() {
             <input
               className="outline-none text-sm w-full"
               placeholder="Enter your password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={form.password}
               onChange={update("password")}
             />
-            <Eye size={16} className="text-muted" />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-muted hover:text-slate-700 dark:hover:text-slate-200 transition focus:outline-none p-0.5"
+              title={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
           </label>
 
           <div className="flex items-center justify-between text-sm mb-6">

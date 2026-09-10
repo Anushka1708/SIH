@@ -15,13 +15,10 @@ import {
   Settings,
   LogOut,
   Info,
-  Sun,
-  Moon,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { getCurrentUser, logout } from "../utils/auth";
 import { motion, AnimatePresence } from "framer-motion";
-import { toggleTheme, isCurrentlyDark } from "../utils/theme";
 
 const INITIAL_NOTIFICATIONS = [
   {
@@ -71,19 +68,13 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
-  const [isDark, setIsDark] = useState(isCurrentlyDark());
 
   const notifRef = useRef(null);
   const userMenuRef = useRef(null);
   const searchRef = useRef(null);
 
-  // Close menus when clicking outside & track theme changes
+  // Close menus when clicking outside
   useEffect(() => {
-    const handleThemeChange = () => {
-      setIsDark(isCurrentlyDark());
-    };
-    window.addEventListener("theme-change", handleThemeChange);
-
     const handleClickOutside = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target)) {
         setShowNotifications(false);
@@ -98,7 +89,6 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("theme-change", handleThemeChange);
     };
   }, []);
 
@@ -270,18 +260,6 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
 
       {/* Action Controls & Profile Menu */}
       <div className="flex items-center gap-3 ml-4">
-        {/* Discrete Dark / Light Mode Toggle */}
-        <button
-          onClick={() => {
-            const next = toggleTheme();
-            setIsDark(next === "dark" || (next === "system" && isCurrentlyDark()));
-          }}
-          className="p-2 rounded-xl text-muted hover:text-primary transition hover:bg-slate-100 dark:hover:bg-white/10"
-          title={`Switch to ${isDark ? "Light" : "Dark"} mode`}
-        >
-          {isDark ? <Sun size={19} className="text-amber-400" /> : <Moon size={19} />}
-        </button>
-
         {/* Notification Bell with Dropdown */}
         <div ref={notifRef} className="relative">
           <button

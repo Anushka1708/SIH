@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   GraduationCap,
@@ -21,6 +22,37 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { getCurrentUser } from "../utils/auth";
+
+const SKILL_PREVIEWS = {
+  "React.js": {
+    level: 90,
+    evidence: "Assessment Verified · Score 92/100",
+    gap: "0% (Fully Eligible)",
+    tag: "Top 5% Cohort",
+    color: "bg-indigo-500",
+  },
+  "Cloud DevOps": {
+    level: 65,
+    evidence: "Milestone 2/3 · Gemini Roadmap Active",
+    gap: "15% Target Gap Remaining",
+    tag: "In Progress",
+    color: "bg-amber-400",
+  },
+  "System Design": {
+    level: 85,
+    evidence: "Live Project Verified · Faculty Sign-off",
+    gap: "5% Target Gap",
+    tag: "Faculty Audited",
+    color: "bg-purple-500",
+  },
+  "Python AI": {
+    level: 88,
+    evidence: "Hackathon Verified · Codebase Audited",
+    gap: "0% (Eligible)",
+    tag: "Industry Verified",
+    color: "bg-emerald-400",
+  },
+};
 
 const features = [
   {
@@ -117,6 +149,7 @@ const pillars = [
 
 export default function Landing() {
   const user = getCurrentUser();
+  const [activeSkillKey, setActiveSkillKey] = useState("React.js");
 
   const getHomeLink = () => {
     if (!user) return "/";
@@ -142,12 +175,13 @@ export default function Landing() {
           <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 font-black group-hover:scale-105 transition-transform">
             S
           </div>
-          <div className="flex flex-col">
-            <span className="leading-tight font-extrabold text-white tracking-tight">
+          <div className="flex items-center gap-2">
+            <span className="leading-tight font-extrabold text-white tracking-tight text-lg">
               SkillBridge
             </span>
-            <span className="text-[9px] text-indigo-300 font-semibold tracking-wider uppercase">
-              SIH26044
+            <span className="text-white/30 text-xs font-light">|</span>
+            <span className="text-[10px] text-indigo-300 font-bold tracking-wider uppercase">
+              TALENT PLATFORM
             </span>
           </div>
         </Link>
@@ -259,54 +293,76 @@ export default function Landing() {
             </motion.div>
           </div>
 
-          {/* Right Column: High-Tech Hero Visual Mockup */}
+          {/* Right Column: High-Tech Hero Visual Mockup with Floating Animation & Interactive Badges */}
           <div className="lg:col-span-5 relative">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
+              animate={{ y: [-5, 5, -5] }}
+              transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
               className="relative"
             >
-              {/* Main Card with Real Student Imagery & Overlay Stats */}
+              {/* Main Card with Real Student Imagery & Interactive Preview */}
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-white/5 backdrop-blur-xl">
                 <img
                   src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
                   alt="Students Collaborating"
                   className="w-full h-72 object-cover opacity-80"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#131032] via-[#131032]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#131032] via-[#131032]/65 to-transparent" />
 
                 <div className="absolute bottom-0 inset-x-0 p-5 text-white">
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between mb-2.5">
                     <span className="text-xs font-bold text-white flex items-center gap-1.5">
                       <Zap size={14} className="text-amber-400" /> Live Match Engine
                     </span>
                     <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      88% High Fit
+                      91% High Fit
                     </span>
                   </div>
 
                   <p className="text-xs font-bold text-slate-100">Frontend & Cloud Systems Engineer</p>
                   <p className="text-[11px] text-indigo-200/80 mb-3">Flipkart Hiring Partner · Remote</p>
 
-                  <div className="space-y-1.5 text-[11px]">
+                  {/* Interactive Skill Verification Preview Badges */}
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {Object.keys(SKILL_PREVIEWS).map((sk) => (
+                      <button
+                        key={sk}
+                        type="button"
+                        onClick={() => setActiveSkillKey(sk)}
+                        className={`text-[10px] px-2 py-0.5 rounded-md font-bold transition-all ${
+                          activeSkillKey === sk
+                            ? "bg-primary text-white shadow-sm ring-1 ring-white/30 scale-105"
+                            : "bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white"
+                        }`}
+                      >
+                        {sk}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="space-y-2 text-[11px] bg-white/5 p-2.5 rounded-xl border border-white/10">
                     <div>
                       <div className="flex justify-between text-[10px] text-slate-300 mb-0.5">
-                        <span>React.js Competency</span>
-                        <span className="font-bold text-indigo-300">Level 85% (Verified)</span>
+                        <span className="font-semibold text-white">{activeSkillKey}</span>
+                        <span className="font-bold text-indigo-300">
+                          Level {SKILL_PREVIEWS[activeSkillKey].level}% ({SKILL_PREVIEWS[activeSkillKey].tag})
+                        </span>
                       </div>
                       <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-indigo-500 rounded-full w-[85%]" />
+                        <motion.div
+                          key={activeSkillKey}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${SKILL_PREVIEWS[activeSkillKey].level}%` }}
+                          transition={{ duration: 0.4 }}
+                          className={`h-full rounded-full ${SKILL_PREVIEWS[activeSkillKey].color}`}
+                        />
                       </div>
                     </div>
-                    <div>
-                      <div className="flex justify-between text-[10px] text-slate-300 mb-0.5">
-                        <span>Cloud DevOps</span>
-                        <span className="font-bold text-amber-300">Skill Gap: Target 60%</span>
-                      </div>
-                      <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-amber-400 rounded-full w-[45%]" />
-                      </div>
+                    <div className="flex items-center justify-between text-[10px] text-indigo-200/90 pt-0.5">
+                      <span className="truncate">{SKILL_PREVIEWS[activeSkillKey].evidence}</span>
+                      <span className="text-emerald-300 font-semibold shrink-0 ml-1">
+                        {SKILL_PREVIEWS[activeSkillKey].gap}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -403,7 +459,10 @@ export default function Landing() {
 
                   {/* Visual Card with Realistic Unsplash Photo */}
                   <div className={`lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-                    <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200 group">
+                    <motion.div
+                      whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                      className="relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl border border-slate-200 group transition-all"
+                    >
                       <img
                         src={p.image}
                         alt={p.title}
@@ -419,7 +478,7 @@ export default function Landing() {
                           Active
                         </span>
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               );
@@ -447,9 +506,8 @@ export default function Landing() {
             {features.map((f, i) => (
               <motion.div
                 key={f.title}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white/95 backdrop-blur-md rounded-2xl p-6 border border-[#ECEBF5] shadow-xs hover:shadow-md flex flex-col justify-between"
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="bg-white/95 backdrop-blur-md rounded-2xl p-6 border border-[#ECEBF5] shadow-xs hover:shadow-xl hover:border-indigo-200 transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
@@ -469,15 +527,15 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* About Platform & Problem Statement */}
+      {/* About Platform & Architecture */}
       <section id="about" className="px-6 md:px-16 py-20 bg-white border-t border-[#ECEBF5]">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <span className="text-xs font-bold text-primary tracking-wider uppercase">
-              Smart India Hackathon 2024
+              Skill Mapping & Collaboration
             </span>
             <h2 className="text-3xl font-extrabold mt-2 mb-4 text-[#1E1B33]">
-              Solving Problem Statement SIH26044
+              Enterprise-Grade Skill & Talent Architecture
             </h2>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed mb-6">
               Conventional college placement portals rely on static, unverified PDFs that recruiters find impossible to calibrate.
@@ -579,7 +637,7 @@ export default function Landing() {
                 <a href="#home" className="hover:text-white transition">Home</a>
               </li>
               <li>
-                <a href="#about" className="hover:text-white transition">About SIH26044</a>
+                <a href="#about" className="hover:text-white transition">About SkillBridge</a>
               </li>
               <li>
                 <a href="#features" className="hover:text-white transition">Core Features</a>
@@ -602,7 +660,7 @@ export default function Landing() {
 
           <div>
             <p className="font-bold text-white mb-3">Contact & Support</p>
-            <p className="text-[#9791C4] mb-2">Smart India Hackathon 2024 · Problem Statement SIH26044</p>
+            <p className="text-[#9791C4] mb-2">SkillBridge Enterprise · Next-Gen Talent & Competency Platform</p>
             <p className="text-[#C9C5E8] flex items-center gap-1.5">
               <Mail size={13} /> support@skillbridge.edu.in
             </p>

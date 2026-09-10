@@ -93,12 +93,13 @@ export default function Sidebar({ brand, subtitle, items = [], active }) {
         <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center font-black text-white shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-transform">
           S
         </div>
-        <div className="flex flex-col">
-          <span className="font-extrabold text-lg tracking-tight text-white leading-none">
+        <div className="flex items-center gap-1.5">
+          <span className="font-extrabold text-base tracking-tight text-white leading-none">
             SkillBridge
           </span>
-          <span className="text-[10px] text-indigo-300/70 font-semibold tracking-wider uppercase mt-0.5">
-            Talent Platform
+          <span className="text-white/30 text-xs font-light">|</span>
+          <span className="text-[10px] text-indigo-300 font-bold tracking-wider uppercase">
+            TALENT PLATFORM
           </span>
         </div>
       </Link>

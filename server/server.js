@@ -1,12 +1,15 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { connectDB } from "./src/config/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Resolve paths cleanly from root
 const clientDistPath = path.resolve(__dirname, "../client/dist");
 
 import dns from "dns";
@@ -53,11 +56,16 @@ app.use("/api/assessments", assessmentRoutes);
 app.use("/api/faculty", facultyRoutes);
 app.use("/api/passport", passportRoutes);
 
-app.use(express.static(clientDistPath));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(clientDistPath, "index.html"));
-});
+if (fs.existsSync(clientDistPath)) {
+  app.use(express.static(clientDistPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(clientDistPath, "index.html"));
+  });
+} else {
+  app.get("*", (req, res) => {
+    res.status(500).send("Client build directory (client/dist) not found. Run npm run build.");
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -216,9 +216,14 @@ html.dark .hover\:bg-slate-100:hover,
 
 html.dark .bg-slate-50,
 .dark .bg-slate-50,
+html.dark [class*="bg-slate-50"],
+.dark [class*="bg-slate-50"],
 html.dark .bg-slate-100,
-.dark .bg-slate-100 {
+.dark .bg-slate-100,
+html.dark [class*="bg-slate-100"],
+.dark [class*="bg-slate-100"] {
   background-color: #1E1B3B !important;
+  border-color: #2E2A52 !important;
 }
 
 html.dark .btn-ghost,
@@ -245,6 +250,14 @@ html.dark ::-webkit-scrollbar-thumb:hover,
 html.dark .bg-\[\#EEF0FD\],
 .dark .bg-\[\#EEF0FD\] {
   background-color: #1E1B3B !important;
+}
+
+/* Inner project cards & roadmap item containers */
+html.dark .inner-card,
+.dark .inner-card {
+  background-color: #1E1B3B !important;
+  border-color: #2E2A52 !important;
+  color: #F3F4F6 !important;
 }
 
 html.dark .text-slate-900,

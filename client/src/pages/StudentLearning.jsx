@@ -183,7 +183,7 @@ export default function StudentLearning() {
                   <div
                     key={step._id || idx}
                     onClick={() => handleToggleItem(step._id, step.done)}
-                    className="cursor-pointer group hover:bg-slate-50/80 rounded-xl p-2 transition"
+                    className="cursor-pointer group hover:bg-slate-50/80 dark:hover:bg-[#1E1B3B]/80 rounded-xl p-2.5 transition border border-transparent hover:border-slate-200 dark:hover:border-[#2E2A52]"
                   >
                     <RoadmapStep
                       step={idx + 1}
@@ -199,7 +199,7 @@ export default function StudentLearning() {
           </div>
 
           {/* Recommended Learning Courses */}
-          <h3 className="font-bold text-base text-[#1E1B33] mb-3">
+          <h3 className="font-bold text-base text-[#1E1B33] dark:text-[#F3F4F6] mb-3">
             Recommended Skill Programs
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
@@ -207,13 +207,13 @@ export default function StudentLearning() {
               <div key={p.title} className="card">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="text-sm font-semibold text-[#1E1B33]">{p.title}</p>
-                    <p className="text-xs text-muted mt-0.5">{p.provider}</p>
+                    <p className="text-sm font-semibold text-[#1E1B33] dark:text-[#F3F4F6]">{p.title}</p>
+                    <p className="text-xs text-muted dark:text-[#9CA3AF] mt-0.5">{p.provider}</p>
                   </div>
                   {p.enrolled && <CheckCircle2 size={18} className="text-green shrink-0" />}
                 </div>
 
-                <div className="flex items-center gap-4 text-xs text-muted mb-4">
+                <div className="flex items-center gap-4 text-xs text-muted dark:text-[#9CA3AF] mb-4">
                   <span className="flex items-center gap-1">
                     <Clock size={13} /> {p.duration}
                   </span>
@@ -226,7 +226,7 @@ export default function StudentLearning() {
                   onClick={() => toggleEnroll(p.title)}
                   className={
                     p.enrolled
-                      ? "btn-ghost !px-4 !py-2 text-xs w-full justify-center"
+                      ? "btn-ghost !px-4 !py-2 text-xs w-full justify-center !bg-slate-100 dark:!bg-[#1E1B3B] !border-slate-200 dark:!border-[#2E2A52] !text-emerald-700 dark:!text-emerald-300 font-bold"
                       : "btn-primary !px-4 !py-2 text-xs w-full justify-center"
                   }
                 >

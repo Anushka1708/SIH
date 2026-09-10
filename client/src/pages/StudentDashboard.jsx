@@ -192,11 +192,11 @@ export default function StudentDashboard() {
                   {opportunities.map((o) => (
                     <div
                       key={o._id}
-                      className="border border-[#ECEBF5] rounded-xl p-3 flex justify-between items-center"
+                      className="border border-[#ECEBF5] dark:border-[#2E2A52] bg-slate-50/50 dark:bg-[#1E1B3B] rounded-xl p-3.5 flex justify-between items-center transition-colors"
                     >
                       <div>
-                        <p className="text-sm font-semibold text-[#1E1B33]">{o.title}</p>
-                        <p className="text-xs text-muted">
+                        <p className="text-sm font-semibold text-[#1E1B33] dark:text-[#F3F4F6]">{o.title}</p>
+                        <p className="text-xs text-muted dark:text-[#9CA3AF]">
                           {o.company?.companyName || "Verified Partner"} · {o.location || "Remote"} · {o.type}
                         </p>
                       </div>
@@ -239,18 +239,18 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={p._id}
-                          className="border border-slate-100 bg-slate-50/60 rounded-xl p-3"
+                          className="border border-slate-100 dark:border-[#2E2A52] bg-slate-50/60 dark:bg-[#1E1B3B] rounded-xl p-3.5 transition-colors"
                         >
-                          <p className="text-xs font-bold text-slate-800 line-clamp-1">{p.title}</p>
-                          <p className="text-[11px] text-muted line-clamp-1 mb-2">
+                          <p className="text-xs font-bold text-slate-800 dark:text-[#F3F4F6] line-clamp-1">{p.title}</p>
+                          <p className="text-[11px] text-muted dark:text-[#9CA3AF] line-clamp-1 mb-2.5">
                             {p.description}
                           </p>
                           <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/20 border border-emerald-200 dark:border-emerald-500/30 px-2 py-0.5 rounded-md">
                               Earns Verified Skill
                             </span>
                             {isAssigned ? (
-                              <span className="text-[10px] font-semibold text-primary flex items-center gap-1">
+                              <span className="text-[10px] font-semibold text-primary dark:text-indigo-300 flex items-center gap-1 bg-indigo-50 dark:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/30 px-2 py-0.5 rounded-md">
                                 <CheckCircle2 size={11} /> Applied
                               </span>
                             ) : (

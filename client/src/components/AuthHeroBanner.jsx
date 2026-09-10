@@ -83,50 +83,103 @@ export default function AuthHeroBanner() {
           The evidence-based academia-industry platform connecting verified competencies directly with enterprise opportunities and accredited institutions.
         </p>
 
-        {/* High-Tech Vector & Telemetry Mockup Graphic */}
+        {/* Modern High-Definition Glassmorphic EdTech & Corporate Telemetry Visual */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-5 shadow-2xl space-y-3.5 max-w-md"
+          className="bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-5 shadow-2xl space-y-4 max-w-md"
         >
-          <div className="flex items-center justify-between">
+          {/* Header with Connection Stream */}
+          <div className="flex items-center justify-between pb-3 border-b border-white/10">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-bold text-white tracking-wide">Live Vector Match Engine</span>
+              <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-xs">
+                ⚡
+              </div>
+              <div>
+                <p className="text-xs font-bold text-white">Academia-Corporate Pipeline</p>
+                <p className="text-[10px] text-indigo-200/80">Active Campus MoUs & Match Stream</p>
+              </div>
             </div>
-            <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-              92% Fit Score
+            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Telemetry
             </span>
           </div>
 
+          {/* Connected Network Nodes Diagram */}
+          <div className="py-2.5 px-3 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-primary/40 border border-indigo-400/40 flex items-center justify-center text-white text-[11px] font-bold">
+                🎓
+              </div>
+              <div>
+                <p className="text-[11px] font-bold text-white">Student Vector</p>
+                <p className="text-[9px] text-slate-300">Audited Skills</p>
+              </div>
+            </div>
+
+            {/* Pulsing Connector Arrow */}
+            <div className="flex items-center px-1">
+              <div className="h-0.5 w-6 bg-gradient-to-r from-indigo-400 to-purple-400 relative">
+                <span className="absolute -top-1 right-0 w-2 h-2 rounded-full bg-indigo-400 animate-ping" />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-purple-500/30 border border-purple-400/40 flex items-center justify-center text-white text-[11px] font-bold">
+                🏛️
+              </div>
+              <div>
+                <p className="text-[11px] font-bold text-white">Faculty Sign-off</p>
+                <p className="text-[9px] text-slate-300">Accredited</p>
+              </div>
+            </div>
+
+            {/* Connector */}
+            <div className="flex items-center px-1">
+              <div className="h-0.5 w-6 bg-gradient-to-r from-purple-400 to-emerald-400" />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/30 border border-emerald-400/40 flex items-center justify-center text-white text-[11px] font-bold">
+                💼
+              </div>
+              <div>
+                <p className="text-[11px] font-bold text-white">Enterprise Hire</p>
+                <p className="text-[9px] text-emerald-300">94% Fit Match</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Competency Gap Resolution Telemetry */}
           <div className="space-y-2 text-xs">
             <div>
               <div className="flex justify-between text-[10px] text-slate-300 mb-1">
-                <span>React & Node.js Architecture</span>
-                <span className="font-semibold text-indigo-300">Level 90% · Verified</span>
+                <span>Distributed Systems & Cloud Architecture</span>
+                <span className="font-semibold text-emerald-300">92% Match · Zero Gap</span>
               </div>
               <div className="h-1.5 bg-white/15 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-indigo-500 to-emerald-400 rounded-full w-[90%]" />
+                <div className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 rounded-full w-[92%]" />
               </div>
             </div>
             <div>
               <div className="flex justify-between text-[10px] text-slate-300 mb-1">
-                <span>Cloud DevOps Systems</span>
-                <span className="font-semibold text-amber-300">Level 75% · Verified</span>
+                <span>Enterprise API & Live Project Problem Statements</span>
+                <span className="font-semibold text-indigo-300">88% Verified Evidence</span>
               </div>
               <div className="h-1.5 bg-white/15 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-amber-400 to-orange-400 rounded-full w-[75%]" />
+                <div className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full w-[88%]" />
               </div>
             </div>
           </div>
 
+          {/* Bottom Trust Stamp */}
           <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-indigo-200">
             <span className="flex items-center gap-1.5">
               <ShieldCheck size={13} className="text-emerald-400" />
-              Faculty & Project Audited
+              Evidence-Derived Skill Vector
             </span>
-            <span className="text-white/70">Flipkart · TechCorp Partner</span>
+            <span className="text-white/80 font-medium">Google · Flipkart · TechCorp</span>
           </div>
         </motion.div>
       </div>

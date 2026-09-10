@@ -12,16 +12,20 @@ export default function RoadmapStep({ step, title, description, done, last }) {
   return (
     <div className="flex gap-3">
       <div className="flex flex-col items-center">
-        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-          done ? "bg-green text-white" : "bg-bg text-muted"
-        }`}>
+        <div
+          className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+            done
+              ? "bg-green text-white"
+              : "bg-slate-100 dark:bg-[#2E2A52] text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-[#4B4578]"
+          }`}
+        >
           {done ? "✓" : step}
         </div>
-        {!last && <div className="w-px flex-1 bg-border" />}
+        {!last && <div className="w-px flex-1 bg-border dark:bg-[#2E2A52]" />}
       </div>
       <div className="pb-6">
-        <p className="text-sm font-semibold text-[#1E1B33]">{title}</p>
-        <p className="text-xs text-muted">{description}</p>
+        <p className="text-sm font-semibold text-[#1E1B33] dark:text-[#F3F4F6]">{title}</p>
+        <p className="text-xs text-muted dark:text-[#9CA3AF] mt-0.5">{description}</p>
       </div>
     </div>
   );

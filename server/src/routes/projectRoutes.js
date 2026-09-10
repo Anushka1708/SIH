@@ -6,6 +6,7 @@ import {
   assignProject,
   submitMilestone,
   verifyMilestone,
+  applyToProject,
 } from "../controllers/projectController.js";
 
 const router = express.Router();
@@ -13,6 +14,7 @@ const router = express.Router();
 router.post("/", createProject);
 router.get("/", getAllProjects);
 router.get("/:id", getProjectById);
+router.post("/:id/apply", applyToProject);
 router.patch("/:id/assign", assignProject);
 router.patch("/:id/milestones/:milestoneIndex/submit", submitMilestone);
 router.patch("/:id/milestones/:milestoneIndex/verify", verifyMilestone);

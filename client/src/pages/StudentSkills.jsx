@@ -1,9 +1,24 @@
-import { useState } from "react";
-import { LayoutDashboard, User, Award, Briefcase, FileText, FileEdit, BookOpen, Settings, CheckCircle2, Circle } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  LayoutDashboard,
+  User,
+  Award,
+  Briefcase,
+  FileText,
+  FileEdit,
+  BookOpen,
+  Settings,
+  CheckCircle2,
+  Circle,
+  Loader2,
+  ShieldCheck,
+  AlertCircle,
+} from "lucide-react";
+import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { getCurrentUser } from "../utils/auth";
-import { studentData } from "../data/mockData";
+import api from "../services/api";
 
 const items = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/student" },
@@ -16,73 +31,175 @@ const items = [
   { label: "Settings", icon: Settings, href: "/student/settings" },
 ];
 
+const evidenceLabels = {
+  assessment: { label: "Assessment", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
+  project: { label: "Project Verified", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  certificate: { label: "Certificate", color: "bg-blue-50 text-blue-700 border-blue-200" },
+  "faculty-signoff": { label: "Faculty Sign-Off", color: "bg-purple-50 text-purple-700 border-purple-200" },
+  "self-reported": { label: "Self-Reported", color: "bg-gray-100 text-gray-700 border-gray-200" },
+};
+
 export default function StudentSkills() {
   const user = getCurrentUser();
-  const [skills, setSkills] = useState(studentData.skillAssessments);
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [taking, setTaking] = useState(null);
 
-  const handleTakeAssessment = (name) => {
-    setTaking(name);
-    // simulate an assessment completing after a short delay
-    setTimeout(() => {
-      setSkills((prev) =>
-        prev.map((s) =>
-          s.name === name
-            ? { ...s, percent: Math.min(100, s.percent + 25), verified: true }
-            : s
-        )
-      );
+  useEffect(() => {
+    fetchSkills();
+  }, []);
+
+  const fetchSkills = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await api.get("/profile/me");
+      const profileSkills = res.data.profile?.skills || [];
+      setSkills(profileSkills);
+    } catch (err) {
+      console.error("Failed to load skills:", err);
+      setError(err.response?.data?.message || "Failed to load skills from server.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTakeAssessment = async (skillEntry) => {
+    const skillId = (skillEntry.skill?._id || skillEntry.skill)?.toString();
+    const skillName = skillEntry.skill?.name || "Skill";
+    setTaking(skillId);
+
+    try {
+      // Simulate completing an assessment by elevating the score and updating evidence type
+      const newLevel = Math.min(100, (skillEntry.level || 0) + 20);
+
+      const res = await api.put("/profile/me", {
+        skills: [
+          {
+            skill: skillId,
+            level: newLevel,
+            evidenceType: "assessment",
+            evidenceRef: `assessment-session-${Date.now()}`,
+          },
+        ],
+      });
+
+      if (res.data.profile?.skills) {
+        setSkills(res.data.profile.skills);
+      }
+    } catch (err) {
+      console.error("Failed to save assessment score:", err);
+      setError(err.response?.data?.message || "Failed to update assessment score.");
+    } finally {
       setTaking(null);
-    }, 1200);
+    }
   };
 
   return (
-    <div className="flex bg-bg min-h-screen">
-      <Sidebar brand={user?.name} subtitle="Student" items={items} />
-      <div className="flex-1">
+    <div className="flex bg-[#F4F5FB] min-h-screen">
+      <Sidebar brand={user?.name} subtitle="Student" items={items} active="Skills & Assessment" />
+      <div className="flex-1 flex flex-col min-w-0">
         <Topbar placeholder="Search opportunities, skills, courses..." />
-        <div className="p-6 max-w-3xl">
-          <h2 className="text-xl font-extrabold mb-1">Skills & Assessment</h2>
-          <p className="text-muted text-sm mb-6">Take assessments to verify your skills and boost your profile.</p>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="p-6 md:p-8 max-w-3xl w-full mx-auto"
+        >
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="text-2xl font-extrabold text-[#1E1B33]">Skills & Assessment</h2>
+            <span className="text-xs text-muted font-medium">
+              Evidence-Based Skill Vector
+            </span>
+          </div>
+          <p className="text-muted text-xs md:text-sm mb-6">
+            Take assessments and complete live projects to verify competencies and boost match scores.
+          </p>
+
+          {error && (
+            <div className="flex items-center gap-2 text-sm text-red bg-redSoft rounded-lg px-3 py-2 mb-4">
+              <AlertCircle size={15} />
+              <span>{error}</span>
+            </div>
+          )}
 
           <div className="card">
-            <ul className="flex flex-col gap-5">
-              {skills.map((s) => (
-                <li key={s.name}>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <div className="flex items-center gap-2">
-                      {s.verified ? (
-                        <CheckCircle2 size={16} className="text-green" />
-                      ) : (
-                        <Circle size={16} className="text-muted" />
-                      )}
-                      <span className="text-sm font-medium text-[#1E1B33]">{s.name}</span>
-                      {s.verified && (
-                        <span className="status-pill bg-greenSoft text-green">Verified</span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-muted font-mono">{s.percent}%</span>
-                      <button
-                        onClick={() => handleTakeAssessment(s.name)}
-                        disabled={taking === s.name}
-                        className="btn-primary !px-4 !py-1.5 text-xs"
-                      >
-                        {taking === s.name ? "Testing..." : s.percent > 0 ? "Retake" : "Take Test"}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="h-1.5 bg-bg rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-primary rounded-full transition-all duration-500"
-                      style={{ width: `${s.percent}%` }}
-                    />
-                  </div>
-                </li>
-              ))}
-            </ul>
+            {loading ? (
+              <div className="py-12 flex flex-col items-center justify-center text-muted gap-2">
+                <Loader2 className="animate-spin text-primary" size={24} />
+                <p className="text-xs">Loading verified skills...</p>
+              </div>
+            ) : skills.length === 0 ? (
+              <div className="py-12 text-center text-muted">
+                <ShieldCheck className="mx-auto mb-3 text-muted" size={32} />
+                <p className="font-semibold text-sm text-[#1E1B33]">No skills recorded yet</p>
+                <p className="text-xs mt-1 max-w-sm mx-auto">
+                  Complete your profile or participate in live industry projects to earn verified skill badges.
+                </p>
+              </div>
+            ) : (
+              <ul className="flex flex-col gap-6">
+                {skills.map((s, index) => {
+                  const skillId = (s.skill?._id || s.skill || index).toString();
+                  const skillName = s.skill?.name || `Skill ${index + 1}`;
+                  const level = s.level || 0;
+                  const evidence = evidenceLabels[s.evidenceType] || evidenceLabels["self-reported"];
+
+                  return (
+                    <li key={skillId}>
+                      <div className="flex items-center justify-between mb-1.5 flex-wrap gap-2">
+                        <div className="flex items-center gap-2">
+                          {s.verified ? (
+                            <CheckCircle2 size={16} className="text-green" />
+                          ) : (
+                            <Circle size={16} className="text-muted" />
+                          )}
+                          <span className="text-sm font-medium text-[#1E1B33]">{skillName}</span>
+
+                          {s.verified && (
+                            <span className="status-pill bg-greenSoft text-green text-[11px] font-semibold">
+                              Verified
+                            </span>
+                          )}
+
+                          <span
+                            className={`border text-[10px] font-semibold px-2 py-0.5 rounded-md ${evidence.color}`}
+                          >
+                            {evidence.label}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs text-muted font-mono font-medium">{level}%</span>
+                          <button
+                            onClick={() => handleTakeAssessment(s)}
+                            disabled={taking === skillId}
+                            className="btn-primary !px-4 !py-1.5 text-xs flex items-center gap-1.5 disabled:opacity-60"
+                          >
+                            {taking === skillId && <Loader2 size={12} className="animate-spin" />}
+                            {taking === skillId
+                              ? "Testing..."
+                              : level > 0
+                              ? "Retake"
+                              : "Take Test"}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="h-2 bg-bg rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary rounded-full transition-all duration-500"
+                          style={{ width: `${level}%` }}
+                        />
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

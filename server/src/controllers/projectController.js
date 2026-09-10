@@ -392,3 +392,59 @@ export const verifyMilestone = async (req, res) => {
     return res.status(500).json({ error: error.message || "Failed to verify milestone." });
   }
 };
+
+/**
+ * POST /api/projects/:id/apply
+ * Student bids / applies to work on a LiveProject.
+ */
+export const applyToProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const studentUserId = req.user?.id || req.body.studentId;
+
+    if (!mongoose.Types.ObjectId.isValid(id) || !studentUserId || !mongoose.Types.ObjectId.isValid(studentUserId)) {
+      return res.status(400).json({ error: "Invalid project ID or student ID format." });
+    }
+
+    const project = await LiveProject.findById(id);
+    if (!project) {
+      return res.status(404).json({ error: "Live project not found." });
+    }
+
+    const studentProfile = await StudentProfile.findOne({
+      $or: [{ user: studentUserId }, { _id: studentUserId }],
+    });
+
+    if (!studentProfile) {
+      return res.status(404).json({ error: "Student profile not found." });
+    }
+
+    const resolvedUserId = studentProfile.user;
+
+    const alreadyApplied = (project.assignedStudents || []).some(
+      (s) => s.toString() === resolvedUserId.toString()
+    );
+
+    if (alreadyApplied) {
+      return res.status(400).json({ error: "Already applied or assigned to this project." });
+    }
+
+    project.assignedStudents = project.assignedStudents || [];
+    project.assignedStudents.push(resolvedUserId);
+    if (project.status === "open") {
+      project.status = "assigned";
+    }
+
+    await project.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Applied to live project successfully!",
+      project,
+    });
+  } catch (error) {
+    console.error("applyToProject error:", error);
+    return res.status(500).json({ error: error.message || "Failed to apply to project." });
+  }
+};
+

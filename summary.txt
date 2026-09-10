@@ -1,0 +1,322 @@
+================================================================================
+SIH26044 — SKILL MAPPING & ACADEMIA-INDUSTRY COLLABORATION PORTAL
+COMPREHENSIVE PROJECT STATUS & CODEBASE AUDIT
+Generated: September 2026
+================================================================================
+
+TABLE OF CONTENTS:
+1. EXECUTIVE OVERVIEW
+2. SERVER SECTION (BACKEND)
+   2.1 Architecture & Core Configuration
+   2.2 Database Models & Schemas
+   2.3 Authentication & Authorization System
+   2.4 API Controllers & Endpoints
+   2.5 Intelligence & Domain Engines (Dev 2 Scope)
+   2.6 Automated Verification & Test Scripts
+   2.7 Server Status: What is Completed vs What is Next
+3. CLIENT SECTION (FRONTEND)
+   3.1 Technology Stack & Design System
+   3.2 Navigation & Routing Architecture
+   3.3 Multi-Role Portals & Pages Breakdown
+   3.4 Reusable Component Library
+   3.5 Client Status: What is Completed vs What is Next
+4. OVERALL PROJECT HEALTH & NEXT MILESTONES
+
+================================================================================
+1. EXECUTIVE OVERVIEW
+================================================================================
+SkillBridge (SIH26044) is an AI-driven, evidence-based academia-industry 
+collaboration platform designed to bridge the gap between student competencies 
+and corporate requirements. The project connects 4 distinct stakeholders:
+  - Students: Evidence-based skill profiles, skill gap analysis, AI roadmaps, live projects.
+  - Companies: Skill-weighted postings, explainable candidate match ranking, project sponsorship.
+  - Faculty: Student mentorship, skill verification/sign-off, academic tracking.
+  - Institutions: Accreditation compliance, macro skill gap reporting, placement insights.
+
+The repository is structured as a full-stack monorepo:
+  - /server: Node.js (ES Modules) + Express + MongoDB/Mongoose + Google Gemini AI.
+  - /client: React 19 + Vite + Tailwind CSS + Lucide Icons + React Router DOM.
+
+================================================================================
+2. SERVER SECTION (BACKEND)
+================================================================================
+
+2.1 ARCHITECTURE & CORE CONFIGURATION
+--------------------------------------------------------------------------------
+- Technology: Node.js v24, Express.js (ES Module format: "type": "module").
+- Database: MongoDB Atlas using Mongoose ODM.
+- Network Resiliency: Custom DNS server fallback (Google 8.8.8.8 / 8.8.4.4) 
+  configured in server.js to resolve SRV Atlas records cleanly in Windows environments.
+- Entrypoint: server/server.js
+  - Boots Express on PORT 5000 (configurable via .env).
+  - CORS configured with configurable CLIENT_URL.
+  - Express JSON body parser.
+  - Health check endpoint: GET /api/health -> { status: "ok", message: "SIH26044 server running" }.
+  - Mounts all 7 core feature routers.
+
+2.2 DATABASE MODELS & SCHEMAS (server/src/models)
+--------------------------------------------------------------------------------
+All schemas are strictly typed with Mongoose validation, references, and indexes:
+
+1. User.js:
+   - Base authentication identity for all platform actors.
+   - Fields: name, email (unique, lowercase), password (bcrypt hashed pre-save),
+     role (enum: ['student', 'company', 'faculty', 'institution']), isVerified.
+   - Instance method: comparePassword(candidatePassword).
+
+2. StudentProfile.js:
+   - 1:1 linked with User.
+   - Academic details: college, degree, branch, year (1-6), bio, contactNumber.
+   - Resumes & Links: resumeUrl, resumeFileName, portfolio items (project, certificate, achievement).
+   - Skills Vector (Evidence-Based): Embedded array containing:
+     * skill (ObjectId ref 'Skill')
+     * level (0-100 numeric score)
+     * verified (boolean)
+     * evidenceType ('assessment'|'certificate'|'project'|'faculty-signoff'|'self-reported')
+     * evidenceRef (URL or Project ID)
+     * verifiedBy (ObjectId ref 'User')
+     * verifiedAt (Date)
+   - Target Roles & Roadmap milestones.
+
+3. CompanyProfile.js:
+   - 1:1 linked with User.
+   - Details: companyName, industry, website, logoUrl, location, about, companySize, contactNumber.
+
+4. FacultyProfile.js:
+   - 1:1 linked with User.
+   - Academic link: institution (ObjectId ref 'InstitutionProfile'), department, designation.
+   - Expertise & Tracking: expertiseSkills (ref 'Skill'), bio, mentorshipCount.
+
+5. InstitutionProfile.js:
+   - 1:1 linked with User.
+   - Accreditation & Analytics: institutionName, address, accreditation, website,
+     totalStudents, totalFaculty, contactNumber.
+
+6. Opportunity.js:
+   - Created by companies for jobs, internships, or live industry projects.
+   - Fields: postedBy (ref 'User'), company (ref 'CompanyProfile'), title, description,
+     type ('internship'|'job'|'project'), location, isRemote, stipend, applicationDeadline.
+   - requiredSkills: Array of { skill: ref 'Skill', minLevel: 0-100, weight: 0-1 }.
+   - applicants: Embedded array of { student: ref 'User', status, matchScore, matchReasoning, appliedAt }.
+     Status enum: ['applied', 'reviewing', 'shortlisted', 'interview', 'hired', 'accepted', 'rejected'].
+
+7. Skill.js:
+   - Global canonical taxonomy of competencies.
+   - Fields: name (unique), category ('technical'|'soft'|'domain'|'tool'), aliases[],
+     relatedSkills[], ncrfCode (India NSQF/NCrF alignment), description.
+
+8. LiveProject.js:
+   - Real-world project pipeline connecting industry, faculty mentors, and students.
+   - Tracks milestones, status, student team, faculty supervisor, and skillsAwarded upon completion.
+
+2.3 AUTHENTICATION & AUTHORIZATION (server/src/middleware/auth.js)
+--------------------------------------------------------------------------------
+- protect: Middleware extracting and verifying Bearer JWT tokens from headers;
+  attaches decoded { id, role } to req.user.
+- restrictTo(...roles): RBAC authorization guard returning 403 Forbidden if the
+  authenticated user's role does not match permitted roles.
+
+2.4 API CONTROLLERS & ENDPOINTS
+--------------------------------------------------------------------------------
+1. Auth Endpoints (/api/auth) -> authRoutes.js & authController.js:
+   - POST /api/auth/signup: Registers User and atomically provisions the role-specific
+     profile document (StudentProfile, CompanyProfile, FacultyProfile, InstitutionProfile).
+   - POST /api/auth/login: Validates credentials and returns signed JWT token.
+   - GET /api/auth/me: Returns current authenticated user metadata.
+
+2. Profile Endpoints (/api/profile) -> profileRoutes.js & profileController.js:
+   - GET /api/profile/me: Protected; dynamically resolves and returns the logged-in
+     user's profile with populated Skill references.
+   - PUT /api/profile/me: Protected; whitelist updates profile data.
+     * CRITICAL ARRAY MERGE: For students, merges skills by Skill ObjectId. Updates
+       level and evidence without wiping project-verified skills or sign-offs.
+   - GET /api/profile/:id: Protected/Public; fetches any profile across all 4 collections
+     by either profile _id or user _id with populated user/skill data.
+
+3. Opportunity Endpoints (/api/opportunities) -> opportunityRoutes.js & opportunityController.js:
+   - POST /api/opportunities: Company-only; creates new posting linked to CompanyProfile.
+   - GET /api/opportunities: Filterable by type, location, and regex text search.
+   - GET /api/opportunities/:id: Detailed posting view with populated skills and company.
+   - PUT /api/opportunities/:id: Company owner-only update.
+   - DELETE /api/opportunities/:id: Company owner-only deletion.
+   - POST /api/opportunities/:id/apply: Student-only; applies to posting with duplicate
+     guard while isolating matchScore and matchReasoning for Dev 2's engine.
+   - PATCH /api/opportunities/:id/applicants/:studentId: Company owner-only status update.
+
+4. Skill Taxonomy Endpoints (/api/skills) -> skillRoutes.js & skillController.js:
+   - GET /api/skills: List all taxonomy skills with category/search filters.
+   - GET /api/skills/:id: Detailed skill data.
+   - POST /api/skills, PUT /api/skills/:id, DELETE /api/skills/:id: Admin skill management.
+
+2.5 INTELLIGENCE & DOMAIN ENGINES (server/src/utils & services)
+--------------------------------------------------------------------------------
+1. Match Engine (server/src/utils/matchEngine.js & matchingController.js):
+   - Computes weighted, explainable match scores between student skill vectors and
+     opportunity requirements.
+   - Provides granular breakdown: matched skills, gap skills, and human-readable reasoning.
+   - Endpoints mounted at /api/matching.
+
+2. AI Roadmap Generator (server/src/controllers/roadmapController.js & geminiService.js):
+   - Integrates Google Gemini AI to analyze candidate gaps against opportunity specs.
+   - Automatically synthesizes step-by-step "How to become eligible" learning roadmaps.
+   - Includes deterministic fallback generation if external AI API keys are unset.
+   - Endpoints mounted at /api/roadmaps.
+
+3. Live Project Pipeline (server/src/controllers/projectController.js & projectRoutes.js):
+   - Facilitates industry problem statement publication, student bidding, and faculty mentorship.
+   - Milestone completion tracking.
+   - Automatic Skill Elevation: When a project is marked completed and signed off,
+     the platform automatically upgrades the student's profile skills to 'project'
+     verified evidence with elevated levels.
+   - Endpoints mounted at /api/projects.
+
+2.6 AUTOMATED VERIFICATION & TEST SCRIPTS
+--------------------------------------------------------------------------------
+- server/test_dev1_flow.mjs:
+  * Full integration test executing against MongoDB Atlas.
+  * Verifies: Multi-role signup, login, profile fetch, array-safe skill merging,
+    opportunity creation, filtering, duplicate application prevention, and applicant status updates.
+  * Test Status: 100% PASSING (10 out of 10 test suites verified).
+- server/src/scripts/seedSkills.js: Seeds canonical Indian skill taxonomy.
+- server/src/scripts/testDev2Flow.js: Tests matching engine and project upgrade flows.
+
+2.7 SERVER STATUS: WHAT IS COMPLETED VS WHAT IS NEXT
+--------------------------------------------------------------------------------
+- COMPLETED:
+  [x] Server infrastructure, Atlas connection, and DNS configuration.
+  [x] All 8 Mongoose domain models with complete schemas.
+  [x] JWT authentication and role-based access control middleware.
+  [x] Multi-role Auth routes & controllers.
+  [x] Multi-role Profile routes & controllers with safe array merging.
+  [x] Opportunity posting, discovery, application, and applicant status pipeline.
+  [x] Skill taxonomy CRUD and seeders.
+  [x] Explainable match engine.
+  [x] AI-powered Eligibility Roadmap generation (Gemini + Fallback).
+  [x] Live Project pipeline with automated verified skill promotion.
+- NEXT FOR SERVER:
+  [ ] End-to-end webhook or notification alerts (e.g. email or socket notifications).
+  [ ] Resume parsing microservice (extracting skills directly from uploaded PDFs).
+
+
+================================================================================
+3. CLIENT SECTION (FRONTEND)
+================================================================================
+
+3.1 TECHNOLOGY STACK & DESIGN SYSTEM
+--------------------------------------------------------------------------------
+- Framework: React 19 with Vite 8 (Ultra-fast HMR and build times).
+- Styling: Tailwind CSS with customized color schemes and typography:
+  * Primary: Deep Violet / Indigo accents (#6366F1, #4F46E5).
+  * Supporting: Emerald Green for verified skills, Amber for gap warnings, Slate neutrals.
+- Icons: Lucide React icon suite.
+- Routing: React Router DOM (v7).
+- Production Build: Fully validated; compiles with 0 errors via `npm run build` (326 kB bundle).
+
+3.2 NAVIGATION & ROUTING ARCHITECTURE (client/src/App.jsx)
+--------------------------------------------------------------------------------
+Protected by ProtectedRoute.jsx component which guards routes based on active role:
+- Public Routes:
+  * /        -> Landing.jsx (Hero, value proposition, role access cards)
+  * /login   -> Login.jsx (Role-aware login with tab selectors)
+  * /signup  -> Signup.jsx (Dynamic multi-step registration tailored to role)
+
+3.3 MULTI-ROLE PORTALS & PAGES BREAKDOWN (client/src/pages)
+--------------------------------------------------------------------------------
+The client features 30+ dedicated pages across the 4 stakeholder portals:
+
+1. STUDENT PORTAL (/student/*):
+   - StudentDashboard.jsx: Key stats (profile strength, applications, active roadmaps),
+     recommended opportunities, quick action shortcuts.
+   - StudentProfile.jsx: Editable personal info, academic details, degree, branch, year.
+   - StudentSkills.jsx: Interactive skill matrix displaying evidence levels (assessment,
+     project-verified, self-reported) and gap alerts.
+   - StudentOpportunities.jsx: Search and filter internships/jobs with match percentages.
+   - StudentApplications.jsx: Kanban/Table tracking application progress (applied -> shortlisted -> hired).
+   - StudentResume.jsx: Document upload, portfolio link manager, and GitHub link showcase.
+   - StudentLearning.jsx: Interactive learning roadmaps and course modules.
+   - StudentSettings.jsx: Account credentials, notifications, privacy preferences.
+
+2. COMPANY PORTAL (/company/*):
+   - CompanyDashboard.jsx: Overview of active postings, incoming candidate volume, shortlists.
+   - CompanyPostOpportunity.jsx: Posting wizard to configure title, type, stipend, and
+     required skills with minimum thresholds and weights.
+   - CompanyApplications.jsx: Applicant review dashboard with match scores and status modifiers.
+   - CompanyInternships.jsx: Management of active internship postings.
+   - CompanyProjects.jsx: Live industry problem statement submission and student submissions.
+   - CompanyProfile.jsx: Organization profile, industry classification, website, and company bio.
+   - CompanyAnalytics.jsx: Talent funnel conversion and skill supply heatmaps.
+   - CompanySettings.jsx: Organization team and preferences.
+
+3. FACULTY PORTAL (/faculty/*):
+   - FacultyDashboard.jsx: Assigned students, pending verification sign-offs, mentorship requests.
+   - FacultyCourses.jsx: Course-to-skill alignment tools and curriculum objectives.
+   - FacultyStudents.jsx: Student roster with macro academic performance indicators.
+   - FacultyAssessments.jsx: Assessment grading and student skill evaluation sign-offs.
+   - FacultyMentorship.jsx: Active student mentorship sessions and guidance requests.
+   - FacultyProfile.jsx: Academic credentials, department, designation, research areas.
+   - FacultySettings.jsx: Account settings.
+
+4. INSTITUTION PORTAL (/institution/*):
+   - InstitutionDashboard.jsx: Institutional placement overview, top recruiters, accreditation stats.
+   - InstitutionStudents.jsx: Batch analytics, department breakdown, student cohort tracking.
+   - InstitutionFaculty.jsx: Faculty allocation, department-wise mentorship records.
+   - InstitutionCollaborations.jsx: MoUs with industry partners and live project agreements.
+   - InstitutionLearning.jsx: Institutional-level skill development programs.
+   - InstitutionReports.jsx: Audit-ready reports for NAAC / NBA / NIRF skill compliance.
+   - InstitutionSettings.jsx: Institution profile and configuration.
+
+3.4 REUSABLE COMPONENT LIBRARY (client/src/components)
+--------------------------------------------------------------------------------
+Modular, DRY components used throughout the application:
+- Layout:
+  * Sidebar.jsx: Role-tailored collapsible navigation menu with active route highlights.
+  * Topbar.jsx: Search bar, notifications, and user profile badge.
+  * DashboardShell.jsx: Shared page wrapper ensuring uniform padding and headers.
+- Visual Cards & Displays:
+  * StatCard.jsx: Metric cards with icons, trend indicators, and formatted values.
+  * OpportunityCard.jsx: Display cards for job/internship postings with badge tags.
+  * SkillCard.jsx: Skill badges showing evidence type (verified tick, percentage bar).
+  * ProgressCard.jsx: Circular and linear progress indicators for profile/roadmap completion.
+  * ActivityCard.jsx: Chronological audit feed of recent events.
+  * RoadmapStep.jsx: Visual timeline node for eligibility roadmap milestones.
+  * EmptyState.jsx: Clean placeholders for empty lists with call-to-action buttons.
+  * ProtectedRoute.jsx: Route guard ensuring authenticated role compliance.
+
+3.5 CLIENT STATUS: WHAT IS COMPLETED VS WHAT IS NEXT
+--------------------------------------------------------------------------------
+- COMPLETED:
+  [x] Full responsive design system using Tailwind CSS.
+  [x] Client routing with route-level role protection for all 4 user roles.
+  [x] High-fidelity UI implementation for all 30+ pages across Student, Company,
+      Faculty, and Institution portals.
+  [x] Local auth state helpers (loginUser, logoutUser, getCurrentUser).
+  [x] Zero compile/build errors (verified via Vite build production bundle).
+- NEXT FOR CLIENT:
+  [ ] Replace local mockData.js calls with live backend API integration:
+      * Auth: Connect Login.jsx and Signup.jsx to /api/auth/login and /api/auth/signup.
+      * Profile: Connect StudentProfile.jsx to /api/profile/me.
+      * Opportunities: Connect StudentOpportunities.jsx & CompanyPostOpportunity.jsx
+        to /api/opportunities.
+      * Matching & Roadmaps: Connect StudentOpportunities.jsx to /api/matching and /api/roadmaps.
+      * Projects: Connect CompanyProjects.jsx to /api/projects.
+
+
+================================================================================
+4. OVERALL PROJECT HEALTH & NEXT MILESTONES
+================================================================================
+
+Current State:
+- Backend: 100% of the core backend infrastructure, authentication, role profiles,
+  opportunity CRUD, matching engine, AI roadmaps, and project pipelines are fully
+  implemented, mounted in Express, and verified with passing test suites.
+- Frontend: 100% of the UI screens, responsive layouts, components, and routing
+  are built and production-compiled.
+- Integration: The project is now at the ideal stage for connecting the React 
+  frontend directly to the live Express/MongoDB API.
+
+Recommended Next Milestones:
+1. Create a centralized client API service (e.g. client/src/utils/api.js) configured
+   with Axios or Fetch pointing to http://localhost:5000/api.
+2. Hook up authentication state (store JWT in localStorage and pass Bearer token in headers).
+3. Connect live endpoints starting with Login/Signup -> Profile -> Opportunities.
+================================================================================

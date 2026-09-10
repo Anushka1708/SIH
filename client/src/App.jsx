@@ -47,6 +47,7 @@ export default function App() {
 
       {/* Student */}
       <Route path="/student" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>} />
+      <Route path="/student/dashboard" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>} />
       <Route path="/student/profile" element={<ProtectedRoute role="student"><StudentProfile /></ProtectedRoute>} />
       <Route path="/student/skills" element={<ProtectedRoute role="student"><StudentSkills /></ProtectedRoute>} />
       <Route path="/student/opportunities" element={<ProtectedRoute role="student"><StudentOpportunities /></ProtectedRoute>} />
@@ -57,6 +58,7 @@ export default function App() {
 
       {/* Company */}
       <Route path="/company" element={<ProtectedRoute role="company"><CompanyDashboard /></ProtectedRoute>} />
+      <Route path="/company/dashboard" element={<ProtectedRoute role="company"><CompanyDashboard /></ProtectedRoute>} />
       <Route path="/company/postopportunity" element={<ProtectedRoute role="company"><CompanyPostOpportunity /></ProtectedRoute>} />
       <Route path="/company/applications" element={<ProtectedRoute role="company"><CompanyApplications /></ProtectedRoute>} />
       <Route path="/company/internships" element={<ProtectedRoute role="company"><CompanyInternships /></ProtectedRoute>} />
@@ -67,6 +69,7 @@ export default function App() {
 
       {/* Institution */}
       <Route path="/institution" element={<ProtectedRoute role="institution"><InstitutionDashboard /></ProtectedRoute>} />
+      <Route path="/institution/dashboard" element={<ProtectedRoute role="institution"><InstitutionDashboard /></ProtectedRoute>} />
       <Route path="/institution/students" element={<ProtectedRoute role="institution"><InstitutionStudents /></ProtectedRoute>} />
       <Route path="/institution/faculty" element={<ProtectedRoute role="institution"><InstitutionFaculty /></ProtectedRoute>} />
       <Route path="/institution/collaborations" element={<ProtectedRoute role="institution"><InstitutionCollaborations /></ProtectedRoute>} />
@@ -76,6 +79,7 @@ export default function App() {
 
       {/* Faculty */}
       <Route path="/faculty" element={<ProtectedRoute role="faculty"><FacultyDashboard /></ProtectedRoute>} />
+      <Route path="/faculty/dashboard" element={<ProtectedRoute role="faculty"><FacultyDashboard /></ProtectedRoute>} />
       <Route path="/faculty/courses" element={<ProtectedRoute role="faculty"><FacultyCourses /></ProtectedRoute>} />
       <Route path="/faculty/students" element={<ProtectedRoute role="faculty"><FacultyStudents /></ProtectedRoute>} />
       <Route path="/faculty/assessments" element={<ProtectedRoute role="faculty"><FacultyAssessments /></ProtectedRoute>} />

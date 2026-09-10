@@ -196,11 +196,43 @@ export const getMyResume = async (req, res) => {
 
     const profile = await StudentProfile.findOne({ user: userId }).populate("skills.skill");
     if (!profile) {
-      return res.status(404).json({ error: "Profile not found." });
+      return res.json({
+        success: true,
+        resume: null,
+        resumeFileName: "",
+        resumeUrl: "",
+        skills: [],
+        portfolio: [],
+      });
+    }
+
+    // Check if user has an explicit uploaded resume file
+    const hasUploadedResume = Boolean(
+      (profile.resumeFileName && profile.resumeFileName.trim()) ||
+      (profile.resumeUrl && profile.resumeUrl.trim())
+    );
+
+    if (!hasUploadedResume) {
+      return res.json({
+        success: true,
+        resume: null,
+        resumeFileName: "",
+        resumeUrl: "",
+        resumeRawText: "",
+        parsedResumeData: null,
+        skills: [],
+        portfolio: profile.portfolio || [],
+      });
     }
 
     return res.json({
       success: true,
+      resume: {
+        fileName: profile.resumeFileName,
+        url: profile.resumeUrl,
+        rawText: profile.resumeRawText || "",
+        parsedData: profile.parsedResumeData || null,
+      },
       resumeFileName: profile.resumeFileName || "",
       resumeUrl: profile.resumeUrl || "",
       resumeRawText: profile.resumeRawText || "",

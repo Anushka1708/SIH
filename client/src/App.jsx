@@ -40,6 +40,7 @@ import FacultySettings from './pages/FacultySettings.jsx'
 
 import GoogleAuthCallback from './pages/GoogleAuthCallback.jsx'
 import AIChatbot from './components/AIChatbot.jsx'
+import NetworkStatusBanner from './components/NetworkStatusBanner.jsx'
 
 export default function App() {
   return (
@@ -95,6 +96,9 @@ export default function App() {
 
       {/* Persistent Floating AI Assistant for all authenticated portals */}
       <AIChatbot />
+
+      {/* Network & Offline Status Banner / Toast */}
+      <NetworkStatusBanner />
     </>
   )
 }

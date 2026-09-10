@@ -18,4 +18,20 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (!error.response || error.code === "ERR_NETWORK" || error.message?.toLowerCase().includes("network error")) {
+      window.dispatchEvent(
+        new CustomEvent("skillbridge:network-error", {
+          detail: {
+            message: "Unable to connect to SkillBridge server. Please check your internet or retry.",
+          },
+        })
+      );
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

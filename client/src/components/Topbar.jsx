@@ -17,6 +17,7 @@ import {
   Info,
   Sun,
   Moon,
+  WifiOff,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { getCurrentUser, logout } from "../utils/auth";
@@ -72,11 +73,22 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
   const [currentTheme, setCurrentTheme] = useState(getStoredTheme());
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
 
   useEffect(() => {
     const handleThemeEv = () => setCurrentTheme(getStoredTheme());
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
     window.addEventListener("theme-change", handleThemeEv);
-    return () => window.removeEventListener("theme-change", handleThemeEv);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("theme-change", handleThemeEv);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
   }, []);
 
   const notifRef = useRef(null);
@@ -275,6 +287,14 @@ export default function Topbar({ placeholder = "Search opportunities, skills, co
 
       {/* Action Controls & Profile Menu */}
       <div className="flex items-center gap-3 ml-4">
+        {/* Offline Status Badge */}
+        {!isOnline && (
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-500/10 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/60 shadow-sm animate-pulse">
+            <WifiOff size={13} />
+            <span>Offline</span>
+          </span>
+        )}
+
         {/* Notification Bell with Dropdown */}
         <div ref={notifRef} className="relative">
           <button

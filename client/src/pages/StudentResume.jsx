@@ -75,19 +75,25 @@ export default function StudentResume() {
         const resumeRes = await api.get("/resume/my-resume").catch(() => null);
         if (resumeRes?.data) {
           const rData = resumeRes.data;
-          if (rData.resumeFileName) setResumeFileName(rData.resumeFileName);
-          if (rData.resumeUrl) setResumeUrl(rData.resumeUrl);
+          // If no custom resume exists, explicitly set to empty strings
+          if (rData.resume === null || (!rData.resumeFileName && !rData.resumeUrl)) {
+            setResumeFileName("");
+            setResumeUrl("");
+          } else {
+            setResumeFileName(rData.resumeFileName || "");
+            setResumeUrl(rData.resumeUrl || "");
+          }
           if (Array.isArray(rData.portfolio)) setPortfolio(rData.portfolio);
-        }
-
-        // 2. Fallback check with profile/me
-        const res = await api.get("/profile/me");
-        const prof = res.data?.profile;
-        if (prof) {
-          setResumeFileName((prev) => prev || prof.resumeFileName || user?.resumeFileName || "aarav_sharma_resume.pdf");
-          setResumeUrl((prev) => prev || prof.resumeUrl || user?.resumeUrl || "");
-          if (Array.isArray(prof.portfolio) && prof.portfolio.length > 0) {
-            setPortfolio(prof.portfolio);
+        } else {
+          // 2. Fallback check with profile/me
+          const res = await api.get("/profile/me");
+          const prof = res.data?.profile;
+          if (prof) {
+            setResumeFileName(prof.resumeFileName || "");
+            setResumeUrl(prof.resumeUrl || "");
+            if (Array.isArray(prof.portfolio)) {
+              setPortfolio(prof.portfolio);
+            }
           }
         }
       } catch (err) {
@@ -440,11 +446,11 @@ export default function StudentResume() {
                   {uploading ? <Loader2 size={24} className="animate-spin" /> : <Upload size={22} />}
                 </div>
                 <div>
-                  <p className="text-xs md:text-sm font-bold text-slate-800">
-                    Click to upload or drag & drop your resume
+                  <p className="text-xs md:text-sm font-bold text-[#0F172A] dark:text-[#F3F4F6]">
+                    Upload Your Resume to Get Started
                   </p>
-                  <p className="text-[11px] text-muted mt-1">
-                    Supports PDF, DOCX, or DOC (Maximum 10 MB)
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                    Drag and drop or click to upload PDF or DOCX (Max 10 MB)
                   </p>
                 </div>
               </div>

@@ -34,6 +34,8 @@ import FacultyDashboard from './pages/FacultyDashboard.jsx'
 import FacultyCourses from './pages/FacultyCourses.jsx'
 import FacultyStudents from './pages/FacultyStudents.jsx'
 import FacultyAssessments from './pages/FacultyAssessments.jsx'
+import FacultyUpskilling from './pages/FacultyUpskilling.jsx'
+import FacultyResume from './pages/FacultyResume.jsx'
 import FacultyMentorship from './pages/FacultyMentorship.jsx'
 import FacultyProfile from './pages/FacultyProfile.jsx'
 import FacultySettings from './pages/FacultySettings.jsx'
@@ -89,6 +91,8 @@ export default function App() {
         <Route path="/faculty/courses" element={<ProtectedRoute role="faculty"><FacultyCourses /></ProtectedRoute>} />
         <Route path="/faculty/students" element={<ProtectedRoute role="faculty"><FacultyStudents /></ProtectedRoute>} />
         <Route path="/faculty/assessments" element={<ProtectedRoute role="faculty"><FacultyAssessments /></ProtectedRoute>} />
+        <Route path="/faculty/upskilling" element={<ProtectedRoute role="faculty"><FacultyUpskilling /></ProtectedRoute>} />
+        <Route path="/faculty/resume" element={<ProtectedRoute role="faculty"><FacultyResume /></ProtectedRoute>} />
         <Route path="/faculty/mentorship" element={<ProtectedRoute role="faculty"><FacultyMentorship /></ProtectedRoute>} />
         <Route path="/faculty/profile" element={<ProtectedRoute role="faculty"><FacultyProfile /></ProtectedRoute>} />
         <Route path="/faculty/settings" element={<ProtectedRoute role="faculty"><FacultySettings /></ProtectedRoute>} />

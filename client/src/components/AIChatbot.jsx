@@ -36,7 +36,7 @@ export default function AIChatbot() {
     {
       id: "welcome",
       role: "assistant",
-      text: `Hello ${user?.name ? user.name.split(" ")[0] : "there"}! 👋 I'm your SkillBridge AI Assistant. I have live context of your profile, verified skill vector, and career roadmap. How can I guide you today?`,
+      text: `Hello ${user?.name ? user.name.split(" ")[0] : "there"}! 👋 I'm your Antara AI Assistant. I have live context of your profile, verified skill vector, and career roadmap. How can I guide you today?`,
       time: "Just now",
     },
   ]);
@@ -88,7 +88,7 @@ export default function AIChatbot() {
       const response = await api.post("/ai/chat", { message: query });
       const replyText =
         response.data?.reply ||
-        "I'm here to help you navigate your learning and career pathway on SkillBridge.";
+        "I'm here to help you navigate your learning and career pathway on Antara.";
 
       // Determine optional helpful action buttons based on query
       const q = query.toLowerCase();
@@ -153,7 +153,7 @@ export default function AIChatbot() {
     // 2. AI Faculty Verification Query
     if (q.includes("verify") || q.includes("faculty") || q.includes("assessment") || q.includes("test")) {
       return {
-        text: `SkillBridge features an instant AI Faculty Mentor Agent! To verify your skills:\n1. Head to 'Skills & Assessment'.\n2. Click 'Take Test' or 'Retake' next to any skill.\n3. The AI Faculty Agent evaluates your submission and signs off an official digital competency credential!`,
+        text: `Antara features an instant AI Faculty Mentor Agent! To verify your skills:\n1. Head to 'Skills & Assessment'.\n2. Click 'Take Test' or 'Retake' next to any skill.\n3. The AI Faculty Agent evaluates your submission and signs off an official digital competency credential!`,
         actions: [
           { label: "Go to Skills & Assessment", path: "/student/skills" },
         ],
@@ -204,7 +204,7 @@ export default function AIChatbot() {
 
     // Default Fallback
     return {
-      text: `I'm here to accelerate your career readiness on SkillBridge! You can ask me to analyze your skill gaps, explain how AI Faculty verification works, help navigate the portal, or suggest live industry projects.`,
+      text: `I'm here to accelerate your career readiness on Antara! You can ask me to analyze your skill gaps, explain how AI Faculty verification works, help navigate the portal, or suggest live industry projects.`,
       actions: [
         { label: "Explore Opportunities", path: "/student/opportunities" },
         { label: "Verify Skills", path: "/student/skills" },
@@ -228,7 +228,7 @@ export default function AIChatbot() {
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
             className="group relative flex items-center gap-2.5 px-4 py-3.5 rounded-full bg-gradient-to-r from-primary via-indigo-600 to-violet-600 text-white shadow-2xl shadow-indigo-600/40 border border-white/20 backdrop-blur-xl"
-            title="SkillBridge AI Assistant"
+            title="Antara AI Assistant"
           >
             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white">
               <Sparkles size={18} className="text-amber-300 animate-pulse" />
@@ -265,7 +265,7 @@ export default function AIChatbot() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <p className="text-xs font-black tracking-tight">SkillBridge AI</p>
+                    <p className="text-xs font-black tracking-tight">Antara AI</p>
                     <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                       Active
                     </span>
@@ -291,7 +291,7 @@ export default function AIChatbot() {
                 <Zap size={11} className="text-amber-500" />
                 Role: {user.role ? user.role.toUpperCase() : "STUDENT"}
               </span>
-              <span className="text-muted dark:text-[#9CA3AF]">SkillBridge AI Engine</span>
+              <span className="text-muted dark:text-[#9CA3AF]">Antara AI Engine</span>
             </div>
 
             {/* Messages Scroll Area */}

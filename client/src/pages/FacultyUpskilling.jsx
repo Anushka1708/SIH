@@ -145,7 +145,7 @@ export default function FacultyUpskilling() {
                 <div>
                   <h3 className="text-sm font-bold text-white">Your AI-Verified Educator Credentials</h3>
                   <p className="text-xs text-indigo-200/80">
-                    Awarded by SkillBridge AI Faculty Academy upon scoring 75%+ on competency evaluations
+                    Awarded by Antara AI Faculty Academy upon scoring 75%+ on competency evaluations
                   </p>
                 </div>
               </div>

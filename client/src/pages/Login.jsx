@@ -87,7 +87,7 @@ export default function Login() {
           <Link
             to="/"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition mb-8 w-fit bg-slate-100 dark:bg-white/5 hover:bg-indigo-50 dark:hover:bg-white/10 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10"
-            title="Return to SkillBridge Home"
+            title="Return to Antara Home"
           >
             <ArrowLeft size={14} /> Back to Home
           </Link>
@@ -98,7 +98,7 @@ export default function Login() {
               Welcome back
             </h2>
             <p className="text-xs sm:text-sm text-muted mt-1">
-              Sign in to continue to your SkillBridge dashboard
+              Sign in to continue to your Antara dashboard
             </p>
           </div>
 

@@ -105,7 +105,7 @@ export default function RoadmapStep({
 
             <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400">
               <span className="flex items-center gap-1">
-                <Play size={11} className="text-emerald-400" /> Interactive SkillBridge Classroom
+                <Play size={11} className="text-emerald-400" /> Interactive Antara Classroom
               </span>
               <a
                 href={`https://www.youtube.com/watch?v=${effectiveVideoId}`}

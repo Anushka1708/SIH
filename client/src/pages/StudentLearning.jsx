@@ -209,7 +209,7 @@ export default function StudentLearning() {
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Synthesized by SkillBridge AI based on detected competency gap vectors.
+                    Synthesized by Antara AI based on detected competency gap vectors.
                   </p>
                 </div>
               </div>
@@ -384,7 +384,7 @@ export default function StudentLearning() {
                                 </span>
                               </div>
                               <span className="text-[10px] text-indigo-300 font-semibold shrink-0 ml-2 bg-white/10 px-2 py-0.5 rounded">
-                                {step.youtubeChannel || "SkillBridge EdTech"}
+                                {step.youtubeChannel || "Antara EdTech"}
                               </span>
                             </div>
 
@@ -400,7 +400,7 @@ export default function StudentLearning() {
 
                             <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400">
                               <span className="flex items-center gap-1">
-                                <Play size={11} className="text-emerald-400" /> Interactive SkillBridge Classroom
+                                <Play size={11} className="text-emerald-400" /> Interactive Antara Classroom
                               </span>
                               <a
                                 href={`https://www.youtube.com/watch?v=${effectiveVideoId}`}

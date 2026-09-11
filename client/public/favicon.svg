@@ -1,20 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="sb-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="antara-bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#4F46E5" />
       <stop offset="100%" stop-color="#7C3AED" />
     </linearGradient>
-    <linearGradient id="sb-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="antara-accent" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#38BDF8" />
       <stop offset="100%" stop-color="#818CF8" />
     </linearGradient>
   </defs>
   <!-- Background Container -->
-  <rect width="64" height="64" rx="18" fill="url(#sb-bg)" />
-  <!-- Bridge Arch Structure -->
-  <path d="M14 44C20 28 44 28 50 44" stroke="#818CF8" stroke-width="4" stroke-linecap="round" opacity="0.6" />
-  <!-- Stylized Monogram S / Talent Bridge -->
-  <path d="M42 20H26C21.5817 20 18 23.5817 18 28C18 32.4183 21.5817 36 26 36H38C42.4183 36 46 39.5817 46 44C46 48.4183 42.4183 52 38 52H22" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <rect width="64" height="64" rx="18" fill="url(#antara-bg)" />
+  <!-- Subtle Ambient Glow Arch -->
+  <path d="M12 47C20 33 44 33 52 47" stroke="#818CF8" stroke-width="3.5" stroke-linecap="round" opacity="0.45" />
+  <!-- Stylized Antara Modern "A" Mark -->
+  <path d="M20 48L32 18L44 48" stroke="white" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Crossbar Bridge Span -->
+  <path d="M24 37C28 34.5 36 34.5 40 37" stroke="url(#antara-accent)" stroke-width="4.5" stroke-linecap="round" />
   <!-- AI Sparkle Node in Top Right -->
-  <path d="M47 13L48.5 17.5L53 19L48.5 20.5L47 25L45.5 20.5L41 19L45.5 17.5L47 13Z" fill="#FBBF24" />
+  <path d="M48 11L49.5 15.5L54 17L49.5 18.5L48 23L46.5 18.5L42 17L46.5 15.5L48 11Z" fill="#FBBF24" />
 </svg>

@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 /**
- * BrandLogo - High-tech custom SVG/JSX Vector Logo for SkillBridge
+ * BrandLogo - High-tech custom SVG/JSX Vector Logo for Antara
  * Features:
- * - Interconnected "S" Bridge Arch with multi-gradient paths (Indigo -> Violet -> Cyan)
+ * - Interconnected "A" Bridge Arch with multi-gradient paths (Indigo -> Violet -> Cyan)
  * - Glowing Violet/Cyan AI Sparkle Node on top-right corner
  * - Modern squircle backdrop with subtle drop-shadow glow
- * - Gradient typography for "SkillBridge"
+ * - Gradient typography for "Antara"
  * - Thin vertical cyan-tinted glowing divider
  * - High-contrast cyan/indigo uppercase "TALENT PLATFORM" badge
  */
@@ -70,37 +70,36 @@ export default function BrandLogo({
             </filter>
           </defs>
 
-          {/* Bridge Upper Arch Curve */}
+          {/* Antara "A" Monogram Frame */}
           <path
-            d="M28 8C20 7.5 12 11 11 18C10.2 23.5 15.5 25.2 20 26C25.5 27 28.5 28.5 28 32C27.2 35.5 22 36.5 14 34.5"
+            d="M11 32L20 8L29 32"
             stroke="url(#sbPrimaryGrad)"
-            strokeWidth="4"
+            strokeWidth="3.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
-          {/* Intersecting Structural Bridge Truss Line */}
+          {/* Intersecting Structural Bridge Crossbar */}
           <path
-            d="M13 14L27 24"
+            d="M14.5 23.5C17.5 21 22.5 21 25.5 23.5"
             stroke="url(#sbTopSpanGrad)"
             strokeWidth="2.5"
             strokeLinecap="round"
-            strokeOpacity="0.75"
           />
 
           {/* Lower Suspension Arch */}
           <path
-            d="M8 22C11 26 15 28 22 28"
+            d="M7 32C12 28 28 28 33 32"
             stroke="url(#sbBottomSpanGrad)"
-            strokeWidth="2"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeDasharray="1 3"
           />
 
           {/* Core Keystone Nodes */}
-          <circle cx="11" cy="18" r="2" fill="#818CF8" />
-          <circle cx="28" cy="32" r="2" fill="#06B6D4" />
-          <circle cx="20" cy="26" r="1.5" fill="#FFFFFF" />
+          <circle cx="20" cy="8" r="1.8" fill="#FFFFFF" />
+          <circle cx="14.5" cy="23.5" r="1.5" fill="#818CF8" />
+          <circle cx="25.5" cy="23.5" r="1.5" fill="#06B6D4" />
         </svg>
 
         {/* AI Sparkle Node Badge on Top-Right Corner */}
@@ -123,7 +122,7 @@ export default function BrandLogo({
         <span
           className={`bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent font-bold tracking-tight ${titleSize} leading-none drop-shadow-xs`}
         >
-          SkillBridge
+          Antara
         </span>
 
         {showTagline && (
@@ -143,7 +142,7 @@ export default function BrandLogo({
 
   if (to) {
     return (
-      <Link to={to} className="inline-block outline-none" title="SkillBridge Dashboard">
+      <Link to={to} className="inline-block outline-none" title="Antara Dashboard">
         {content}
       </Link>
     );

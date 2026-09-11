@@ -133,7 +133,7 @@ export default function CompanyTalentSearch() {
             { name: "SQL", level: 82, verified: true, evidenceType: "assessment" },
           ],
           badges: [
-            { title: "Full-Stack Project Certified", issuedBy: "SkillBridge AI" },
+            { title: "Full-Stack Project Certified", issuedBy: "Antara AI" },
           ],
           completedProjectsCount: 2,
         },

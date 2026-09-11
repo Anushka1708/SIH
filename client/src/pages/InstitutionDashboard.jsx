@@ -176,7 +176,7 @@ export default function InstitutionDashboard() {
                 </span>
               </div>
               <p className="text-[11px] text-muted mt-1">
-                92% final-year students pre-verified by AI SkillBridge assessments for campus hiring.
+                92% final-year students pre-verified by AI Antara assessments for campus hiring.
               </p>
             </div>
           </div>

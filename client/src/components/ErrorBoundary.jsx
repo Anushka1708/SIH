@@ -34,7 +34,7 @@ export default class ErrorBoundary extends React.Component {
             </div>
             <h2 className="text-xl font-extrabold text-white">Something went wrong</h2>
             <p className="text-xs text-gray-400 leading-relaxed">
-              SkillBridge encountered an unexpected rendering error. We have automatically preserved your session state.
+              Antara encountered an unexpected rendering error. We have automatically preserved your session state.
             </p>
 
             {this.state.error && (

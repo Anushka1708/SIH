@@ -125,7 +125,7 @@ export default function Signup() {
           <Link
             to="/"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition mb-6 w-fit bg-slate-100 dark:bg-white/5 hover:bg-indigo-50 dark:hover:bg-white/10 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10"
-            title="Return to SkillBridge Home"
+            title="Return to Antara Home"
           >
             <ArrowLeft size={14} /> Back to Home
           </Link>
@@ -133,7 +133,7 @@ export default function Signup() {
           {/* Form Header */}
           <div className="mb-6">
             <h2 className="text-2xl sm:text-3xl font-black text-[#1E1B33] dark:text-white tracking-tight">
-              Join SkillBridge
+              Join Antara
             </h2>
             <p className="text-xs sm:text-sm text-muted mt-1">
               Select your role to configure your verified workspace

@@ -43,7 +43,7 @@ export const studentData = {
   { title: "Full Stack Web Development & Microservices", provider: "SWAYAM / NPTEL (IIT Kharagpur)", duration: "8 weeks", level: "NSQF Level 6 · NCrF 4.0", enrolled: false, nsqfCode: "NSQF-L6", accreditation: "SWAYAM / NPTEL", link: "https://swayam.gov.in" },
   { title: "Applied Data Structures & Algorithm Design", provider: "NSDC / Skill India Digital Hub", duration: "10 weeks", level: "NSQF Level 6 · NCrF 4.5", enrolled: true, nsqfCode: "NSQF-L6", accreditation: "NSDC Accredited", link: "https://www.skillindiadigital.gov.in" },
   { title: "Cloud Architecture & DevOps Engineering", provider: "SWAYAM / AICTE Approved", duration: "6 weeks", level: "NSQF Level 7 · NCrF 5.0", enrolled: false, nsqfCode: "NSQF-L7", accreditation: "AICTE / SWAYAM", link: "https://swayam.gov.in" },
-  { title: "Generative AI Engineering & LLMOps", provider: "SkillBridge Center of Excellence", duration: "6 weeks", level: "NSQF Level 7 · NCrF 5.0", enrolled: false, nsqfCode: "NSQF-L7", accreditation: "Industry Verified", link: "https://swayam.gov.in" },
+  { title: "Generative AI Engineering & LLMOps", provider: "Antara Center of Excellence", duration: "6 weeks", level: "NSQF Level 7 · NCrF 5.0", enrolled: false, nsqfCode: "NSQF-L7", accreditation: "Industry Verified", link: "https://swayam.gov.in" },
 ],
 };
 

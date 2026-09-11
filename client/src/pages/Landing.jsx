@@ -49,7 +49,7 @@ const SKILL_PREVIEWS = {
     level: 94,
     badge: "94% AI-Verified",
     evidence: "LLM Pipelines & RAG · Codebase Audited",
-    mentor: "SkillBridge AI Evaluator",
+    mentor: "Antara AI Evaluator",
     gap: "0% Gap (Top Talent)",
     tag: "Expert Vector",
     gradient: "from-amber-400 via-orange-500 to-rose-400",
@@ -77,7 +77,7 @@ const features = [
   {
     icon: Sparkles,
     title: "AI Eligibility Roadmaps",
-    desc: "Powered by SkillBridge AI. When competency gaps are identified, students receive step-by-step learning roadmaps to reach 100% eligibility.",
+    desc: "Powered by Antara AI. When competency gaps are identified, students receive step-by-step learning roadmaps to reach 100% eligibility.",
     badge: "AI Roadmap",
   },
   {
@@ -111,7 +111,7 @@ const pillars = [
     category: "For Students",
     title: "Graduate with an Audited Skill Vector, Not Just a GPA",
     description:
-      "Transform academic projects, hackathons, and certifications into a recruiter-verified competency profile. Get matched to high-fit internships and receive tailored SkillBridge AI roadmaps.",
+      "Transform academic projects, hackathons, and certifications into a recruiter-verified competency profile. Get matched to high-fit internships and receive tailored Antara AI roadmaps.",
     image:
       "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
     points: [
@@ -309,7 +309,7 @@ export default function Landing() {
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block shadow-sm" />
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block shadow-sm" />
                     <span className="ml-1 text-[11px] font-bold text-slate-300 tracking-wider uppercase">
-                      SkillBridge AI Talent Engine
+                      Antara AI Talent Engine
                     </span>
                   </div>
                   <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-[10px] font-extrabold text-emerald-300">
@@ -487,7 +487,7 @@ export default function Landing() {
               Built for Every Stakeholder in Higher Education
             </h2>
             <p className="text-muted text-xs md:text-sm leading-relaxed">
-              SkillBridge harmonizes student skill readiness with recruiter expectations and accreditation compliance.
+              Antara harmonizes student skill readiness with recruiter expectations and accreditation compliance.
             </p>
           </div>
 
@@ -622,7 +622,7 @@ export default function Landing() {
             </h2>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed mb-6">
               Conventional college placement portals rely on static, unverified PDFs that recruiters find impossible to calibrate.
-              SkillBridge turns competencies into dynamic, tamper-evident vectors verified through rigorous coding evaluations,
+              Antara turns competencies into dynamic, tamper-evident vectors verified through rigorous coding evaluations,
               live corporate problem statements, and faculty sign-offs.
             </p>
             <div className="space-y-3 mb-8">
@@ -679,7 +679,7 @@ export default function Landing() {
         <div className="max-w-3xl mx-auto relative z-10">
           <h2 className="text-3xl font-black mb-3">Ready to Elevate Your Campus Talent Pipeline?</h2>
           <p className="text-indigo-200 text-xs md:text-sm mb-8 leading-relaxed">
-            Join thousands of students and hundreds of recruiters using SkillBridge to make hiring evidence-driven and fair.
+            Join thousands of students and hundreds of recruiters using Antara to make hiring evidence-driven and fair.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -710,9 +710,9 @@ export default function Landing() {
           <div className="space-y-3">
             <div className="flex items-center gap-2.5 font-bold text-base text-white">
               <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-white font-black">
-                S
+                A
               </div>
-              SkillBridge
+              Antara
             </div>
             <p className="text-[#9791C4] leading-relaxed">
               India's premier AI-driven skill mapping and academia-industry collaboration platform.
@@ -726,7 +726,7 @@ export default function Landing() {
                 <a href="#home" className="hover:text-white transition">Home</a>
               </li>
               <li>
-                <a href="#about" className="hover:text-white transition">About SkillBridge</a>
+                <a href="#about" className="hover:text-white transition">About Antara</a>
               </li>
               <li>
                 <a href="#features" className="hover:text-white transition">Core Features</a>
@@ -749,15 +749,15 @@ export default function Landing() {
 
           <div>
             <p className="font-bold text-white mb-3">Contact & Support</p>
-            <p className="text-[#9791C4] mb-2">SkillBridge Enterprise · Next-Gen Talent & Competency Platform</p>
+            <p className="text-[#9791C4] mb-2">Antara Enterprise · Next-Gen Talent & Competency Platform</p>
             <p className="text-[#C9C5E8] flex items-center gap-1.5">
-              <Mail size={13} /> support@skillbridge.edu.in
+              <Mail size={13} /> support@antara.edu.in
             </p>
           </div>
         </div>
 
         <div className="max-w-6xl mx-auto pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-[#9791C4] gap-3">
-          <p>© 2026 SkillBridge Platform · All rights reserved.</p>
+          <p>© 2026 Antara Platform · All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#" className="hover:text-white transition">Privacy Policy</a>
             <a href="#" className="hover:text-white transition">Terms of Service</a>

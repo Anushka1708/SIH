@@ -215,7 +215,7 @@ export default function ExplainableMatchModal({
                             </span>
                           </div>
                           <p className="text-[11px] text-muted dark:text-gray-400 mt-0.5">
-                            Estimated learning time: 4-7 days on SkillBridge Learning Roadmap.
+                            Estimated learning time: 4-7 days on Antara Learning Roadmap.
                           </p>
                         </div>
 

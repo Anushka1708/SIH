@@ -136,11 +136,11 @@ export default function StudentPassport() {
                   <div className="flex items-center justify-between border-b border-[#ECEBF5] dark:border-white/10 pb-5 mb-6">
                     <div className="flex items-center gap-3">
                       <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 text-white flex items-center justify-center font-black text-xl shadow-md">
-                        S
+                        A
                       </div>
                       <div>
                         <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-                          SKILLBRIDGE TALENT IDENTITY
+                          ANTARA TALENT IDENTITY
                         </span>
                         <h3 className="text-lg font-extrabold text-[#1E1B33] dark:text-white">
                           National Digital Skill Passport
@@ -303,7 +303,7 @@ export default function StudentPassport() {
                     </div>
                     <div className="flex justify-between">
                       <span>Network:</span>
-                      <span className="text-slate-800 dark:text-slate-200">SkillBridge Sovereign Registry</span>
+                      <span className="text-slate-800 dark:text-slate-200">Antara Sovereign Registry</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Issued Date:</span>

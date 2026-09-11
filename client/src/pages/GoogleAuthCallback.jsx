@@ -97,7 +97,7 @@ export default function GoogleAuthCallback() {
           <Loader2 size={36} className="animate-spin text-primary mx-auto" />
           <h2 className="text-lg font-bold text-white">Completing Google Sign-in...</h2>
           <p className="text-xs text-indigo-200/80 max-w-sm">
-            Verifying your Google identity and loading your verified SkillBridge workspace.
+            Verifying your Google identity and loading your verified Antara workspace.
           </p>
         </div>
       )}

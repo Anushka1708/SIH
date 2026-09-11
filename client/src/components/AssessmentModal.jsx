@@ -134,7 +134,7 @@ export default function AssessmentModal({ skillEntry, onClose, onVerified }) {
         if (isMounted) {
           if (res.data?.questions && res.data.questions.length > 0) {
             setQuestions(res.data.questions);
-            setQuizSource(res.data.source || "SkillBridge AI");
+            setQuizSource(res.data.source || "Antara AI");
           } else {
             setError("No questions received from quiz engine.");
           }
@@ -208,7 +208,7 @@ export default function AssessmentModal({ skillEntry, onClose, onVerified }) {
         feedback:
           res.data?.feedback ||
           (isPassed
-            ? `Outstanding! You achieved ${calculatedScore}% in ${skillName}. Officially certified by SkillBridge AI Faculty Mentor!`
+            ? `Outstanding! You achieved ${calculatedScore}% in ${skillName}. Officially certified by Antara AI Faculty Mentor!`
             : `You scored ${calculatedScore}%. A minimum score of 80% is required for verified status. Review the detailed explanations and retake anytime!`),
         badgeAwarded: res.data?.badgeAwarded || isPassed,
         badgeTitle: res.data?.badgeTitle || `AI-Verified ${skillName} Specialist`,
@@ -286,7 +286,7 @@ export default function AssessmentModal({ skillEntry, onClose, onVerified }) {
               </div>
               <div>
                 <p className="text-sm font-bold text-[#0F172A] dark:text-[#F3F4F6]">
-                  SkillBridge AI is generating your skill assessment quiz...
+                  Antara AI is generating your skill assessment quiz...
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
                   Synthesizing 5 technical multiple choice questions tailored specifically to{" "}

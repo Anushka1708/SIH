@@ -160,7 +160,7 @@ export default function StudentResume() {
               resumeUrl: dataUrl,
               resumeFileSize: sizeFormatted,
             });
-            setSuccessMsg("Resume Uploaded & SkillBridge AI Skills Extracted Successfully!");
+            setSuccessMsg("Resume Uploaded & Antara AI Skills Extracted Successfully!");
             if (parseRes.data?.extractedSkills?.length > 0) {
               setDiagnosticSkills(parseRes.data.extractedSkills);
               setTimeout(() => setShowDiagnosticModal(true), 600);

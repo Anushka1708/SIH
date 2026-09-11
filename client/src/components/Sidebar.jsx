@@ -144,7 +144,7 @@ export default function Sidebar({ brand, subtitle, items = [], active }) {
 
       {/* Bottom version badge */}
       <div className="pt-4 border-t border-white/5 px-2 text-[11px] text-[#7C75A8] flex items-center justify-between">
-        <span>SkillBridge v2.0</span>
+        <span>Antara v2.0</span>
         <span className="inline-block w-2 h-2 rounded-full bg-emerald-400/80 animate-pulse" />
       </div>
     </aside>

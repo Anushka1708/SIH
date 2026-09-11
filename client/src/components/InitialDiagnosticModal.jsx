@@ -254,7 +254,7 @@ export default function InitialDiagnosticModal({ skills = [], onClose, onComplet
               </div>
               <div>
                 <p className="text-sm font-bold text-[#0F172A] dark:text-[#F3F4F6]">
-                  SkillBridge AI is compiling your Comprehensive Diagnostic Test...
+                  Antara AI is compiling your Comprehensive Diagnostic Test...
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
                   Generating 15 baseline questions across extracted competencies:{" "}
